@@ -1,0 +1,12 @@
+Đăng ký/ Đăng nhập
+Quản lý tài khoản/ noti
+DS bài viết theo phòng - khoa - Đoàn - câu lạc bộ - clb (có thể tĩnh hoặc động)
+Danh sách bài viết tìm kiếm
+Tìm kiếm nâng cao
+Trang chủ
+chi tiết bài viết
+bình luận
+Cài đặt
+
++ DS bài viết tìm kím: có tab bài viết
++ trang chủ: slide, bài viết. bài viết xem nhiều.
