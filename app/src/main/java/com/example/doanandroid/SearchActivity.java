@@ -3,6 +3,7 @@ package com.example.doanandroid;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,7 +17,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.doanandroid.Adapter.AdapterSearch;
 import com.example.doanandroid.Model.DemoModel;
@@ -37,6 +37,7 @@ import java.util.Random;
 import java.util.UUID;
 
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
+    Toolbar toolbar;
     List<DemoModel> demoModelList = new ArrayList<>();
     AdapterSearch adapterSearch;
     RecyclerView recyFind;
@@ -49,7 +50,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         init();
-
+        ActionToolbar();
         demoModelList.add(new DemoModel("Đăng ký học phần", "15/02/2022", "151", R.drawable.ic_launcher_background));
         demoModelList.add(new DemoModel("Đăng ký học kỳ phụ", "15/02/2022", "151", R.drawable.ic_launcher_background));
         demoModelList.add(new DemoModel("Lịch học kỳ phụ", "15/02/2022", "151", R.drawable.ic_launcher_background));
@@ -64,8 +65,20 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         txt_start_date.setOnClickListener(this::onClick);
     }
 
+    private void ActionToolbar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
     // khởi tạo các control
     private void init() {
+        toolbar = findViewById(R.id.toolbar);
         txt_end_date = findViewById(R.id.txt_date_end);
         txt_start_date = findViewById(R.id.txt_date_start);
         edt_search = findViewById(R.id.edt_search_1);

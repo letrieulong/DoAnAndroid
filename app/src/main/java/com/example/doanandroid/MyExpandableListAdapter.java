@@ -12,6 +12,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.doanandroid.Fragment.HomeFragment;
+
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +26,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     private List<String> groupList;
 
     public MyExpandableListAdapter(Context context, List<String> groupList,
-                                   Map<String, List<String>> mobileCollection){
+                                   Map<String, List<String>> mobileCollection) {
         this.context = context;
         this.mobileCollection = mobileCollection;
         this.groupList = groupList;
@@ -35,6 +39,9 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int i) {
+        if (mobileCollection.get(groupList.get(i)).size() == 0){
+            return 0;
+        }else
         return mobileCollection.get(groupList.get(i)).size();
     }
 
@@ -66,19 +73,21 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
         String mobileName = getGroup(i).toString();
-        if(view == null){
+        if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.group_item, null);
         }
         TextView item = view.findViewById(R.id.mobile);
         ImageView img = view.findViewById(R.id.img_view);
         RelativeLayout check = view.findViewById(R.id.relate_check);
-        if (mobileName.equals("CÀI ĐẶT") || mobileName.equals("THOÁT")){
+        if (mobileName.equals("CÀI ĐẶT") || mobileName.equals("THOÁT") || mobileName.equals("TRANG CHỦ")) {
             img.setVisibility(View.GONE);
-        }else {
+        } else {
             img.setVisibility(View.VISIBLE);
         }
-
+        if (mobileName.equals("TRANG CHỦ")) {
+            ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_Layout, new HomeFragment()).addToBackStack(null).commit();
+        }
         item.setTypeface(null, Typeface.BOLD);
         item.setText(mobileName);
         return view;
@@ -87,7 +96,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(final int i, final int i1, boolean b, View view, ViewGroup viewGroup) {
         String model = getChild(i, i1).toString();
-        if (view == null){
+        if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.child_item, null);
         }
