@@ -1,15 +1,22 @@
 package com.example.doanandroid;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,19 +29,27 @@ import com.example.doanandroid.Fragment.DepartmentPoliticsFragment;
 import com.example.doanandroid.Fragment.DepmentElectronicFragment;
 import com.example.doanandroid.Fragment.GroupStudentFragment;
 import com.example.doanandroid.Fragment.GroupYouthFragment;
+import com.example.doanandroid.Fragment.HomeFragment;
+import com.example.doanandroid.Fragment.InforUserFragment;
 import com.example.doanandroid.Fragment.RoomAdminiStrativeFragment;
 import com.example.doanandroid.Fragment.RoomCTCT_HSSVFragment;
 import com.example.doanandroid.Fragment.RoomTrainingFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static Toolbar toolbar;
     public static DrawerLayout drawerLayout;
+    BottomNavigationView bottomNavigationView;
     TextView txt_name_toolbar;
+    CircleImageView img_account;
     List<String> groupList;
     List<String> childList;
     Map<String, List<String>> ListCollection;
@@ -51,12 +66,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = findViewById(R.id.toolbar);
-        txt_name_toolbar = findViewById(R.id.txt_name_toolbar);
-        drawerLayout = findViewById(R.id.drawerlayout);
-        expandableListView = findViewById(R.id.elvMobiles);
+        init();
+        loadFragment(new HomeFragment());
+        setActionNavi();
         createGroupList();
         createCollection();
+
         expandableListAdapter = new MyExpandableListAdapter(this, groupList, ListCollection);
         expandableListView.setAdapter(expandableListAdapter);
 
@@ -68,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
                     expandableListView.collapseGroup(lastExpandedPosition);
                 }
                 lastExpandedPosition = i;
+                if (lastExpandedPosition == 4){
+                    startActivity(new Intent(MainActivity.this, cai_dat.class));
+                }
             }
         });
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -152,6 +170,14 @@ public class MainActivity extends AppCompatActivity {
         Actionbar();
     }
 
+    private void init(){
+        toolbar = findViewById(R.id.toolbar);
+        txt_name_toolbar = findViewById(R.id.txt_name_toolbar);
+        drawerLayout = findViewById(R.id.drawerlayout);
+        expandableListView = findViewById(R.id.elvMobiles);
+        bottomNavigationView = findViewById(R.id.bottomnavi);
+        img_account = findViewById(R.id.img_acount);
+    }
 
     private void createCollection() {
         ListCollection = new HashMap<String, List<String>>();
@@ -181,14 +207,41 @@ public class MainActivity extends AppCompatActivity {
 
     private void createGroupList() {
         groupList = new ArrayList<>();
-        groupList.add("TRANG CHỦ");
-        groupList.add("PHÒNG");
+       groupList.add("PHÒNG");
         groupList.add("KHOA");
         groupList.add("ĐOÀN - HỘI");
         groupList.add("CÂU LẠC BỘ");
         groupList.add("CÀI ĐẶT");
         groupList.add("THOÁT");
     }
+
+    // set hành động của bottomnavigation
+    private void setActionNavi() {
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fragment;
+                switch (item.getItemId()) {
+                    case R.id.item_home:
+                        txt_name_toolbar.setText("TRANG CHỦ");
+                        fragment = new HomeFragment();
+                        loadFragment(fragment);
+//                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0)); // hiển thị layout dialog trong this
+//                        dialog.show();
+                        return true;
+                    case R.id.item_person:
+                        txt_name_toolbar.setText("THÔNG TIN CÁ NHÂN");
+                        fragment = new InforUserFragment();
+                        loadFragment(fragment);
+//                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+//                        dialog.show();
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
+
 
     private void Actionbar() {
         setSupportActionBar(toolbar);
@@ -207,4 +260,21 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_Layout, fragment).addToBackStack(null).commit();
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btn_logout:
+                SharedPreferences preferences = getSharedPreferences("checkbox",MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("remember", "false");
+                editor.apply();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            case R.id.linear_logout:
+                SharedPreferences preferences1 = getSharedPreferences("checkbox",MODE_PRIVATE);
+                SharedPreferences.Editor editor1 = preferences1.edit();
+                editor1.putString("remember", "false");
+                editor1.apply();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        }
+    }
 }

@@ -13,6 +13,18 @@
             android:name=".DepartmentCNTT"
             android:exported="false" />
         <activity
+            android:name=".cai_dat"
+            android:exported="false" />
+        <activity
+            android:name=".dang_ky_tai_khoan"
+            android:exported="false" />
+        <activity
+            android:name=".doi_avatar"
+            android:exported="false" />
+        <activity
+            android:name=".Doi_mat_khau"
+            android:exported="false" />
+        <activity
             android:name=".SearchActivity"
             android:exported="false" />
         <activity

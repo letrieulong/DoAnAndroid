@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/backgr"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.InforUserFragment">
+
+    <RelativeLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/linear_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/custom_logout"
+            android:gravity="center|center_vertical">
+
+            <ImageView
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/logout" />
+
+            <Button
+                android:id="@+id/btn_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-12dp"
+                android:background="@android:color/transparent"
+                android:text="Đăng Xuất"
+                android:textSize="10dp" />
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_acount"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_below="@id/linear_logout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/empty" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="#32a3dc"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_below="@id/img_acount"
+            android:text="Lê Triệu Long"
+            android:id="@+id/txt_name_account"
+            android:layout_marginStart="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="15dp"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="5dp"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:padding="2dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/iccon_email"
+                android:background="@drawable/custom_infor"/>
+            <TextView
+                android:text="0306181044@caothang.edu.vn"
+                android:id="@+id/txt_email_infor"
+                android:layout_marginStart="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="15dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
