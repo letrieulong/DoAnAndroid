@@ -11,15 +11,22 @@ import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.doanandroid.Adapter.AdapterRecruit_CNTT;
 import com.example.doanandroid.Adapter.AdapterSearch;
 import com.example.doanandroid.Model.DemoModel;
+import com.example.doanandroid.Model.Infor_All_CNTT;
+import com.example.doanandroid.Model.Recruit_CNTT;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,12 +45,13 @@ import java.util.UUID;
 
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
     Toolbar toolbar;
-    List<DemoModel> demoModelList = new ArrayList<>();
-    AdapterSearch adapterSearch;
+    List<Recruit_CNTT> recruit_cnttList = new ArrayList<>();
+    AdapterRecruit_CNTT adapterRecruit_cntt;
     RecyclerView recyFind;
     EditText edt_search;
     TextView txt_end_date, txt_start_date;
     DatePickerDialog.OnDateSetListener setListener;
+    String SearchFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,29 +59,21 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_search);
         init();
         ActionToolbar();
-        demoModelList.add(new DemoModel("Đăng ký học phần", "15/02/2022", "151", R.drawable.ic_launcher_background));
-        demoModelList.add(new DemoModel("Đăng ký học kỳ phụ", "15/02/2022", "151", R.drawable.ic_launcher_background));
-        demoModelList.add(new DemoModel("Lịch học kỳ phụ", "15/02/2022", "151", R.drawable.ic_launcher_background));
-        demoModelList.add(new DemoModel("Lịch tiếp sinh viên", "15/02/2022", "151", R.drawable.ic_launcher_background));
-        demoModelList.add(new DemoModel("Thông báo", "15/02/2022", "151", R.drawable.ic_launcher_background));
-        demoModelList.add(new DemoModel("Lịch thi", "15/02/2022", "151", R.drawable.ic_launcher_background));
-        demoModelList.add(new DemoModel("Thời gian báo cáo đồ án", "15/02/2022", "151", R.drawable.ic_launcher_background));
-        demoModelList.add(new DemoModel("Thời gian nghĩ hè", "15/02/2022", "151", R.drawable.ic_launcher_background));
-        demoModelList.add(new DemoModel("Thông báo đóng học phí", "15/02/2022", "151", R.drawable.ic_launcher_background));
 
         txt_end_date.setOnClickListener(this::onClick);
         txt_start_date.setOnClickListener(this::onClick);
+
     }
 
     private void ActionToolbar() {
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//            }
+//        });
     }
 
     // khởi tạo các control
@@ -85,9 +85,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         recyFind = findViewById(R.id.recyFindSearch);
 
-        adapterSearch = new AdapterSearch(this, demoModelList);
+        adapterRecruit_cntt = new AdapterRecruit_CNTT(this, recruit_cnttList);
         recyFind.setLayoutManager(new LinearLayoutManager(this));
-        recyFind.setAdapter(adapterSearch);
+        recyFind.setAdapter(adapterRecruit_cntt);
     }
 
     // calendar
@@ -113,14 +113,80 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         };
     }
 
+    // search
+    private void Search(EditText edt_search) {
+        edt_search.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_UP && i == KeyEvent.KEYCODE_ENTER) {
+                    SearchFilter = edt_search.getText().toString();
+                    filter(SearchFilter);
+                }
+                return false;
+            }
+        });
+    }
+
+    // Tìm kiếm giá trị
+    private void filter(String text) {
+        // tạo một danh sách mảng mới để lọc dữ liệu
+        ArrayList<DemoModel> filteredlist = new ArrayList<>();
+
+        // so sánh các phần từ trong adapter
+//        for (DemoModel item : demoModelList) {
+//            // kiểm tra chuỗi vừa nhập có khớp với giá trị cần so sánh hay không
+//            if (item.getTitle().toLowerCase().contains(text.toLowerCase())) {
+//                filteredlist.add(item);
+////            } else {
+////                recyclerView.setVisibility(View.INVISIBLE);
+////            }
+////            if (Index_Start_Source.equals(text)){
+////                recyclerView.setVisibility(View.VISIBLE);
+////                filteredlist.add(item);
+////            }if (Index_Start_Careby.equals(text)){
+////                recyclerView.setVisibility(View.VISIBLE);
+////                filteredlist.add(item);
+////            }
+//            }
+//            // kiểm tra data vừa nhập có chứa nội dung trong adapter hay không
+//            if (filteredlist.isEmpty()) {
+//            } else {
+//                // nếu có sẽ add vào classAdapter
+//                adapterSearch.filterList(filteredlist);
+////            recyclerView.setVisibility(View.VISIBLE);
+//            }
+//        }
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txt_date_end:
                 calendar(txt_end_date);
+                DatabaseReference mDatabases = FirebaseDatabase.getInstance().getReference("list_cntt");
+                UUID uuidd = UUID.randomUUID();
+                String userI = mDatabases.push().getKey();
+                mDatabases.child("");
+
                 return;
             case R.id.txt_date_start:
-                calendar(txt_start_date);
+//                calendar(txt_start_date);
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("list_electronic");
+
+                UUID uuid = UUID.randomUUID();
+                String id = uuid.toString();
+                String title = "";
+                String date = "";
+                String content = "";
+                String image = "";
+                Infor_All_CNTT rs = new Infor_All_CNTT(id, title, image, content, date);
+
+                String userId = mDatabase.push().getKey();
+
+                mDatabase.child("list_news/"+userId).setValue(rs);
+                return;
+            case R.id.edt_search_1:
+                Search(edt_search);
                 return;
         }
     }

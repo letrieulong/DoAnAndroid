@@ -1,6 +1,7 @@
 package com.example.doanandroid.Adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,47 +11,49 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanandroid.Model.DemoModel;
-import com.example.doanandroid.Model.Recruit_CNTT;
+import com.bumptech.glide.Glide;
+import com.example.doanandroid.Model.Infor_All_CNTT;
+import com.example.doanandroid.Model.News_Electronic;
 import com.example.doanandroid.R;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ViewHodel> {
+public class AdapterNews_Electronic extends RecyclerView.Adapter<AdapterNews_Electronic.ViewHodel> {
     Context context;
-    List<Recruit_CNTT> demoModelList;
+    List<News_Electronic> news_electronics;
 
-    public AdapterSearch(Context context, List<Recruit_CNTT> demoModelList) {
+    public AdapterNews_Electronic(Context context, List<News_Electronic> news_electronics) {
         this.context = context;
-        this.demoModelList = demoModelList;
+        this.news_electronics = news_electronics;
     }
 
     @NonNull
     @Override
     public ViewHodel onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_search, parent, false);
+        View view = inflater.inflate(R.layout.item_recruit, parent, false);
         return new ViewHodel(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHodel holder, int i) {
-        holder.txt_date.setText("Ngày : " + demoModelList.get(i).getDate());
-        holder.txt_title.setText(demoModelList.get(i).getTitle());
-        holder.txt_view.setText("View : " + demoModelList.get(i).getDate());
+        holder.txt_date.setText("Ngày : " + news_electronics.get(i).getDate());
+        holder.txt_title.setMaxLines(3);
+        holder.txt_title.setEllipsize(TextUtils.TruncateAt.END);
+        holder.txt_title.setText(news_electronics.get(i).getTitle());
+        Glide.with(context)
+                .load(news_electronics.get(i).getImage())
+                .into(holder.img);
     }
 
     @Override
     public int getItemCount() {
-        return demoModelList.size();
+        return news_electronics.size();
     }
 
     public class ViewHodel extends RecyclerView.ViewHolder {
         ImageView img;
-        TextView txt_title, txt_date, txt_view;
+        TextView txt_title, txt_date;
         View v;
         public ViewHodel(@NonNull View view) {
             super(view);
@@ -58,13 +61,12 @@ public class AdapterSearch extends RecyclerView.Adapter<AdapterSearch.ViewHodel>
 
             txt_title = view.findViewById(R.id.txt_title);
             txt_date  = view.findViewById(R.id.txt_date);
-            txt_view  = view.findViewById(R.id.txt_view);
             v = view;
         }
     }
     // Lọc Các Từ Khóa Gần Giống Khi search
-    public void filterList(ArrayList<Recruit_CNTT> filterllist) {
-        demoModelList = filterllist;
-        notifyDataSetChanged();
-    }
+//    public void filterList(ArrayList<Recruit_CNTT> filterllist) {
+//        cntt_inforList = filterllist;
+//        notifyDataSetChanged();
+//    }
 }

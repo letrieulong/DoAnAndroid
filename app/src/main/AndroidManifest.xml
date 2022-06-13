@@ -10,9 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAnAndroid">
         <activity
-            android:name=".DepartmentCNTT"
-            android:exported="false" />
-        <activity
             android:name=".cai_dat"
             android:exported="false" />
         <activity

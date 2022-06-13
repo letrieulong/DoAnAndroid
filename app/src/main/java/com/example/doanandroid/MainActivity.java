@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static Toolbar toolbar;
     public static DrawerLayout drawerLayout;
     BottomNavigationView bottomNavigationView;
-    TextView txt_name_toolbar;
+    public static TextView txt_name_toolbar;
     CircleImageView img_account;
     List<String> groupList;
     List<String> childList;
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
     String[] RoomModels = {"Phòng đào tạo", "Phòng hành chính", "Phòng CTCT - HSSV"};
-    String[] DepartmentModels = {"Khoa kinh tế", "Khoa chính trị", "Khoa công CNTT", "Khoa điện tử"};
+    String[] DepartmentModels = {"Khoa kinh tế", "Khoa chính trị", "Khoa công CNTT", "Khoa điện - điện tử"};
     String[] unionModels = {"Đoàn thanh niên", "Hội sinh viên"};
     String[] CLBModels = {"Câu lạc bộ âm nhạc", "Câu lạc bộ tin học", "Câu lạc bộ điện tử"};
     String[] CLBModelss = {};
@@ -230,9 +230,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                        dialog.show();
                         return true;
                     case R.id.item_person:
-                        txt_name_toolbar.setText("THÔNG TIN CÁ NHÂN");
-                        fragment = new InforUserFragment();
-                        loadFragment(fragment);
+//                        txt_name_toolbar.setText("THÔNG TIN CÁ NHÂN");
+//                        fragment = new InforUserFragment();
+//                        loadFragment(fragment);
+                        startActivity(new Intent(MainActivity.this, SearchActivity.class));
 //                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
 //                        dialog.show();
                         return true;
