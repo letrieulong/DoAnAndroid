@@ -123,10 +123,10 @@ public class DepmentElectronicFragment extends Fragment {
     }
 
     //Hỗ trợ đổi TEXT
-    private void setText(final TextView text, final String value) {
-        if (text != null) {
-            text.setText(value);
-        }
-    }
+//    private void setText(final TextView text, final String value) {
+//        if (text != null) {
+//            text.setText(value);
+//        }
+//    }
 
 }
