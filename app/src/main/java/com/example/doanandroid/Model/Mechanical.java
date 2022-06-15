@@ -10,7 +10,26 @@ public class Mechanical {
     String content_link;
     ContentLink list_Link;
 
+    public Mechanical(String id, String title, String link, String date, String views, String size, ContentLink list_Link) {
+        this.id = id;
+        this.title = title;
+        this.link = link;
+        this.date = date;
+        this.views = views;
+        this.size = size;
+        this.list_Link = list_Link;
+    }
+
     public Mechanical() {
+    }
+
+    public Mechanical(String id, String title, String link, String date, String views, String size) {
+        this.id = id;
+        this.title = title;
+        this.link = link;
+        this.date = date;
+        this.views = views;
+        this.size = size;
     }
 
     public Mechanical(String id, String title, String link, String date, String views, String size, String content_link) {

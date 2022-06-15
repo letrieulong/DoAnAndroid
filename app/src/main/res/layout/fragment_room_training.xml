@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:text="Tuyển dụng"
+            android:text="Tin mới"
             android:textColor="#32a3dc"
             android:textSize="20dp" />
 
@@ -59,7 +59,7 @@
             android:weightSum="2">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyRecruit"
+                android:id="@+id/recynew"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

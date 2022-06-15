@@ -162,25 +162,24 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 //        }
     }
     String userId = "";
+    String listValue = "";
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txt_date_end:
 //                calendar(txt_end_date);
-//                DatabaseReference mDatabsase = FirebaseDatabase.getInstance().getReference("list_Mechanical");
-//                UUID uuid_ctt = UUID.randomUUID();
-//                String id_ctt = uuid_ctt.toString();
-//                String userkey = mDatabsase.push().getKey();
-//                ContentLink ctt = new ContentLink(id_ctt, "", "");
-//                mDatabsase.child("list_notification/" + userId + "/list_Link/" + userkey).setValue(ctt);
+                DatabaseReference mDatabsase = FirebaseDatabase.getInstance().getReference("list_training");
+                UUID uuid_ctt = UUID.randomUUID();
+                String id_ctt = uuid_ctt.toString();
+                String userkey = mDatabsase.push().getKey();
+                ContentLink ctt = new ContentLink(id_ctt, "", "");
+                mDatabsase.child("list_new/" + userId + "/link/" + userkey).setValue(ctt);
 //                Toast.makeText(this, userId, Toast.LENGTH_SHORT).show();
-                String listValue = "";
-                listValue += "-N4aUFZsG5e4Q8dyNptz";
-                SharedPreferencessss.save(this,"Student",  listValue);
+
                 return;
             case R.id.txt_date_start:
 //                calendar(txt_start_date);
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("list_Mechanical");
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("list_training");
 
                 UUID uuid = UUID.randomUUID();
                 String id = uuid.toString();
@@ -198,7 +197,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 Mechanical rs = new Mechanical(id, title,"", date, views, size, content_link);
 
                 userId = mDatabase.push().getKey();
-                mDatabase.child("list_notification/" + userId).setValue(rs);
+                mDatabase.child("list_new/" + userId).setValue(rs);
+                listValue += userId + ",";
+                SharedPreferencessss.save(this,"trainning",  listValue);
                 return;
             case R.id.edt_search_1:
                 Search(edt_search);
