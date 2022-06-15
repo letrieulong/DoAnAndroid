@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -22,9 +23,12 @@ import android.widget.Toast;
 
 import com.example.doanandroid.Adapter.AdapterRecruit_CNTT;
 import com.example.doanandroid.Adapter.AdapterSearch;
+import com.example.doanandroid.Model.ContentLink;
 import com.example.doanandroid.Model.DemoModel;
 import com.example.doanandroid.Model.Infor_All_CNTT;
+import com.example.doanandroid.Model.Mechanical;
 import com.example.doanandroid.Model.Recruit_CNTT;
+import com.example.doanandroid.Util.SharedPreferencessss;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -157,33 +161,44 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 //            }
 //        }
     }
-
+    String userId = "";
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txt_date_end:
-                calendar(txt_end_date);
-                DatabaseReference mDatabases = FirebaseDatabase.getInstance().getReference("list_cntt");
-                UUID uuidd = UUID.randomUUID();
-                String userI = mDatabases.push().getKey();
-                mDatabases.child("");
-
+//                calendar(txt_end_date);
+//                DatabaseReference mDatabsase = FirebaseDatabase.getInstance().getReference("list_Mechanical");
+//                UUID uuid_ctt = UUID.randomUUID();
+//                String id_ctt = uuid_ctt.toString();
+//                String userkey = mDatabsase.push().getKey();
+//                ContentLink ctt = new ContentLink(id_ctt, "", "");
+//                mDatabsase.child("list_notification/" + userId + "/list_Link/" + userkey).setValue(ctt);
+//                Toast.makeText(this, userId, Toast.LENGTH_SHORT).show();
+                String listValue = "";
+                listValue += "-N4aUFZsG5e4Q8dyNptz";
+                SharedPreferencessss.save(this,"Student",  listValue);
                 return;
             case R.id.txt_date_start:
 //                calendar(txt_start_date);
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("list_electronic");
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("list_Mechanical");
 
                 UUID uuid = UUID.randomUUID();
                 String id = uuid.toString();
                 String title = "";
                 String date = "";
-                String content = "";
-                String image = "";
-                Infor_All_CNTT rs = new Infor_All_CNTT(id, title, image, content, date);
+                String content_link = "";
+//                String image = "";
+                String size = "";
+                String link = "";
+                String views = "";
+                UUID uuid_ct = UUID.randomUUID();
+                String id_ct = uuid_ct.toString();
+                ContentLink ct = new ContentLink(id_ct, link, "");
 
-                String userId = mDatabase.push().getKey();
+                Mechanical rs = new Mechanical(id, title,"", date, views, size, content_link);
 
-                mDatabase.child("list_news/"+userId).setValue(rs);
+                userId = mDatabase.push().getKey();
+                mDatabase.child("list_notification/" + userId).setValue(rs);
                 return;
             case R.id.edt_search_1:
                 Search(edt_search);

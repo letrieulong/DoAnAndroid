@@ -7,60 +7,53 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.ViewFlipper;
 
+import com.bumptech.glide.Glide;
 import com.example.doanandroid.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RoomTrainingFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class RoomTrainingFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public RoomTrainingFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RoomTrainingFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RoomTrainingFragment newInstance(String param1, String param2) {
-        RoomTrainingFragment fragment = new RoomTrainingFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
+    ViewFlipper viewFlipper;
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_room_training, container, false);
+        view = inflater.inflate(R.layout.fragment_room_training, container, false);
+        init();
+        Acviewflipper();
+        return view;
+    }
+
+    private void init() {
+        viewFlipper = view.findViewById(R.id.viewflipper);
+    }
+
+    // banner
+    private void Acviewflipper() {
+        ArrayList<String> arrayViewFlipper = new ArrayList<>();
+        arrayViewFlipper.add("https://daotao.caothang.edu.vn/images/banner/1641353501_Banner%20TS%202022%20-%20900x452.jpg");
+          for (int i = 0; i < arrayViewFlipper.size(); i++) {
+            ImageView imageView = new ImageView(getContext());
+            Glide.with(this).load(arrayViewFlipper.get(i)).into(imageView);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY); // sét hình ảnh hiển thị full;
+            viewFlipper.addView(imageView);
+        }
+        viewFlipper.setFlipInterval(5000);
+        viewFlipper.setAutoStart(true);
+        Animation animation_slide_in = AnimationUtils.loadAnimation(getContext(), R.anim.slide_right_in);
+        Animation animation_slide_out = AnimationUtils.loadAnimation(getContext(), R.anim.slide_right_out);
+        viewFlipper.setInAnimation(animation_slide_in);
+        viewFlipper.setOutAnimation(animation_slide_out);
     }
 }

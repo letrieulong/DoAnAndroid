@@ -25,6 +25,7 @@ import com.example.doanandroid.Adapter.AdapterNew_Electronic;
 import com.example.doanandroid.Adapter.AdapterNews_Electronic;
 import com.example.doanandroid.Adapter.AdapterView_CNTT;
 import com.example.doanandroid.Model.CNTT_infor;
+import com.example.doanandroid.Model.Contact;
 import com.example.doanandroid.Model.Infor_All_CNTT;
 import com.example.doanandroid.Model.News_Electronic;
 import com.example.doanandroid.Model.Recruit_CNTT;
@@ -120,13 +121,30 @@ public class DepmentElectronicFragment extends Fragment {
 
             }
         });
+
+        // get data từ firebase
+        mDatabase.child("contact").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Contact rs = snapshot.getValue(Contact.class);
+
+                setText(view.findViewById(R.id.txt_phone),rs.getPhone());
+                setText(view.findViewById(R.id.txt_email),rs.getEmail());
+                setText(view.findViewById(R.id.txt_address),rs.getAddress());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     //Hỗ trợ đổi TEXT
-//    private void setText(final TextView text, final String value) {
-//        if (text != null) {
-//            text.setText(value);
-//        }
-//    }
+    private void setText(final TextView text, final String value) {
+        if (text != null) {
+            text.setText(value);
+        }
+    }
 
 }

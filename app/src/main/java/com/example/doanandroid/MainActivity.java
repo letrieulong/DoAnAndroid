@@ -9,28 +9,23 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.doanandroid.Fragment.CLB_ElectronicFragment;
 import com.example.doanandroid.Fragment.CLB_IT_Fragment;
 import com.example.doanandroid.Fragment.CLB_MusicFragment;
 import com.example.doanandroid.Fragment.DepartmentCNTTFragment;
 import com.example.doanandroid.Fragment.DepartmentEconomyFragment;
-import com.example.doanandroid.Fragment.DepartmentPoliticsFragment;
+import com.example.doanandroid.Fragment.DepartmentMechanicalFragment;
 import com.example.doanandroid.Fragment.DepmentElectronicFragment;
 import com.example.doanandroid.Fragment.GroupStudentFragment;
 import com.example.doanandroid.Fragment.GroupYouthFragment;
 import com.example.doanandroid.Fragment.HomeFragment;
-import com.example.doanandroid.Fragment.InforUserFragment;
 import com.example.doanandroid.Fragment.RoomAdminiStrativeFragment;
 import com.example.doanandroid.Fragment.RoomCTCT_HSSVFragment;
 import com.example.doanandroid.Fragment.RoomTrainingFragment;
@@ -56,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
     String[] RoomModels = {"Phòng đào tạo", "Phòng hành chính", "Phòng CTCT - HSSV"};
-    String[] DepartmentModels = {"Khoa kinh tế", "Khoa chính trị", "Khoa công CNTT", "Khoa điện - điện tử"};
+    String[] DepartmentModels = {"Khoa kinh tế", "Khoa cơ khí", "Khoa công CNTT", "Khoa điện - điện tử"};
     String[] unionModels = {"Đoàn thanh niên", "Hội sinh viên"};
     String[] CLBModels = {"Câu lạc bộ âm nhạc", "Câu lạc bộ tin học", "Câu lạc bộ điện tử"};
     String[] CLBModelss = {};
@@ -101,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     drawerLayout.close();
                 }
                 if (selected.equals(DepartmentModels[1])){
-                    txt_name_toolbar.setText("KHOA CHÍNH TRỊ");
-                    loadFragment(new DepartmentPoliticsFragment());
+                    txt_name_toolbar.setText("KHOA CƠ KHÍ");
+                    loadFragment(new DepartmentMechanicalFragment());
                     drawerLayout.close();
                 }
                 if (selected.equals(DepartmentModels[2])){

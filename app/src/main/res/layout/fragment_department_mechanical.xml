@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.RoomTrainingFragment">
+    tools:context=".Fragment.DepartmentMechanicalFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -167,6 +167,4 @@
                 android:textColor="#000000" />
         </LinearLayout>
     </LinearLayout>
-
-
 </androidx.core.widget.NestedScrollView>
