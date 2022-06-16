@@ -110,54 +110,6 @@ public class RoomAdminiStrativeFragment extends Fragment {
     //     get data
     private void getDataFireBase() {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("list_adminiStrative");
-        String str = SharedPreferencessss.read(getContext(), "trainning", "");
-        String[] list;
-        for (int i = 0; i < 2; i++) {
-            list = str.split(",");
-            // lịch tiếp sinh viên
-            mDatabase.child("list_new/" + list[i]).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    List<String> list = new ArrayList<>();
-                    HashMap<String, Object> hashMap = (HashMap<String, Object>) snapshot.getValue();
-                    //HashMap này sẽ có kích  thước bằng số Node con bên trong node truy vấn
-                    //mỗi phần tử có key là name được định nghĩa trong cấu trúc Json của Firebase
-
-//                    String id = hashMap.get("id").toString();
-//                    String content_link = hashMap.get("content_link").toString();
-//                    String date = hashMap.get("date").toString();
-//                    String size = hashMap.get("size").toString();
-//                    String title = hashMap.get("title").toString();
-//                    String views = hashMap.get("views").toString();
-//                    Log.d("abc", hashMap.get("link").toString());
-//                    mechanicalList.add(new Mechanical(id, title, content_link, date, views, size));
-//                    adapterNew_trainning.notifyDataSetChanged();
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
-            mDatabase.child("list_new/link").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot snapshot1 : snapshot.getChildren()){
-                        Toast.makeText(getContext(), snapshot1.getValue()+"", Toast.LENGTH_SHORT).show();
-                        ContentLink contentLink = snapshot1.getValue(ContentLink.class);
-//                        contentLinkList.add(contentLink);
-                    }
-//                    adapterNew_trainning.notifyDataSetChanged();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
         // get data từ firebase
         mDatabase.child("list_recruit").addValueEventListener(new ValueEventListener() {
             @Override
