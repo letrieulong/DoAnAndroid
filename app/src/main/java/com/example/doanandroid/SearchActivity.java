@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -65,6 +66,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         ActionToolbar();
 
         txt_end_date.setOnClickListener(this::onClick);
+        edt_search.setOnClickListener(this::onClick);
         txt_start_date.setOnClickListener(this::onClick);
 
     }
@@ -186,7 +188,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 String title = "";
                 String date = "";
                 String content_link = "";
-//                String image = "";
+                String image = "";
                 String size = "";
                 String link = "";
                 String views = "";
@@ -202,7 +204,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 SharedPreferencessss.save(this,"trainning",  listValue);
                 return;
             case R.id.edt_search_1:
-                Search(edt_search);
+//                Search(edt_search);
+                startActivity(new Intent(SearchActivity.this, LoginActivity.class));
+
+                SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("remember", "false");
+                editor.apply();
                 return;
         }
     }

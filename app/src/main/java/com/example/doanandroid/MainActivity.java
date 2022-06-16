@@ -2,6 +2,7 @@ package com.example.doanandroid;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -10,11 +11,14 @@ import androidx.fragment.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.doanandroid.Fragment.CLB_ElectronicFragment;
 import com.example.doanandroid.Fragment.CLB_IT_Fragment;
@@ -47,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     CircleImageView img_account;
     List<String> groupList;
     List<String> childList;
+    SearchView searchView;
+    RelativeLayout relate_toolbar;
     Map<String, List<String>> ListCollection;
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
@@ -93,20 +99,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (selected.equals(DepartmentModels[0])){
                     txt_name_toolbar.setText("KHOA KINH TẾ");
                     loadFragment(new DepartmentEconomyFragment());
+                    relate_toolbar.setVisibility(View.GONE);
                     drawerLayout.close();
                 }
                 if (selected.equals(DepartmentModels[1])){
                     txt_name_toolbar.setText("KHOA CƠ KHÍ");
+                    relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new DepartmentMechanicalFragment());
                     drawerLayout.close();
                 }
                 if (selected.equals(DepartmentModels[2])){
                     txt_name_toolbar.setText("KHOA CÔNG NGHỆ THÔNG TIN");
+                    relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new DepartmentCNTTFragment());
                     drawerLayout.close();
                 }
                 if (selected.equals(DepartmentModels[3])){
                     txt_name_toolbar.setText("KHOA ĐIỆN TỬ");
+                    relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new DepmentElectronicFragment());
                     drawerLayout.close();
                 }
@@ -116,16 +126,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (selected.equals(RoomModels[0])){
                     txt_name_toolbar.setText("PHÒNG ĐÀO TẠO");
                     loadFragment(new RoomTrainingFragment());
+                    relate_toolbar.setVisibility(View.GONE);
                     drawerLayout.close();
                 }
                 if (selected.equals(RoomModels[1])){
                     txt_name_toolbar.setText("PHÒNG HÀNH CHÍNH");
                     loadFragment(new RoomAdminiStrativeFragment());
+                    relate_toolbar.setVisibility(View.GONE);
                     drawerLayout.close();
                 }
                 if (selected.equals(RoomModels[2])){
                     txt_name_toolbar.setText("PHÒNG CTCT-HSSV");
                     loadFragment(new RoomCTCT_HSSVFragment());
+                    relate_toolbar.setVisibility(View.GONE);
                     drawerLayout.close();
                 }
                 /**
@@ -133,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                  * */
                 if (selected.equals(unionModels[0])){
                     txt_name_toolbar.setText("ĐOÀN - HỘI");
+                    relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new GroupYouthFragment());
                     drawerLayout.close();
                 }
@@ -141,16 +155,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                  * */
                 if (selected.equals(CLBModels[0])){
                     txt_name_toolbar.setText("CÂU LẠC BỘ ÂM NHẠC");
+                    relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new CLB_MusicFragment());
                     drawerLayout.close();
                 }
                 if (selected.equals(CLBModels[1])){
                     txt_name_toolbar.setText("CÂU LẠC BỘ TIN HỌC");
+                    relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new CLB_IT_Fragment());
                     drawerLayout.close();
                 }
                 if (selected.equals(CLBModels[2])) {
                     txt_name_toolbar.setText("CÂU LẠC BỘ ĐIỆN TỬ");
+                    relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new CLB_ElectronicFragment());
                     drawerLayout.close();
                 }
@@ -167,6 +184,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         expandableListView = findViewById(R.id.elvMobiles);
         bottomNavigationView = findViewById(R.id.bottomnavi);
         img_account = findViewById(R.id.img_acount);
+        searchView = findViewById(R.id.search_view);
+        relate_toolbar = findViewById(R.id.relate_toolbar);
     }
 
     private void createCollection() {

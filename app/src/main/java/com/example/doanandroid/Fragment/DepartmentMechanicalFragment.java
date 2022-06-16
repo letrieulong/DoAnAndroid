@@ -1,8 +1,14 @@
 package com.example.doanandroid.Fragment;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -26,6 +35,7 @@ import com.example.doanandroid.Adapter.AdapterNotification_Mechanical;
 import com.example.doanandroid.Adapter.AdapterRecruit_CNTT;
 import com.example.doanandroid.Adapter.AdapterRecruit_Mechanical;
 import com.example.doanandroid.Adapter.AdapterView_CNTT;
+import com.example.doanandroid.MainActivity;
 import com.example.doanandroid.Model.CNTT_infor;
 import com.example.doanandroid.Model.ContactMechanical;
 import com.example.doanandroid.Model.ContentLink;
@@ -69,7 +79,22 @@ public class DepartmentMechanicalFragment extends Fragment {
         init();
         getDataFireBase();
         Acviewflipper();
+        Actionbar();
+        setHasOptionsMenu(true);
         return view;
+    }
+
+    private void Actionbar() {
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.menu);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
     }
 
     // get data
@@ -207,4 +232,61 @@ public class DepartmentMechanicalFragment extends Fragment {
         recyNotification.setAdapter(adapterNotification_mechanical);
     }
 
+    /**
+     * Tìm kiếm
+     * **/
+    private SearchView searchView = null;
+    private SearchView.OnQueryTextListener queryTextListener;
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.search, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+
+            queryTextListener = new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    Log.i("onQueryTextChange", newText);
+
+//                    for (Recruit_CNTT rc : recruit_cnttList){
+//                        if (rc.getTitle().toLowerCase().contains(newText.toLowerCase())){
+//
+//                        }
+//                    }
+                    return true;
+                }
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    Log.i("onQueryTextSubmit", query);
+//                    for (Recruit_CNTT rc : recruit_cnttList){
+//                        if (rc.getTitle().toLowerCase().contains(query.toLowerCase())){
+//                            Log.d("abc", rc.getTitle());
+//                        }
+//                    }
+                    return true;
+                }
+            };
+            searchView.setOnQueryTextListener(queryTextListener);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                // Not implemented here
+                return false;
+            default:
+                break;
+        }
+        searchView.setOnQueryTextListener(queryTextListener);
+        return super.onOptionsItemSelected(item);
+    }
 }
