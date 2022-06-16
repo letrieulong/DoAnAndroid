@@ -5,7 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +21,14 @@ import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
 import com.example.doanandroid.Adapter.AdapterNew_Trainning;
+import com.example.doanandroid.Adapter.AdapterPolicy_Admin;
+import com.example.doanandroid.Adapter.AdapterRecruit_Admin;
 import com.example.doanandroid.Model.ContactMechanical;
 import com.example.doanandroid.Model.ContentLink;
 import com.example.doanandroid.Model.Mechanical;
+import com.example.doanandroid.Model.Policy;
+import com.example.doanandroid.Model.Recruit_Admin;
+import com.example.doanandroid.Model.Recruit_CNTT;
 import com.example.doanandroid.R;
 import com.example.doanandroid.Util.SharedPreferencessss;
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +49,12 @@ public class RoomAdminiStrativeFragment extends Fragment {
     }
     View view;
     ViewFlipper viewFlipper;
+    AdapterRecruit_Admin adapterRecruit_admin;
+    AdapterPolicy_Admin adapterPolicy_admin;
+    List<Recruit_Admin> recruit_adminList = new ArrayList<>();
+    List<Policy> policyList = new ArrayList<>();
+    RecyclerView recy_recuirt;
+    RecyclerView recy_policy;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,6 +67,18 @@ public class RoomAdminiStrativeFragment extends Fragment {
     }
     private void init() {
         viewFlipper = view.findViewById(R.id.viewflipper);
+
+        // tuyển dụng
+        recy_recuirt = view.findViewById(R.id.recyRecruit);
+        adapterRecruit_admin = new AdapterRecruit_Admin(getContext(), recruit_adminList);
+        recy_recuirt.setLayoutManager(new LinearLayoutManager(getContext()));
+        recy_recuirt.setAdapter(adapterRecruit_admin);
+
+        // chế độ chính sách
+        recy_policy = view.findViewById(R.id.recyPolicy);
+        adapterPolicy_admin = new AdapterPolicy_Admin(getContext(), policyList);
+        recy_policy.setLayoutManager(new LinearLayoutManager(getContext()));
+        recy_policy.setAdapter(adapterPolicy_admin);
 
 
     }
@@ -133,6 +158,44 @@ public class RoomAdminiStrativeFragment extends Fragment {
                 }
             });
         }
+        // get data từ firebase
+        mDatabase.child("list_recruit").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                recruit_adminList.clear();
+                List<String> list = new ArrayList<>();
+                for (DataSnapshot dt : snapshot.getChildren()) {
+                    list.add(dt.getKey());
+                    Recruit_Admin rs = dt.getValue(Recruit_Admin.class);
+                    recruit_adminList.add(rs);
+                }
+                adapterRecruit_admin.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        // get data từ firebase
+        mDatabase.child("list_policy").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                policyList.clear();
+                List<String> list = new ArrayList<>();
+                for (DataSnapshot dt : snapshot.getChildren()) {
+                    list.add(dt.getKey());
+                    Policy rs = dt.getValue(Policy.class);
+                    policyList.add(rs);
+                }
+                adapterPolicy_admin.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         // contact
         mDatabase.child("contact").addValueEventListener(new ValueEventListener() {
             @Override

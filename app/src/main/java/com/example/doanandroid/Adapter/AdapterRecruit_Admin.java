@@ -1,60 +1,59 @@
 package com.example.doanandroid.Adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanandroid.Model.ContentLink;
-import com.example.doanandroid.Model.Mechanical;
-import com.example.doanandroid.Model.New_Tranning;
+import com.bumptech.glide.Glide;
+import com.example.doanandroid.Model.Recruit_Admin;
+import com.example.doanandroid.Model.Recruit_CNTT;
 import com.example.doanandroid.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterNew_Trainning extends RecyclerView.Adapter<AdapterNew_Trainning.ViewHodel> {
+public class AdapterRecruit_Admin extends RecyclerView.Adapter<AdapterRecruit_Admin.ViewHodel> {
     Context context;
-    List<New_Tranning> mechanicalList;
+    List<Recruit_Admin> recruit_admins;
 
-    public AdapterNew_Trainning(Context context, List<New_Tranning> mechanicalList) {
+    public AdapterRecruit_Admin(Context context, List<Recruit_Admin> recruit_admins) {
         this.context = context;
-        this.mechanicalList = mechanicalList;
-
+        this.recruit_admins = recruit_admins;
     }
 
     @NonNull
     @Override
     public ViewHodel onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_mechanical, parent, false);
+        View view = inflater.inflate(R.layout.item_recruit, parent, false);
         return new ViewHodel(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHodel holder, int i) {
-        holder.txt_date.setText("Ngày : " + mechanicalList.get(i).getDate());
-        holder.txt_title.setEllipsize(TextUtils.TruncateAt.END);
+        holder.txt_date.setText("Ngày : " + recruit_admins.get(i).getDate());
+        holder.txt_title.setText(recruit_admins.get(i).getTitle());
+        holder.txt_title.setText(recruit_admins.get(i).getTitle());
         holder.txt_title.setMaxLines(2);
-        holder.txt_title.setText(mechanicalList.get(i).getTitle());
+        Glide.with(context)
+                .load(recruit_admins.get(i).getImage())
+                .into(holder.img);
     }
 
     @Override
     public int getItemCount() {
-        return mechanicalList.size();
+        return recruit_admins.size();
     }
 
     public class ViewHodel extends RecyclerView.ViewHolder {
         ImageView img;
-        TextView txt_title, txt_date, txt_view;
+        TextView txt_title, txt_date;
         View v;
         public ViewHodel(@NonNull View view) {
             super(view);
@@ -62,13 +61,12 @@ public class AdapterNew_Trainning extends RecyclerView.Adapter<AdapterNew_Trainn
 
             txt_title = view.findViewById(R.id.txt_title);
             txt_date  = view.findViewById(R.id.txt_date);
-            txt_view  = view.findViewById(R.id.txt_view);
             v = view;
         }
     }
     // Lọc Các Từ Khóa Gần Giống Khi search
-//    public void filterList(ArrayList<Mechanical> filterllist) {
-//        mechanicalList = filterllist;
+//    public void filterList(ArrayList<Recruit_CNTT> filterllist) {
+//        recruit_cnttList = filterllist;
 //        notifyDataSetChanged();
 //    }
 }
