@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ExpandableListAdapter expandableListAdapter;
     String[] RoomModels = {"Phòng đào tạo", "Phòng hành chính", "Phòng CTCT - HSSV"};
     String[] DepartmentModels = {"Khoa kinh tế", "Khoa cơ khí", "Khoa công CNTT", "Khoa điện - điện tử"};
-    String[] unionModels = {"Đoàn thanh niên", "Hội sinh viên"};
+    String[] unionModels = {"Đoàn - Hội"};
     String[] CLBModels = {"Câu lạc bộ âm nhạc", "Câu lạc bộ tin học", "Câu lạc bộ điện tử"};
     String[] CLBModelss = {};
 
@@ -132,13 +132,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                  * Đoàn - hội
                  * */
                 if (selected.equals(unionModels[0])){
-                    txt_name_toolbar.setText("ĐOÀN THANH NIÊN");
+                    txt_name_toolbar.setText("ĐOÀN - HỘI");
                     loadFragment(new GroupYouthFragment());
-                    drawerLayout.close();
-                }
-                if (selected.equals(unionModels[1])){
-                    txt_name_toolbar.setText("HỘI SINH VIÊN");
-                    loadFragment(new GroupStudentFragment());
                     drawerLayout.close();
                 }
                 /**

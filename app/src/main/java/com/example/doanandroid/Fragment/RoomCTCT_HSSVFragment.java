@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,11 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
+import com.example.doanandroid.Adapter.AdapterCTCT_HSSV_noti;
 import com.example.doanandroid.Adapter.AdapterPolicy_Admin;
 import com.example.doanandroid.Adapter.AdapterRecruit_Admin;
 import com.example.doanandroid.Model.ContactMechanical;
+import com.example.doanandroid.Model.New_Tranning;
 import com.example.doanandroid.Model.Policy;
 import com.example.doanandroid.Model.Recruit_Admin;
 import com.example.doanandroid.R;
@@ -39,6 +42,9 @@ public class RoomCTCT_HSSVFragment extends Fragment {
 
     View view;
     ViewFlipper viewFlipper;
+    RecyclerView recy_noti;
+    List<New_Tranning> list_noti = new ArrayList<>();
+    AdapterCTCT_HSSV_noti adapterCTCT_hssv_noti;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,6 +57,12 @@ public class RoomCTCT_HSSVFragment extends Fragment {
     }
     private void init() {
         viewFlipper = view.findViewById(R.id.viewflipper);
+        recy_noti = view.findViewById(R.id.recyNoti);
+
+        adapterCTCT_hssv_noti = new AdapterCTCT_HSSV_noti(getContext(), list_noti);
+        recy_noti.setLayoutManager(new LinearLayoutManager(getContext()));
+        recy_noti.setAdapter(adapterCTCT_hssv_noti);
+
     }
     //Hỗ trợ đổi TEXT
     private void setText(final TextView text, final String value) {
@@ -62,7 +74,7 @@ public class RoomCTCT_HSSVFragment extends Fragment {
     // banner
     private void Acviewflipper() {
         ArrayList<String> arrayViewFlipper = new ArrayList<>();
-        arrayViewFlipper.add("https://hcqt.caothang.edu.vn/images/banner/1569581178_caothang.jpg");
+        arrayViewFlipper.add("https://ctct.caothang.edu.vn/images/banner/1446867244_Congtruong2.jpg");
         for (int i = 0; i < arrayViewFlipper.size(); i++) {
             ImageView imageView = new ImageView(getContext());
             Glide.with(this).load(arrayViewFlipper.get(i)).into(imageView);
@@ -81,17 +93,17 @@ public class RoomCTCT_HSSVFragment extends Fragment {
     private void getDataFireBase() {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("list_ctct_hssv");
         // get data từ firebase
-        mDatabase.child("list_recruit").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("list_newnoti").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                recruit_adminList.clear();
+                list_noti.clear();
                 List<String> list = new ArrayList<>();
                 for (DataSnapshot dt : snapshot.getChildren()) {
 //                    list.add(dt.getKey());
-//                    Recruit_Admin rs = dt.getValue(Recruit_Admin.class);
-//                    recruit_adminList.add(rs);
+                    New_Tranning rs = dt.getValue(New_Tranning.class);
+                    list_noti.add(rs);
                 }
-//                adapterRecruit_admin.notifyDataSetChanged();
+                adapterCTCT_hssv_noti.notifyDataSetChanged();
             }
 
             @Override

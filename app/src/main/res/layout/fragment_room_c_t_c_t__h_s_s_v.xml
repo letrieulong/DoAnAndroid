@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:text="Chế độ - Danh sách"
+            android:text="Thông báo mới"
             android:textColor="#32a3dc"
             android:textSize="20dp" />
 
@@ -35,7 +35,7 @@
             android:weightSum="2">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyPolicy"
+                android:id="@+id/recyNoti"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

@@ -179,7 +179,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 return;
             case R.id.txt_date_start:
 //                calendar(txt_start_date);
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("list_training");
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("list_group");
 
                 UUID uuid = UUID.randomUUID();
                 String id = uuid.toString();
@@ -197,7 +197,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 Mechanical rs = new Mechanical(id, title,"", date, views, size, content_link);
 
                 userId = mDatabase.push().getKey();
-                mDatabase.child("list_new/" + userId).setValue(rs);
+                mDatabase.child("list_new_update/" + userId).setValue(rs);
                 listValue += userId + ",";
                 SharedPreferencessss.save(this,"trainning",  listValue);
                 return;
