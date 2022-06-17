@@ -43,23 +43,30 @@
         <entry key="..\:/Users/ADMIN/AndroidStudioProjects/DoAnAndroid/app/src/main/res/layout/item_search.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/ADMIN/AndroidStudioProjects/DoAnAndroid/app/src/main/res/menu/menu.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/ADMIN/AndroidStudioProjects/DoAnAndroid/app/src/main/res/menu/search.xml" value="0.17552083333333332" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/drawable/custom_login.xml" value="0.1465" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1465" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/drawable/rounded_corners.xml" value="0.1465" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/drawable/bg.xml" value="0.132" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/drawable/date.xml" value="0.132" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/drawable/edt_view.xml" value="0.132" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/drawable/img_acount.xml" value="0.132" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/drawable/menu.xml" value="0.184" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/drawable/navigation.xml" value="0.132" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/drawable/search.xml" value="0.132" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/drawable/view_content.xml" value="0.132" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/layout/activity_info.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/layout/activity_main.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/layout/child_item.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/layout/fragment_c_l_b__i_t_.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/layout/fragment_department_c_n_t_t.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/layout/fragment_department_mechanical.xml" value="0.22" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/layout/fragment_depment_electronic.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/layout/fragment_infor_user.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/layout/group_item.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/layout/progresbar_dialog.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/menu/search.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_dang_ky_tai_khoan.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_department_cntt.xml" value="0.22916666666666666" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_detail_post.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_doi_mat_khau.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_login.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_show_screen.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/child_item.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/fragment_home.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/item_comment.xml" value="0.253125" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/item_mechanical.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/item_new.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/item_recruit.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/item_search.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>
