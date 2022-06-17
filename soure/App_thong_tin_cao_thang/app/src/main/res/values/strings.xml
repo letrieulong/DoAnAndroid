@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">App_thong_tin_cao_thang</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="Xem_nhieu_fragment">Bài viết xem nhiều</string>
+    <string name="Bai_moi_fragment">Bài viết mới</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
