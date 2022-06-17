@@ -35,10 +35,13 @@ import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
 import com.example.doanandroid.Adapter.AdapterRecruit_CNTT;
+import com.example.doanandroid.Adapter.AdapterSearch_CNTT;
+import com.example.doanandroid.Adapter.AdapterSearch_Mechanical;
 import com.example.doanandroid.Adapter.AdapterView_CNTT;
 import com.example.doanandroid.MainActivity;
 import com.example.doanandroid.Model.CNTT_infor;
 import com.example.doanandroid.Model.Infor_All_CNTT;
+import com.example.doanandroid.Model.Mechanical;
 import com.example.doanandroid.Model.Recruit_CNTT;
 import com.example.doanandroid.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -63,10 +66,13 @@ public class DepartmentCNTTFragment extends Fragment {
 
     RecyclerView recyRecruit;
     RecyclerView recyInfor;
+    RecyclerView recy_search;
     List<Recruit_CNTT> recruit_cnttList = new ArrayList<>();
     List<Infor_All_CNTT> infor_all_cntts = new ArrayList<>();
+    List<Infor_All_CNTT> list_search = new ArrayList<>();
     AdapterRecruit_CNTT adapterRecruit_cntt;
     AdapterView_CNTT adapterView_cntt;
+    AdapterSearch_CNTT adapterSearch_cntt;
     TextView txt_title_name;
     ImageView img_view;
     ViewFlipper viewFlipper;
@@ -110,8 +116,11 @@ public class DepartmentCNTTFragment extends Fragment {
                 for (DataSnapshot dt : snapshot.getChildren()) {
                     list.add(dt.getKey());
                     Recruit_CNTT rs = dt.getValue(Recruit_CNTT.class);
+                    Infor_All_CNTT rss = dt.getValue(Infor_All_CNTT.class);
                     recruit_cnttList.add(rs);
+                    list_search.add(rss);
                 }
+                adapterSearch_cntt.notifyDataSetChanged();
                 adapterRecruit_cntt.notifyDataSetChanged();
             }
 
@@ -151,7 +160,9 @@ public class DepartmentCNTTFragment extends Fragment {
                     list.add(dt.getKey());
                     Infor_All_CNTT rs = dt.getValue(Infor_All_CNTT.class);
                     infor_all_cntts.add(rs);
+                    list_search.add(rs);
                 }
+                adapterSearch_cntt.notifyDataSetChanged();
                 adapterView_cntt.notifyDataSetChanged();
             }
 
@@ -198,6 +209,12 @@ public class DepartmentCNTTFragment extends Fragment {
         img_view = view.findViewById(R.id.img_view);
         viewFlipper = view.findViewById(R.id.viewflipper);
 
+        // tìm kiếm
+        recy_search = view.findViewById(R.id.list_item);
+        adapterSearch_cntt = new AdapterSearch_CNTT(getContext(), list_search);
+        recy_search.setLayoutManager(new LinearLayoutManager(getContext()));
+        recy_search.setAdapter(adapterSearch_cntt);
+
         // list all
         recyInfor = view.findViewById(R.id.recyInfor);
         adapterView_cntt = new AdapterView_CNTT(getContext(), infor_all_cntts);
@@ -230,11 +247,12 @@ public class DepartmentCNTTFragment extends Fragment {
                 public boolean onQueryTextChange(String newText) {
                     Log.i("onQueryTextChange", newText);
 
-                    for (Recruit_CNTT rc : recruit_cnttList){
-                        if (rc.getTitle().toLowerCase().contains(newText.toLowerCase())){
-
-                        }
+                    filter(newText);
+                    recy_search.setVisibility(View.VISIBLE);
+                    if (newText.equals("")){
+                        recy_search.setVisibility(View.GONE);
                     }
+                    adapterSearch_cntt.notifyDataSetChanged();
                     return true;
                 }
                 @Override
@@ -264,5 +282,26 @@ public class DepartmentCNTTFragment extends Fragment {
         }
         searchView.setOnQueryTextListener(queryTextListener);
         return super.onOptionsItemSelected(item);
+    }
+
+    // Tìm kiếm giá trị theo mssv
+    private void filter(String text) {
+        // tạo một danh sách mảng mới để lọc dữ liệu
+        ArrayList<Infor_All_CNTT> filteredlist = new ArrayList<>();
+
+        // so sánh các phần từ trong adapter
+        for (Infor_All_CNTT item : list_search) {
+            // kiểm tra chuỗi vừa nhập có khớp với giá trị cần so sánh hay không
+            if (item.getTitle().toLowerCase().contains(text.toLowerCase())) {
+                filteredlist.add(item);
+            }
+        }
+        // kiểm tra data vừa nhập có chứa nội dung trong adapter hay không
+        if (filteredlist.isEmpty()) {
+        } else {
+            // nếu có sẽ add vào classAdapter
+            adapterSearch_cntt.filterList(filteredlist);
+            adapterSearch_cntt.notifyDataSetChanged();
+        }
     }
 }

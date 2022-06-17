@@ -32,9 +32,12 @@ import com.bumptech.glide.Glide;
 import com.example.doanandroid.Adapter.AdapterNew_Trainning;
 import com.example.doanandroid.Adapter.AdapterPolicy_Admin;
 import com.example.doanandroid.Adapter.AdapterRecruit_Admin;
+import com.example.doanandroid.Adapter.AdapterSearch_AdmininS;
+import com.example.doanandroid.Adapter.AdapterSearch_CNTT;
 import com.example.doanandroid.MainActivity;
 import com.example.doanandroid.Model.ContactMechanical;
 import com.example.doanandroid.Model.ContentLink;
+import com.example.doanandroid.Model.Infor_All_CNTT;
 import com.example.doanandroid.Model.Mechanical;
 import com.example.doanandroid.Model.Policy;
 import com.example.doanandroid.Model.Recruit_Admin;
@@ -59,10 +62,13 @@ public class RoomAdminiStrativeFragment extends Fragment {
     }
     View view;
     ViewFlipper viewFlipper;
+    RecyclerView recy_search;
     AdapterRecruit_Admin adapterRecruit_admin;
     AdapterPolicy_Admin adapterPolicy_admin;
+    AdapterSearch_AdmininS adapterSearch_admininS;
     List<Recruit_Admin> recruit_adminList = new ArrayList<>();
     List<Policy> policyList = new ArrayList<>();
+    List<Recruit_Admin> list_search = new ArrayList<>();
     RecyclerView recy_recuirt;
     RecyclerView recy_policy;
     @Override
@@ -92,6 +98,11 @@ public class RoomAdminiStrativeFragment extends Fragment {
 
     private void init() {
         viewFlipper = view.findViewById(R.id.viewflipper);
+        // tìm kiếm
+        recy_search = view.findViewById(R.id.list_item);
+        adapterSearch_admininS = new AdapterSearch_AdmininS(getContext(), list_search);
+        recy_search.setLayoutManager(new LinearLayoutManager(getContext()));
+        recy_search.setAdapter(adapterSearch_admininS);
 
         // tuyển dụng
         recy_recuirt = view.findViewById(R.id.recyRecruit);
@@ -145,7 +156,9 @@ public class RoomAdminiStrativeFragment extends Fragment {
                     list.add(dt.getKey());
                     Recruit_Admin rs = dt.getValue(Recruit_Admin.class);
                     recruit_adminList.add(rs);
+                    list_search.add(rs);
                 }
+                adapterSearch_admininS.notifyDataSetChanged();
                 adapterRecruit_admin.notifyDataSetChanged();
             }
 
@@ -164,7 +177,11 @@ public class RoomAdminiStrativeFragment extends Fragment {
                     list.add(dt.getKey());
                     Policy rs = dt.getValue(Policy.class);
                     policyList.add(rs);
+                    Recruit_Admin rss = dt.getValue(Recruit_Admin.class);
+                    list_search.add(rss);
                 }
+                adapterSearch_admininS.notifyDataSetChanged();
+                adapterPolicy_admin.notifyDataSetChanged();
                 adapterPolicy_admin.notifyDataSetChanged();
             }
 
@@ -236,11 +253,12 @@ public class RoomAdminiStrativeFragment extends Fragment {
                 public boolean onQueryTextChange(String newText) {
                     Log.i("onQueryTextChange", newText);
 
-//                    for (Recruit_CNTT rc : recruit_cnttList){
-//                        if (rc.getTitle().toLowerCase().contains(newText.toLowerCase())){
-//
-//                        }
-//                    }
+                    filter(newText);
+                    recy_search.setVisibility(View.VISIBLE);
+                    if (newText.equals("")){
+                        recy_search.setVisibility(View.GONE);
+                    }
+                    adapterSearch_admininS.notifyDataSetChanged();
                     return true;
                 }
                 @Override
@@ -270,5 +288,25 @@ public class RoomAdminiStrativeFragment extends Fragment {
         }
         searchView.setOnQueryTextListener(queryTextListener);
         return super.onOptionsItemSelected(item);
+    }
+    // Tìm kiếm giá trị theo mssv
+    private void filter(String text) {
+        // tạo một danh sách mảng mới để lọc dữ liệu
+        ArrayList<Recruit_Admin> filteredlist = new ArrayList<>();
+
+        // so sánh các phần từ trong adapter
+        for (Recruit_Admin item : list_search) {
+            // kiểm tra chuỗi vừa nhập có khớp với giá trị cần so sánh hay không
+            if (item.getTitle().toLowerCase().contains(text.toLowerCase())) {
+                filteredlist.add(item);
+            }
+        }
+        // kiểm tra data vừa nhập có chứa nội dung trong adapter hay không
+        if (filteredlist.isEmpty()) {
+        } else {
+            // nếu có sẽ add vào classAdapter
+            adapterSearch_admininS.filterList(filteredlist);
+            adapterSearch_admininS.notifyDataSetChanged();
+        }
     }
 }

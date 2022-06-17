@@ -188,9 +188,14 @@
 
 
             </LinearLayout>
-
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="300dp"
+        android:id="@+id/list_item"
+        android:background="@color/white"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/relate_toolbar"
+        android:layout_height="wrap_content"/>
 </RelativeLayout>

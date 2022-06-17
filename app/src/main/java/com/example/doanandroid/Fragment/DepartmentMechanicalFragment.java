@@ -34,6 +34,8 @@ import com.example.doanandroid.Adapter.AdapterNews_Electronic;
 import com.example.doanandroid.Adapter.AdapterNotification_Mechanical;
 import com.example.doanandroid.Adapter.AdapterRecruit_CNTT;
 import com.example.doanandroid.Adapter.AdapterRecruit_Mechanical;
+import com.example.doanandroid.Adapter.AdapterSearch_Electronic;
+import com.example.doanandroid.Adapter.AdapterSearch_Mechanical;
 import com.example.doanandroid.Adapter.AdapterView_CNTT;
 import com.example.doanandroid.MainActivity;
 import com.example.doanandroid.Model.CNTT_infor;
@@ -59,12 +61,14 @@ public class DepartmentMechanicalFragment extends Fragment {
 
     RecyclerView recyRecruit;
     RecyclerView recyNotification;
+    RecyclerView recy_search;
     ViewFlipper viewFlipper;
     AdapterRecruit_Mechanical adapterRecruit_mechanical;
+    AdapterSearch_Mechanical adapterSearch_mechanical;
     AdapterNotification_Mechanical adapterNotification_mechanical;
     List<Mechanical> mechanicalList = new ArrayList<>();
     List<Mechanical> mechanicalList_noti = new ArrayList<>();
-    List<ContentLink> contentLinksList = new ArrayList<>();
+    List<Mechanical> list_search = new ArrayList<>();
     View view;
 
     public DepartmentMechanicalFragment() {
@@ -110,7 +114,9 @@ public class DepartmentMechanicalFragment extends Fragment {
                     list.add(dt.getKey());
                     Mechanical rs = dt.getValue(Mechanical.class);
                     mechanicalList.add(rs);
+                    list_search.add(rs);
                 }
+                adapterSearch_mechanical.notifyDataSetChanged();
                 adapterRecruit_mechanical.notifyDataSetChanged();
             }
 
@@ -172,7 +178,9 @@ public class DepartmentMechanicalFragment extends Fragment {
                     list.add(dt.getKey());
                     Mechanical rs = dt.getValue(Mechanical.class);
                     mechanicalList_noti.add(rs);
+                    list_search.add(rs);
                 }
+                adapterSearch_mechanical.notifyDataSetChanged();
                 adapterNotification_mechanical.notifyDataSetChanged();
             }
 
@@ -218,6 +226,11 @@ public class DepartmentMechanicalFragment extends Fragment {
     // khởi tạo các control
     private void init() {
         viewFlipper = view.findViewById(R.id.viewflipper);
+        // tìm kiếm
+        recy_search = view.findViewById(R.id.list_item);
+        adapterSearch_mechanical = new AdapterSearch_Mechanical(getContext(), list_search);
+        recy_search.setLayoutManager(new LinearLayoutManager(getContext()));
+        recy_search.setAdapter(adapterSearch_mechanical);
 
         // list tuyển dụng
         recyRecruit = view.findViewById(R.id.recyRecruit);
@@ -253,12 +266,12 @@ public class DepartmentMechanicalFragment extends Fragment {
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     Log.i("onQueryTextChange", newText);
-
-//                    for (Recruit_CNTT rc : recruit_cnttList){
-//                        if (rc.getTitle().toLowerCase().contains(newText.toLowerCase())){
-//
-//                        }
-//                    }
+                    filter(newText);
+                    recy_search.setVisibility(View.VISIBLE);
+                    if (newText.equals("")){
+                        recy_search.setVisibility(View.GONE);
+                    }
+                    adapterSearch_mechanical.notifyDataSetChanged();
                     return true;
                 }
                 @Override
@@ -288,5 +301,26 @@ public class DepartmentMechanicalFragment extends Fragment {
         }
         searchView.setOnQueryTextListener(queryTextListener);
         return super.onOptionsItemSelected(item);
+    }
+
+    // Tìm kiếm giá trị theo mssv
+    private void filter(String text) {
+        // tạo một danh sách mảng mới để lọc dữ liệu
+        ArrayList<Mechanical> filteredlist = new ArrayList<>();
+
+        // so sánh các phần từ trong adapter
+        for (Mechanical item : list_search) {
+            // kiểm tra chuỗi vừa nhập có khớp với giá trị cần so sánh hay không
+            if (item.getTitle().toLowerCase().contains(text.toLowerCase())) {
+                filteredlist.add(item);
+            }
+        }
+        // kiểm tra data vừa nhập có chứa nội dung trong adapter hay không
+        if (filteredlist.isEmpty()) {
+        } else {
+            // nếu có sẽ add vào classAdapter
+            adapterSearch_mechanical.filterList(filteredlist);
+            adapterSearch_mechanical.notifyDataSetChanged();
+        }
     }
 }

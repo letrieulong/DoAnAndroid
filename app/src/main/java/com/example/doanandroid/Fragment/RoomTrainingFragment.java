@@ -29,6 +29,8 @@ import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
 import com.example.doanandroid.Adapter.AdapterNew_Trainning;
+import com.example.doanandroid.Adapter.AdapterSearch_CTCT_HSSV;
+import com.example.doanandroid.Adapter.AdapterSearch_Trainning;
 import com.example.doanandroid.MainActivity;
 import com.example.doanandroid.Model.ContactMechanical;
 import com.example.doanandroid.Model.ContentLink;
@@ -54,11 +56,14 @@ public class RoomTrainingFragment extends Fragment {
 
     ViewFlipper viewFlipper;
     RecyclerView recyNew;
+    RecyclerView recy_search;
     View view;
     List<ContentLink> contentLinkList = new ArrayList<>();
     List<Mechanical> mechanicalList = new ArrayList<>();
     List<New_Tranning> new_tranningList = new ArrayList<>();
+    List<New_Tranning> list_search = new ArrayList<>();
     AdapterNew_Trainning adapterNew_trainning;
+    AdapterSearch_Trainning adapterSearch_trainning;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,6 +92,11 @@ public class RoomTrainingFragment extends Fragment {
 
     private void init() {
         viewFlipper = view.findViewById(R.id.viewflipper);
+        // tìm kiếm
+        recy_search = view.findViewById(R.id.list_item);
+        adapterSearch_trainning = new AdapterSearch_Trainning(getContext(), list_search);
+        recy_search.setLayoutManager(new LinearLayoutManager(getContext()));
+        recy_search.setAdapter(adapterSearch_trainning);
 
         recyNew = view.findViewById(R.id.recynew);
         adapterNew_trainning = new AdapterNew_Trainning(getContext(), new_tranningList);
@@ -110,7 +120,9 @@ public class RoomTrainingFragment extends Fragment {
                 for (DataSnapshot snap : snapshot.getChildren()){
                     New_Tranning n = snap.getValue(New_Tranning.class);
                     new_tranningList.add(n);
+                    list_search.add(n);
                 }
+                adapterSearch_trainning.notifyDataSetChanged();
                 adapterNew_trainning.notifyDataSetChanged();
             }
 
@@ -206,11 +218,13 @@ public class RoomTrainingFragment extends Fragment {
                 public boolean onQueryTextChange(String newText) {
                     Log.i("onQueryTextChange", newText);
 
-//                    for (Recruit_CNTT rc : recruit_cnttList){
-//                        if (rc.getTitle().toLowerCase().contains(newText.toLowerCase())){
-//
-//                        }
-//                    }
+
+                    filter(newText);
+                    recy_search.setVisibility(View.VISIBLE);
+                    if (newText.equals("")){
+                        recy_search.setVisibility(View.GONE);
+                    }
+                    adapterSearch_trainning.notifyDataSetChanged();
                     return true;
                 }
                 @Override
@@ -240,5 +254,26 @@ public class RoomTrainingFragment extends Fragment {
         }
         searchView.setOnQueryTextListener(queryTextListener);
         return super.onOptionsItemSelected(item);
+    }
+
+    // Tìm kiếm giá trị theo mssv
+    private void filter(String text) {
+        // tạo một danh sách mảng mới để lọc dữ liệu
+        ArrayList<New_Tranning> filteredlist = new ArrayList<>();
+
+        // so sánh các phần từ trong adapter
+        for (New_Tranning item : list_search) {
+            // kiểm tra chuỗi vừa nhập có khớp với giá trị cần so sánh hay không
+            if (item.getTitle().toLowerCase().contains(text.toLowerCase())) {
+                filteredlist.add(item);
+            }
+        }
+        // kiểm tra data vừa nhập có chứa nội dung trong adapter hay không
+        if (filteredlist.isEmpty()) {
+        } else {
+            // nếu có sẽ add vào classAdapter
+            adapterSearch_trainning.filterList(filteredlist);
+            adapterSearch_trainning.notifyDataSetChanged();
+        }
     }
 }
