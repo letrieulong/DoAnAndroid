@@ -1,16 +1,22 @@
 package com.example.doanandroid.Model;
 
-import java.io.Serializable;
-
-public class Infor_All_CNTT implements Serializable {
+public class Infor_All_CNTT {
     String id;
     String title;
     String image;
     String content;
     String date;
-    long view;
-    long like;
-    boolean isRecruit;
+    String content_link;
+
+    public Infor_All_CNTT(String id, String title, String image, String content, String date, String content_link) {
+        this.id = id;
+        this.title = title;
+        this.image = image;
+        this.content = content;
+        this.date = date;
+        this.content_link = content_link;
+    }
+
     public Infor_All_CNTT() {
 
     }
@@ -21,30 +27,6 @@ public class Infor_All_CNTT implements Serializable {
         this.image = image;
         this.content = content;
         this.date = date;
-    }
-
-    public long getView() {
-        return view;
-    }
-
-    public void setView(long view) {
-        this.view = view;
-    }
-
-    public long getLike() {
-        return like;
-    }
-
-    public void setLike(long like) {
-        this.like = like;
-    }
-
-    public boolean isRecruit() {
-        return isRecruit;
-    }
-
-    public void setRecruit(boolean recruit) {
-        isRecruit = recruit;
     }
 
     public String getId() {
