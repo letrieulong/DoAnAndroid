@@ -7,6 +7,10 @@ public class New_Tranning {
     String link;
     String date;
 
+    public New_Tranning(String title) {
+        this.title = title;
+    }
+
     public New_Tranning(){
 
     }

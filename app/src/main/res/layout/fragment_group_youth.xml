@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -21,15 +21,12 @@
             app:title="ĐOÀN - HỘI"
             app:titleTextAppearance="@style/Widget.MaterialComponents.TextView"
             app:titleTextColor="@color/white" />
-        <AutoCompleteTextView
-            android:layout_below="@id/toolbar"
-            android:id="@+id/autoComplete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
     </RelativeLayout>
+
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
+        android:layout_below="@id/relate_toolbar"
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
@@ -220,6 +217,12 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-
-</LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="300dp"
+        android:id="@+id/list_item"
+        android:background="@color/white"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/relate_toolbar"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>

@@ -27,16 +27,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
+import com.example.doanandroid.Adapter.AdapterGroup_Search;
 import com.example.doanandroid.Adapter.AdapterNew_Electronic;
 import com.example.doanandroid.Adapter.AdapterNews_Electronic;
+import com.example.doanandroid.Adapter.AdapterSearch_CNTT;
+import com.example.doanandroid.Adapter.AdapterSearch_Electronic;
 import com.example.doanandroid.Adapter.AdapterView_CNTT;
 import com.example.doanandroid.MainActivity;
 import com.example.doanandroid.Model.CNTT_infor;
 import com.example.doanandroid.Model.Contact;
 import com.example.doanandroid.Model.Infor_All_CNTT;
+import com.example.doanandroid.Model.New_Tranning;
 import com.example.doanandroid.Model.News_Electronic;
 import com.example.doanandroid.Model.Recruit_CNTT;
 import com.example.doanandroid.R;
@@ -55,10 +60,13 @@ public class DepmentElectronicFragment extends Fragment {
     }
     RecyclerView recyNews;
     RecyclerView recyNew;
+    RecyclerView recy_search;
     ViewFlipper viewFlipper;
+    AdapterSearch_Electronic adapterSearch_electronic;
     AdapterNews_Electronic adapterNews_electronic;
     AdapterNew_Electronic adapterNew_electronic;
     List<News_Electronic> news_electronics = new ArrayList<>();
+    List<News_Electronic> list_Search = new ArrayList<>();
     View view;
 
     @Override
@@ -89,6 +97,12 @@ public class DepmentElectronicFragment extends Fragment {
 
     private void init() {
         viewFlipper = view.findViewById(R.id.viewflipper);
+
+        // tìm kiếm
+        recy_search = view.findViewById(R.id.list_item);
+        adapterSearch_electronic = new AdapterSearch_Electronic(getContext(), list_Search);
+        recy_search.setLayoutManager(new LinearLayoutManager(getContext()));
+        recy_search.setAdapter(adapterSearch_electronic);
 
         // list new
         recyNew = view.findViewById(R.id.recynew);
@@ -136,7 +150,9 @@ public class DepmentElectronicFragment extends Fragment {
                     list.add(dt.getKey());
                     News_Electronic rs = dt.getValue(News_Electronic.class);
                     news_electronics.add(rs);
+                    list_Search.add(rs);
                 }
+                adapterSearch_electronic.notifyDataSetChanged();
                 adapterNew_electronic.notifyDataSetChanged();
                 adapterNews_electronic.notifyDataSetChanged();
             }
@@ -192,12 +208,12 @@ public class DepmentElectronicFragment extends Fragment {
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     Log.i("onQueryTextChange", newText);
-
-//                    for (Recruit_CNTT rc : recruit_cnttList){
-//                        if (rc.getTitle().toLowerCase().contains(newText.toLowerCase())){
-//
-//                        }
-//                    }
+                    filter(newText);
+                    recy_search.setVisibility(View.VISIBLE);
+                    if (newText.equals("")){
+                        recy_search.setVisibility(View.GONE);
+                    }
+                    adapterSearch_electronic.notifyDataSetChanged();
                     return true;
                 }
                 @Override
@@ -227,5 +243,26 @@ public class DepmentElectronicFragment extends Fragment {
         }
         searchView.setOnQueryTextListener(queryTextListener);
         return super.onOptionsItemSelected(item);
+    }
+
+    // Tìm kiếm giá trị theo mssv
+    private void filter(String text) {
+        // tạo một danh sách mảng mới để lọc dữ liệu
+        ArrayList<News_Electronic> filteredlist = new ArrayList<>();
+
+        // so sánh các phần từ trong adapter
+        for (News_Electronic item : list_Search) {
+            // kiểm tra chuỗi vừa nhập có khớp với giá trị cần so sánh hay không
+            if (item.getTitle().toLowerCase().contains(text.toLowerCase())) {
+                filteredlist.add(item);
+            }
+        }
+        // kiểm tra data vừa nhập có chứa nội dung trong adapter hay không
+        if (filteredlist.isEmpty()) {
+        } else {
+            // nếu có sẽ add vào classAdapter
+            adapterSearch_electronic.filterList(filteredlist);
+            adapterSearch_electronic.notifyDataSetChanged();
+        }
     }
 }

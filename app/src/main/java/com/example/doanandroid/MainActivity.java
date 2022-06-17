@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setActionNavi();
         createGroupList();
         createCollection();
-
+        relate_toolbar.setVisibility(View.VISIBLE);
         expandableListAdapter = new MyExpandableListAdapter(this, groupList, ListCollection);
         expandableListView.setAdapter(expandableListAdapter);
 

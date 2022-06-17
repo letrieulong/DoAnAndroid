@@ -30,6 +30,8 @@ import com.bumptech.glide.Glide;
 import com.example.doanandroid.Adapter.AdapterCTCT_HSSV_noti;
 import com.example.doanandroid.Adapter.AdapterPolicy_Admin;
 import com.example.doanandroid.Adapter.AdapterRecruit_Admin;
+import com.example.doanandroid.Adapter.AdapterSearch_AdmininS;
+import com.example.doanandroid.Adapter.AdapterSearch_CTCT_HSSV;
 import com.example.doanandroid.MainActivity;
 import com.example.doanandroid.Model.ContactMechanical;
 import com.example.doanandroid.Model.New_Tranning;
@@ -54,8 +56,11 @@ public class RoomCTCT_HSSVFragment extends Fragment {
     View view;
     ViewFlipper viewFlipper;
     RecyclerView recy_noti;
+    RecyclerView recy_search;
     List<New_Tranning> list_noti = new ArrayList<>();
+    List<New_Tranning> list_search = new ArrayList<>();
     AdapterCTCT_HSSV_noti adapterCTCT_hssv_noti;
+    AdapterSearch_CTCT_HSSV adapterSearch_ctct_hssv;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -84,6 +89,12 @@ public class RoomCTCT_HSSVFragment extends Fragment {
     private void init() {
         viewFlipper = view.findViewById(R.id.viewflipper);
         recy_noti = view.findViewById(R.id.recyNoti);
+
+        // tìm kiếm
+        recy_search = view.findViewById(R.id.list_item);
+        adapterSearch_ctct_hssv = new AdapterSearch_CTCT_HSSV(getContext(), list_search);
+        recy_search.setLayoutManager(new LinearLayoutManager(getContext()));
+        recy_search.setAdapter(adapterSearch_ctct_hssv);
 
         adapterCTCT_hssv_noti = new AdapterCTCT_HSSV_noti(getContext(), list_noti);
         recy_noti.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -128,7 +139,9 @@ public class RoomCTCT_HSSVFragment extends Fragment {
 //                    list.add(dt.getKey());
                     New_Tranning rs = dt.getValue(New_Tranning.class);
                     list_noti.add(rs);
+                    list_search.add(rs);
                 }
+                adapterSearch_ctct_hssv.notifyDataSetChanged();
                 adapterCTCT_hssv_noti.notifyDataSetChanged();
             }
 
@@ -219,11 +232,12 @@ public class RoomCTCT_HSSVFragment extends Fragment {
                 public boolean onQueryTextChange(String newText) {
                     Log.i("onQueryTextChange", newText);
 
-//                    for (Recruit_CNTT rc : recruit_cnttList){
-//                        if (rc.getTitle().toLowerCase().contains(newText.toLowerCase())){
-//
-//                        }
-//                    }
+                    filter(newText);
+                    recy_search.setVisibility(View.VISIBLE);
+                    if (newText.equals("")){
+                        recy_search.setVisibility(View.GONE);
+                    }
+                    adapterSearch_ctct_hssv.notifyDataSetChanged();
                     return true;
                 }
                 @Override
@@ -254,5 +268,24 @@ public class RoomCTCT_HSSVFragment extends Fragment {
         searchView.setOnQueryTextListener(queryTextListener);
         return super.onOptionsItemSelected(item);
     }
+    // Tìm kiếm giá trị theo mssv
+    private void filter(String text) {
+        // tạo một danh sách mảng mới để lọc dữ liệu
+        ArrayList<New_Tranning> filteredlist = new ArrayList<>();
 
+        // so sánh các phần từ trong adapter
+        for (New_Tranning item : list_search) {
+            // kiểm tra chuỗi vừa nhập có khớp với giá trị cần so sánh hay không
+            if (item.getTitle().toLowerCase().contains(text.toLowerCase())) {
+                filteredlist.add(item);
+            }
+        }
+        // kiểm tra data vừa nhập có chứa nội dung trong adapter hay không
+        if (filteredlist.isEmpty()) {
+        } else {
+            // nếu có sẽ add vào classAdapter
+            adapterSearch_ctct_hssv.filterList(filteredlist);
+            adapterSearch_ctct_hssv.notifyDataSetChanged();
+        }
+    }
 }
