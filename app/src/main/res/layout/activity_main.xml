@@ -27,16 +27,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#32a3dc"
-                    app:navigationIcon="@drawable/back"
+                    app:navigationIcon="@drawable/menu"
                     app:title=" "
                     app:titleTextColor="@color/white" />
 
+                <Button
+                    android:layout_marginStart="50dp"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/btn_account"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/img_acount" />
                 <TextView
+                    android:layout_toRightOf="@id/btn_account"
                     android:id="@+id/txt_name_toolbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="70dp"
+                    android:layout_marginStart="5dp"
                     android:text=""
                     android:textColor="@color/white"
                     android:textSize="18dp" />
@@ -80,6 +89,7 @@
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigationview"
             android:layout_width="match_parent"
+            android:background="@drawable/navigation"
             android:layout_height="match_parent"
             android:layout_gravity="start">
 
