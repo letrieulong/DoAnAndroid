@@ -10,6 +10,7 @@ public class Recruit_CNTT implements Serializable {
     String image;
     long view;
     long like;
+    boolean isRecruit;
 
 
     public Recruit_CNTT() {
@@ -21,6 +22,14 @@ public class Recruit_CNTT implements Serializable {
         this.content = content;
         this.date = date;
         this.image = image;
+    }
+
+    public boolean isRecruit() {
+        return isRecruit;
+    }
+
+    public void setRecruit(boolean recruit) {
+        isRecruit = recruit;
     }
 
     public long getView() {

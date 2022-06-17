@@ -57,7 +57,8 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_CNTT.ClickItemPost
+public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_CNTT.ClickItemPost, AdapterView_CNTT.ClickItemPost
+
 
 {
 
@@ -213,7 +214,7 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
 
         // list all
         recyInfor = view.findViewById(R.id.recyInfor);
-        adapterView_cntt = new AdapterView_CNTT(getContext(), infor_all_cntts);
+        adapterView_cntt = new AdapterView_CNTT(getContext(), infor_all_cntts, this);
         recyInfor.setLayoutManager(new LinearLayoutManager(getContext()));
         recyInfor.setAdapter(adapterView_cntt);
 
@@ -301,6 +302,22 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
     @Override
     public void onClickItem(Recruit_CNTT recruit_cntt) {
         Intent i = new Intent(getContext(), DetailPostActivity.class);
+        recruit_cntt.setRecruit(true);
+        i.putExtra("recruit", recruit_cntt);
+        startActivity(i);
+    }
+
+
+    @Override
+    public void onClickItemInfor(Infor_All_CNTT infor_all_cntt) {
+        Intent i = new Intent(getContext(), DetailPostActivity.class);
+        Recruit_CNTT recruit_cntt = new Recruit_CNTT();
+        recruit_cntt.setRecruit(false);
+        recruit_cntt.setId(infor_all_cntt.getId());
+        recruit_cntt.setContent(infor_all_cntt.getContent());
+        recruit_cntt.setTitle(infor_all_cntt.getTitle());
+        recruit_cntt.setLike(infor_all_cntt.getLike());
+        recruit_cntt.setView(infor_all_cntt.getView());
         i.putExtra("recruit", recruit_cntt);
         startActivity(i);
     }

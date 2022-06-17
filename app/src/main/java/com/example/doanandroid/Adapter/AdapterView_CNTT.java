@@ -23,12 +23,16 @@ import java.util.List;
 public class AdapterView_CNTT extends RecyclerView.Adapter<AdapterView_CNTT.ViewHodel> {
     Context context;
     List<Infor_All_CNTT> infor_all_cntts;
+    AdapterView_CNTT.ClickItemPost clickItemPost;
 
-    public AdapterView_CNTT(Context context, List<Infor_All_CNTT> infor_all_cntts) {
+    public AdapterView_CNTT(Context context, List<Infor_All_CNTT> infor_all_cntts,  AdapterView_CNTT.ClickItemPost clickItemPost) {
         this.context = context;
         this.infor_all_cntts = infor_all_cntts;
+        this.clickItemPost = clickItemPost;
     }
-
+    public interface ClickItemPost{
+        void onClickItemInfor(Infor_All_CNTT infor_all_cntt);
+    }
     @NonNull
     @Override
     public ViewHodel onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,6 +47,14 @@ public class AdapterView_CNTT extends RecyclerView.Adapter<AdapterView_CNTT.View
         holder.txt_title.setMaxLines(3);
         holder.txt_title.setEllipsize(TextUtils.TruncateAt.END);
         holder.txt_title.setText(infor_all_cntts.get(i).getTitle());
+
+        Infor_All_CNTT infor_all_cntt = infor_all_cntts.get(i);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickItemPost.onClickItemInfor(infor_all_cntt);
+            }
+        });
         Glide.with(context)
                 .load(infor_all_cntts.get(i).getImage())
                 .into(holder.img);
