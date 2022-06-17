@@ -23,10 +23,15 @@ import java.util.List;
 public class AdapterRecruit_CNTT extends RecyclerView.Adapter<AdapterRecruit_CNTT.ViewHodel> {
     Context context;
     List<Recruit_CNTT> recruit_cnttList;
-
-    public AdapterRecruit_CNTT(Context context, List<Recruit_CNTT> recruit_cnttList) {
+    ClickItemPost clickItemPost;
+    public AdapterRecruit_CNTT(Context context, List<Recruit_CNTT> recruit_cnttList, ClickItemPost clickItemPost) {
         this.context = context;
+        this.clickItemPost = clickItemPost;
         this.recruit_cnttList = recruit_cnttList;
+    }
+
+    public interface ClickItemPost{
+        void onClickItem(Recruit_CNTT recruit_cntt);
     }
 
     @NonNull
@@ -44,6 +49,13 @@ public class AdapterRecruit_CNTT extends RecyclerView.Adapter<AdapterRecruit_CNT
         Glide.with(context)
                 .load(recruit_cnttList.get(i).getImage())
                 .into(holder.img);
+        Recruit_CNTT recruit_cntt = recruit_cnttList.get(i);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickItemPost.onClickItem(recruit_cntt);
+            }
+        });
     }
 
     @Override

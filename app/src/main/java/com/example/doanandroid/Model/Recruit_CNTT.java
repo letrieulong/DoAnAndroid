@@ -1,11 +1,16 @@
 package com.example.doanandroid.Model;
 
-public class Recruit_CNTT {
+import java.io.Serializable;
+
+public class Recruit_CNTT implements Serializable {
     String id;
     String title;
     String content;
     String date;
     String image;
+    long view;
+    long like;
+
 
     public Recruit_CNTT() {
     }
@@ -16,6 +21,22 @@ public class Recruit_CNTT {
         this.content = content;
         this.date = date;
         this.image = image;
+    }
+
+    public long getView() {
+        return view;
+    }
+
+    public void setView(long view) {
+        this.view = view;
+    }
+
+    public long getLike() {
+        return like;
+    }
+
+    public void setLike(long like) {
+        this.like = like;
     }
 
     public String getId() {

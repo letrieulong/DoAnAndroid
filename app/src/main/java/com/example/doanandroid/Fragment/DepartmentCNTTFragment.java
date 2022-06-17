@@ -2,6 +2,7 @@ package com.example.doanandroid.Fragment;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -35,9 +36,8 @@ import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
 import com.example.doanandroid.Adapter.AdapterRecruit_CNTT;
-import com.example.doanandroid.Adapter.AdapterSearch_CNTT;
-import com.example.doanandroid.Adapter.AdapterSearch_Mechanical;
 import com.example.doanandroid.Adapter.AdapterView_CNTT;
+import com.example.doanandroid.DetailPostActivity;
 import com.example.doanandroid.MainActivity;
 import com.example.doanandroid.Model.CNTT_infor;
 import com.example.doanandroid.Model.Infor_All_CNTT;
@@ -57,7 +57,9 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DepartmentCNTTFragment extends Fragment {
+public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_CNTT.ClickItemPost
+
+{
 
 
     public DepartmentCNTTFragment() {
@@ -72,7 +74,6 @@ public class DepartmentCNTTFragment extends Fragment {
     List<Infor_All_CNTT> list_search = new ArrayList<>();
     AdapterRecruit_CNTT adapterRecruit_cntt;
     AdapterView_CNTT adapterView_cntt;
-    AdapterSearch_CNTT adapterSearch_cntt;
     TextView txt_title_name;
     ImageView img_view;
     ViewFlipper viewFlipper;
@@ -120,7 +121,6 @@ public class DepartmentCNTTFragment extends Fragment {
                     recruit_cnttList.add(rs);
                     list_search.add(rss);
                 }
-                adapterSearch_cntt.notifyDataSetChanged();
                 adapterRecruit_cntt.notifyDataSetChanged();
             }
 
@@ -162,7 +162,6 @@ public class DepartmentCNTTFragment extends Fragment {
                     infor_all_cntts.add(rs);
                     list_search.add(rs);
                 }
-                adapterSearch_cntt.notifyDataSetChanged();
                 adapterView_cntt.notifyDataSetChanged();
             }
 
@@ -210,10 +209,7 @@ public class DepartmentCNTTFragment extends Fragment {
         viewFlipper = view.findViewById(R.id.viewflipper);
 
         // tìm kiếm
-        recy_search = view.findViewById(R.id.list_item);
-        adapterSearch_cntt = new AdapterSearch_CNTT(getContext(), list_search);
-        recy_search.setLayoutManager(new LinearLayoutManager(getContext()));
-        recy_search.setAdapter(adapterSearch_cntt);
+
 
         // list all
         recyInfor = view.findViewById(R.id.recyInfor);
@@ -223,7 +219,7 @@ public class DepartmentCNTTFragment extends Fragment {
 
         // list tuyển dụng
         recyRecruit = view.findViewById(R.id.recyRecruit);
-        adapterRecruit_cntt = new AdapterRecruit_CNTT(getContext(), recruit_cnttList);
+        adapterRecruit_cntt = new AdapterRecruit_CNTT(getContext(), recruit_cnttList, this);
         recyRecruit.setLayoutManager(new LinearLayoutManager(getContext()));
         recyRecruit.setAdapter(adapterRecruit_cntt);
     }
@@ -252,7 +248,6 @@ public class DepartmentCNTTFragment extends Fragment {
                     if (newText.equals("")){
                         recy_search.setVisibility(View.GONE);
                     }
-                    adapterSearch_cntt.notifyDataSetChanged();
                     return true;
                 }
                 @Override
@@ -300,8 +295,13 @@ public class DepartmentCNTTFragment extends Fragment {
         if (filteredlist.isEmpty()) {
         } else {
             // nếu có sẽ add vào classAdapter
-            adapterSearch_cntt.filterList(filteredlist);
-            adapterSearch_cntt.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onClickItem(Recruit_CNTT recruit_cntt) {
+        Intent i = new Intent(getContext(), DetailPostActivity.class);
+        i.putExtra("recruit", recruit_cntt);
+        startActivity(i);
     }
 }

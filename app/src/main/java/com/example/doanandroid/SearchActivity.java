@@ -91,7 +91,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         recyFind = findViewById(R.id.recyFindSearch);
 
-        adapterRecruit_cntt = new AdapterRecruit_CNTT(this, recruit_cnttList);
         recyFind.setLayoutManager(new LinearLayoutManager(this));
         recyFind.setAdapter(adapterRecruit_cntt);
     }
