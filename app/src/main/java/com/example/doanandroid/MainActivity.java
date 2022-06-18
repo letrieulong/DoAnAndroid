@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ import com.example.doanandroid.Fragment.RoomTrainingFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,17 +78,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_account).setOnClickListener(this);
         expandableListAdapter = new MyExpandableListAdapter(this, groupList, ListCollection);
         expandableListView.setAdapter(expandableListAdapter);
-
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int lastExpandedPosition = -1;
+
             @Override
             public void onGroupExpand(int i) {
                 if (lastExpandedPosition != -1 && i != lastExpandedPosition) {
                     expandableListView.collapseGroup(lastExpandedPosition);
                 }
                 lastExpandedPosition = i;
-                if (lastExpandedPosition == 4){
-                    startActivity(new Intent(MainActivity.this, cai_dat.class));
+                if (expandableListAdapter.getGroup(i).equals("THOÁT")) {
+                    SharedPreferences preferences1 = getSharedPreferences("checkbox",MODE_PRIVATE);
+                    SharedPreferences.Editor editor1 = preferences1.edit();
+                    editor1.putString("remember", "false");
+                    editor1.apply();
+                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+                } else if (expandableListAdapter.getGroup(i).equals("ĐĂNG NHẬP")){
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
+                if (expandableListAdapter.getGroup(i).equals("HỌC BỔNG - VAY VỐN")){
+                    String url = "https://ctct.caothang.edu.vn/upload//files/So_Tay_SV_2021/Hoc%20bong%20khuyen%20khich%20hoc%20tap%202021.pdf";
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    startActivity(intent);
                 }
             }
         });
@@ -97,40 +111,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 /**
                  * Khoa
                  * */
-                if (selected.equals(DepartmentModels[0])){
+                if (selected.equals(DepartmentModels[0])) {
                     txt_name_toolbar.setText("KHOA CƠ KHÍ");
                     relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new DepartmentMechanicalFragment());
                     drawerLayout.close();
                 }
-                if (selected.equals(DepartmentModels[1])){
+                if (selected.equals(DepartmentModels[1])) {
                     txt_name_toolbar.setText("KHOA CÔNG NGHỆ THÔNG TIN");
                     relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new DepartmentCNTTFragment());
                     drawerLayout.close();
                 }
-                if (selected.equals(DepartmentModels[2])){
+                if (selected.equals(DepartmentModels[2])) {
                     txt_name_toolbar.setText("KHOA ĐIỆN TỬ");
                     relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new DepmentElectronicFragment());
                     drawerLayout.close();
                 }
                 /**
-                * Phòng Ban
-                * */
-                if (selected.equals(RoomModels[0])){
+                 * Phòng Ban
+                 * */
+                if (selected.equals(RoomModels[0])) {
                     txt_name_toolbar.setText("PHÒNG ĐÀO TẠO");
                     loadFragment(new RoomTrainingFragment());
                     relate_toolbar.setVisibility(View.GONE);
                     drawerLayout.close();
                 }
-                if (selected.equals(RoomModels[1])){
+                if (selected.equals(RoomModels[1])) {
                     txt_name_toolbar.setText("PHÒNG HÀNH CHÍNH");
                     loadFragment(new RoomAdminiStrativeFragment());
                     relate_toolbar.setVisibility(View.GONE);
                     drawerLayout.close();
                 }
-                if (selected.equals(RoomModels[2])){
+                if (selected.equals(RoomModels[2])) {
                     txt_name_toolbar.setText("PHÒNG CTCT-HSSV");
                     loadFragment(new RoomCTCT_HSSVFragment());
                     relate_toolbar.setVisibility(View.GONE);
@@ -139,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 /**
                  * Đoàn - hội
                  * */
-                if (selected.equals(unionModels[0])){
+                if (selected.equals(unionModels[0])) {
                     txt_name_toolbar.setText("ĐOÀN - HỘI");
                     relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new GroupYouthFragment());
@@ -154,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    loadFragment(new CLB_MusicFragment());
 //                    drawerLayout.close();
 //                }
-                if (selected.equals(CLBModels[0])){
+                if (selected.equals(CLBModels[0])) {
                     txt_name_toolbar.setText("CÂU LẠC BỘ TIN HỌC");
                     relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new CLB_IT_Fragment());
@@ -172,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Actionbar();
     }
 
-    private void init(){
+    private void init() {
         toolbar = findViewById(R.id.toolbar);
         txt_name_toolbar = findViewById(R.id.txt_name_toolbar);
         drawerLayout = findViewById(R.id.drawerlayout);
@@ -195,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else if (group.equals("CÂU LẠC BỘ")) {
                 loadChild(CLBModels);
             }
-            if (group.equals("CÀI ĐẶT")) {
+            if (group.equals("HỌC BỔNG - VAY VỐN")) {
                 loadChild(CLBModelss);
             }
             ListCollection.put(group, childList);
@@ -215,8 +229,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         groupList.add("KHOA");
         groupList.add("ĐOÀN - HỘI");
         groupList.add("CÂU LẠC BỘ");
+        groupList.add("HỌC BỔNG - VAY VỐN");
+        groupList.add("HỌC PHÍ");
         groupList.add("CÀI ĐẶT");
-        groupList.add("THOÁT");
+        SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+        String checkbox = preferences.getString("remember", "");
+        if (checkbox.equals("false")) {
+            groupList.add("ĐĂNG NHẬP");
+        } else {
+            groupList.add("THOÁT");
+        }
     }
 
     // set hành động của bottomnavigation
@@ -268,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_account:
                 startActivity(new Intent(MainActivity.this, InfoActivity.class));
         }
