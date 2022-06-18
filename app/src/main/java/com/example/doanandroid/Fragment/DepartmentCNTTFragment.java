@@ -316,8 +316,8 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
         recruit_cntt.setId(infor_all_cntt.getId());
         recruit_cntt.setContent(infor_all_cntt.getContent());
         recruit_cntt.setTitle(infor_all_cntt.getTitle());
-        recruit_cntt.setLike(infor_all_cntt.getLike());
-        recruit_cntt.setView(infor_all_cntt.getView());
+//        recruit_cntt.setLike(infor_all_cntt.getLike());
+//        recruit_cntt.setView(infor_all_cntt.getView());
         i.putExtra("recruit", recruit_cntt);
         startActivity(i);
     }
