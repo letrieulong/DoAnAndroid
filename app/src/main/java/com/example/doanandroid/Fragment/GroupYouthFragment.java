@@ -2,6 +2,7 @@ package com.example.doanandroid.Fragment;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,8 @@ import com.example.doanandroid.Adapter.AdapterGroup_Youth;
 import com.example.doanandroid.Adapter.AdapterNew_Trainning;
 import com.example.doanandroid.Adapter.AdapterPolicy_Admin;
 import com.example.doanandroid.Adapter.AdapterRecruit_Admin;
+import com.example.doanandroid.DetailPostRoomTraining;
+import com.example.doanandroid.Doan_HoiActivity;
 import com.example.doanandroid.MainActivity;
 import com.example.doanandroid.Model.ContactMechanical;
 import com.example.doanandroid.Model.New_Tranning;
@@ -55,7 +58,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupYouthFragment extends Fragment {
+public class GroupYouthFragment extends Fragment implements AdapterGroup_Youth.ClickItemPost, AdapterGroup_New_update.ClickItemNewUpdate, AdapterGroup_SV.ClickItemSV {
     public GroupYouthFragment() {
         // Required empty public constructor
     }
@@ -112,19 +115,19 @@ public class GroupYouthFragment extends Fragment {
 
         // hội sinh viên
         recy_group_sv = view.findViewById(R.id.recygroupSV);
-        adapterGroup_sv = new AdapterGroup_SV(getContext(), new_List_sv);
+        adapterGroup_sv = new AdapterGroup_SV(getContext(), new_List_sv, this);
         recy_group_sv.setLayoutManager(new LinearLayoutManager(getContext()));
         recy_group_sv.setAdapter(adapterGroup_sv);
 
         // đoàn thanh niên
         recy_youth = view.findViewById(R.id.recyyouth);
-        adapterGroup_youth = new AdapterGroup_Youth(getContext(), new_List_youth);
+        adapterGroup_youth = new AdapterGroup_Youth(getContext(), new_List_youth ,this);
         recy_youth.setLayoutManager(new LinearLayoutManager(getContext()));
         recy_youth.setAdapter(adapterGroup_youth);
 
         // tin mới
         recy_new_update = view.findViewById(R.id.recy_news_update);
-        adapterGroup_new_update = new AdapterGroup_New_update(getContext(), new_List_update);
+        adapterGroup_new_update = new AdapterGroup_New_update(getContext(), new_List_update, this);
         recy_new_update.setLayoutManager(new LinearLayoutManager(getContext()));
         recy_new_update.setAdapter(adapterGroup_new_update);
     }
@@ -338,5 +341,29 @@ public class GroupYouthFragment extends Fragment {
             adapterGroup_search.filterList(filteredlist);
             adapterGroup_search.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onClickItem(New_Tranning new_tranning) {
+        Intent i = new Intent(getContext(), Doan_HoiActivity.class);
+        new_tranning.setTypePost(0);
+        i.putExtra("recruit", new_tranning);
+        startActivity(i);
+    }
+
+    @Override
+    public void onClickItemNewUpdate(New_Tranning new_tranning) {
+        Intent i = new Intent(getContext(), Doan_HoiActivity.class);
+        new_tranning.setTypePost(1);
+        i.putExtra("recruit", new_tranning);
+        startActivity(i);
+    }
+
+    @Override
+    public void onClickItemSV(New_Tranning new_tranning) {
+        Intent i = new Intent(getContext(), Doan_HoiActivity.class);
+        new_tranning.setTypePost(2);
+        i.putExtra("recruit", new_tranning);
+        startActivity(i);
     }
 }

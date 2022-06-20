@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAnAndroid">
         <activity
+            android:name=".Doan_HoiActivity"
+            android:exported="false" />
+        <activity
             android:name=".CTCT_HSSVActivity"
             android:exported="false" />
         <activity

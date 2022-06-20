@@ -19,11 +19,15 @@ import java.util.List;
 public class AdapterGroup_New_update extends RecyclerView.Adapter<AdapterGroup_New_update.ViewHodel> {
     Context context;
     List<New_Tranning> mechanicalList;
-
-    public AdapterGroup_New_update(Context context, List<New_Tranning> mechanicalList) {
+    ClickItemNewUpdate clickItemNewUpdate;
+    public AdapterGroup_New_update(Context context, List<New_Tranning> mechanicalList, ClickItemNewUpdate clickItemNewUpdate) {
         this.context = context;
         this.mechanicalList = mechanicalList;
+        this.clickItemNewUpdate = clickItemNewUpdate;
+    }
 
+    public interface ClickItemNewUpdate{
+        void onClickItemNewUpdate(New_Tranning new_tranning);
     }
 
     @NonNull
@@ -40,6 +44,14 @@ public class AdapterGroup_New_update extends RecyclerView.Adapter<AdapterGroup_N
         holder.txt_title.setEllipsize(TextUtils.TruncateAt.END);
         holder.txt_title.setMaxLines(2);
         holder.txt_title.setText(mechanicalList.get(i).getTitle());
+
+        New_Tranning new_tranning = mechanicalList.get(i);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickItemNewUpdate.onClickItemNewUpdate(new_tranning);
+            }
+        });
     }
 
     @Override

@@ -19,13 +19,15 @@ import java.util.List;
 public class AdapterGroup_Youth extends RecyclerView.Adapter<AdapterGroup_Youth.ViewHodel> {
     Context context;
     List<New_Tranning> mechanicalList;
-
-    public AdapterGroup_Youth(Context context, List<New_Tranning> mechanicalList) {
+    AdapterGroup_Youth.ClickItemPost clickItemPost;
+    public AdapterGroup_Youth(Context context, List<New_Tranning> mechanicalList, AdapterGroup_Youth.ClickItemPost clickItemPost) {
         this.context = context;
         this.mechanicalList = mechanicalList;
-
+        this.clickItemPost= clickItemPost;
     }
-
+    public interface ClickItemPost{
+        void onClickItem(New_Tranning new_tranning);
+    }
     @NonNull
     @Override
     public ViewHodel onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,6 +42,13 @@ public class AdapterGroup_Youth extends RecyclerView.Adapter<AdapterGroup_Youth.
         holder.txt_title.setEllipsize(TextUtils.TruncateAt.END);
         holder.txt_title.setMaxLines(2);
         holder.txt_title.setText(mechanicalList.get(i).getTitle());
+        New_Tranning new_tranning = mechanicalList.get(i);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickItemPost.onClickItem(new_tranning);
+            }
+        });
     }
 
     @Override

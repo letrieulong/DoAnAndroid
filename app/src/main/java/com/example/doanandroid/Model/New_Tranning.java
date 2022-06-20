@@ -11,6 +11,7 @@ public class New_Tranning  implements Serializable {
     long view;
     long like;
     boolean isRecruit;
+    int typePost;
 
     public New_Tranning(String title) {
         this.title = title;
@@ -18,6 +19,14 @@ public class New_Tranning  implements Serializable {
 
     public New_Tranning(){
 
+    }
+
+    public int getTypePost() {
+        return typePost;
+    }
+
+    public void setTypePost(int typePost) {
+        this.typePost = typePost;
     }
 
     public long getView() {

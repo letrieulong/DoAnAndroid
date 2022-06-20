@@ -20,11 +20,16 @@ import java.util.List;
 public class AdapterGroup_SV extends RecyclerView.Adapter<AdapterGroup_SV.ViewHodel> {
     Context context;
     List<New_Tranning> mechanicalList;
+    ClickItemSV clickItemSV;
 
-    public AdapterGroup_SV(Context context, List<New_Tranning> mechanicalList) {
+    public AdapterGroup_SV(Context context, List<New_Tranning> mechanicalList, ClickItemSV clickItemSV) {
         this.context = context;
         this.mechanicalList = mechanicalList;
+        this.clickItemSV = clickItemSV;
+    }
 
+    public interface ClickItemSV{
+        void onClickItemSV(New_Tranning new_tranning);
     }
 
     @NonNull
@@ -41,6 +46,14 @@ public class AdapterGroup_SV extends RecyclerView.Adapter<AdapterGroup_SV.ViewHo
         holder.txt_title.setEllipsize(TextUtils.TruncateAt.END);
         holder.txt_title.setMaxLines(2);
         holder.txt_title.setText(mechanicalList.get(i).getTitle());
+
+        New_Tranning new_tranning = mechanicalList.get(i);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickItemSV.onClickItemSV(new_tranning);
+            }
+        });
     }
 
     @Override
