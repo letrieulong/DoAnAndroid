@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAnAndroid">
         <activity
+            android:name=".CTCT_HSSVActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetailPostRoomTraining"
+            android:exported="false" />
+        <activity
             android:name=".DetailPostActivity"
             android:exported="false" />
         <activity

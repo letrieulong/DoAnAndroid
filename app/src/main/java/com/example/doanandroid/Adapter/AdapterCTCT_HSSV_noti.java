@@ -19,13 +19,15 @@ import java.util.List;
 public class AdapterCTCT_HSSV_noti extends RecyclerView.Adapter<AdapterCTCT_HSSV_noti.ViewHodel> {
     Context context;
     List<New_Tranning> mechanicalList;
-
-    public AdapterCTCT_HSSV_noti(Context context, List<New_Tranning> mechanicalList) {
+    AdapterCTCT_HSSV_noti.ClickItemPost clickItemPost;
+    public AdapterCTCT_HSSV_noti(Context context, List<New_Tranning> mechanicalList,AdapterCTCT_HSSV_noti.ClickItemPost clickItemPost) {
         this.context = context;
         this.mechanicalList = mechanicalList;
-
+        this.clickItemPost= clickItemPost;
     }
-
+    public interface ClickItemPost{
+        void onClickItem(New_Tranning new_tranning);
+    }
     @NonNull
     @Override
     public ViewHodel onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,6 +42,14 @@ public class AdapterCTCT_HSSV_noti extends RecyclerView.Adapter<AdapterCTCT_HSSV
         holder.txt_title.setEllipsize(TextUtils.TruncateAt.END);
         holder.txt_title.setMaxLines(2);
         holder.txt_title.setText(mechanicalList.get(i).getTitle());
+
+        New_Tranning new_tranning = mechanicalList.get(i);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickItemPost.onClickItem(new_tranning);
+            }
+        });
     }
 
     @Override

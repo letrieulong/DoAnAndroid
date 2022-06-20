@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.doanandroid.Model.ContentLink;
 import com.example.doanandroid.Model.Mechanical;
 import com.example.doanandroid.Model.New_Tranning;
+import com.example.doanandroid.Model.Recruit_CNTT;
 import com.example.doanandroid.R;
 
 import java.util.ArrayList;
@@ -24,11 +25,16 @@ import java.util.List;
 public class AdapterNew_Trainning extends RecyclerView.Adapter<AdapterNew_Trainning.ViewHodel> {
     Context context;
     List<New_Tranning> mechanicalList;
-
-    public AdapterNew_Trainning(Context context, List<New_Tranning> mechanicalList) {
+    AdapterNew_Trainning.ClickItemPost clickItemPost;
+    public AdapterNew_Trainning(Context context, List<New_Tranning> mechanicalList, AdapterNew_Trainning.ClickItemPost clickItemPost) {
         this.context = context;
         this.mechanicalList = mechanicalList;
+        this.clickItemPost= clickItemPost;
 
+    }
+
+    public interface ClickItemPost{
+        void onClickItem(New_Tranning new_tranning);
     }
 
     @NonNull
@@ -45,6 +51,14 @@ public class AdapterNew_Trainning extends RecyclerView.Adapter<AdapterNew_Trainn
         holder.txt_title.setEllipsize(TextUtils.TruncateAt.END);
         holder.txt_title.setMaxLines(2);
         holder.txt_title.setText(mechanicalList.get(i).getTitle());
+//ihjihjkhkjhlj
+        New_Tranning new_tranning = mechanicalList.get(i);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickItemPost.onClickItem(new_tranning);
+            }
+        });
     }
 
     @Override

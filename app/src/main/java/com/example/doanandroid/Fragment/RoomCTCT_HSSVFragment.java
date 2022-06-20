@@ -2,6 +2,7 @@ package com.example.doanandroid.Fragment;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,10 +29,13 @@ import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
 import com.example.doanandroid.Adapter.AdapterCTCT_HSSV_noti;
+import com.example.doanandroid.Adapter.AdapterNew_Trainning;
 import com.example.doanandroid.Adapter.AdapterPolicy_Admin;
 import com.example.doanandroid.Adapter.AdapterRecruit_Admin;
 import com.example.doanandroid.Adapter.AdapterSearch_AdmininS;
 import com.example.doanandroid.Adapter.AdapterSearch_CTCT_HSSV;
+import com.example.doanandroid.CTCT_HSSVActivity;
+import com.example.doanandroid.DetailPostRoomTraining;
 import com.example.doanandroid.MainActivity;
 import com.example.doanandroid.Model.ContactMechanical;
 import com.example.doanandroid.Model.New_Tranning;
@@ -47,7 +51,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomCTCT_HSSVFragment extends Fragment {
+public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_noti.ClickItemPost {
 
     public RoomCTCT_HSSVFragment() {
         // Required empty public constructor
@@ -96,7 +100,7 @@ public class RoomCTCT_HSSVFragment extends Fragment {
         recy_search.setLayoutManager(new LinearLayoutManager(getContext()));
         recy_search.setAdapter(adapterSearch_ctct_hssv);
 
-        adapterCTCT_hssv_noti = new AdapterCTCT_HSSV_noti(getContext(), list_noti);
+        adapterCTCT_hssv_noti = new AdapterCTCT_HSSV_noti(getContext(), list_noti,this);
         recy_noti.setLayoutManager(new LinearLayoutManager(getContext()));
         recy_noti.setAdapter(adapterCTCT_hssv_noti);
 
@@ -287,5 +291,13 @@ public class RoomCTCT_HSSVFragment extends Fragment {
             adapterSearch_ctct_hssv.filterList(filteredlist);
             adapterSearch_ctct_hssv.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onClickItem(New_Tranning new_tranning) {
+        Intent i = new Intent(getContext(), CTCT_HSSVActivity.class);
+        new_tranning.setRecruit(true);
+        i.putExtra("recruit", new_tranning);
+        startActivity(i);
     }
 }

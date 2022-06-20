@@ -2,6 +2,7 @@ package com.example.doanandroid.Fragment;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -29,13 +30,17 @@ import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
 import com.example.doanandroid.Adapter.AdapterNew_Trainning;
+import com.example.doanandroid.Adapter.AdapterRecruit_CNTT;
 import com.example.doanandroid.Adapter.AdapterSearch_CTCT_HSSV;
 import com.example.doanandroid.Adapter.AdapterSearch_Trainning;
+import com.example.doanandroid.DetailPostActivity;
+import com.example.doanandroid.DetailPostRoomTraining;
 import com.example.doanandroid.MainActivity;
 import com.example.doanandroid.Model.ContactMechanical;
 import com.example.doanandroid.Model.ContentLink;
 import com.example.doanandroid.Model.Mechanical;
 import com.example.doanandroid.Model.New_Tranning;
+import com.example.doanandroid.Model.Recruit_CNTT;
 import com.example.doanandroid.R;
 import com.example.doanandroid.Util.SharedPreferencessss;
 import com.google.firebase.database.DataSnapshot;
@@ -48,7 +53,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class RoomTrainingFragment extends Fragment {
+public class RoomTrainingFragment extends Fragment  implements AdapterNew_Trainning.ClickItemPost {
 
     public RoomTrainingFragment() {
         // Required empty public constructor
@@ -99,7 +104,7 @@ public class RoomTrainingFragment extends Fragment {
         recy_search.setAdapter(adapterSearch_trainning);
 
         recyNew = view.findViewById(R.id.recynew);
-        adapterNew_trainning = new AdapterNew_Trainning(getContext(), new_tranningList);
+        adapterNew_trainning = new AdapterNew_Trainning(getContext(), new_tranningList, this);
         recyNew.setLayoutManager(new LinearLayoutManager(getContext()));
         recyNew.setAdapter(adapterNew_trainning);
     }
@@ -275,5 +280,14 @@ public class RoomTrainingFragment extends Fragment {
             adapterSearch_trainning.filterList(filteredlist);
             adapterSearch_trainning.notifyDataSetChanged();
         }
+    }
+
+
+    @Override
+    public void onClickItem(New_Tranning new_tranning) {
+        Intent i = new Intent(getContext(), DetailPostRoomTraining.class);
+        new_tranning.setRecruit(true);
+        i.putExtra("recruit", new_tranning);
+        startActivity(i);
     }
 }

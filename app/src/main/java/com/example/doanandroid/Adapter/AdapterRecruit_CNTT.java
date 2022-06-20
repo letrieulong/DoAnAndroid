@@ -49,6 +49,7 @@ public class AdapterRecruit_CNTT extends RecyclerView.Adapter<AdapterRecruit_CNT
         Glide.with(context)
                 .load(recruit_cnttList.get(i).getImage())
                 .into(holder.img);
+
         Recruit_CNTT recruit_cntt = recruit_cnttList.get(i);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
