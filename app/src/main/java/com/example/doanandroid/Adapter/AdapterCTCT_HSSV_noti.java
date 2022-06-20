@@ -7,13 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanandroid.Fragment.RoomCTCT_HSSVFragment;
 import com.example.doanandroid.Model.New_Tranning;
 import com.example.doanandroid.R;
 
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterCTCT_HSSV_noti extends RecyclerView.Adapter<AdapterCTCT_HSSV_noti.ViewHodel> {
@@ -54,7 +58,7 @@ public class AdapterCTCT_HSSV_noti extends RecyclerView.Adapter<AdapterCTCT_HSSV
 
     @Override
     public int getItemCount() {
-        return mechanicalList.size();
+        return mechanicalList.size() + RoomCTCT_HSSVFragment.count;
     }
 
     public class ViewHodel extends RecyclerView.ViewHolder {

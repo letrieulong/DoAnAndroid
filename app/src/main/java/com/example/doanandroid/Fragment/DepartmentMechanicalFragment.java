@@ -1,7 +1,10 @@
 package com.example.doanandroid.Fragment;
 
+import android.app.DatePickerDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,7 +27,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -54,10 +61,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class DepartmentMechanicalFragment extends Fragment {
+public class DepartmentMechanicalFragment extends Fragment implements View.OnClickListener {
+    TextView txt_contetn;
+    RelativeLayout rela_filter;
+    Button btn_filter, btn_filter_off;
 
     RecyclerView recyRecruit;
     RecyclerView recyNotification;
@@ -85,13 +96,18 @@ public class DepartmentMechanicalFragment extends Fragment {
         Acviewflipper();
         Actionbar();
         setHasOptionsMenu(true);
+        txt_contetn.setOnClickListener(this::onClick);
+        view.findViewById(R.id.txt_end_date).setOnClickListener(this::onClick);
+        view.findViewById(R.id.txt_start_date).setOnClickListener(this::onClick);
+        btn_filter.setOnClickListener(this::onClick);
+        btn_filter_off.setOnClickListener(this::onClick);
         return view;
     }
 
     private void Actionbar() {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,6 +184,21 @@ public class DepartmentMechanicalFragment extends Fragment {
             }
         });
 
+        // content
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // truy cập từng phần tử
+                HashMap<String, Object> hashMap = (HashMap<String, Object>) snapshot.getValue();
+                setText(txt_contetn, Html.fromHtml(hashMap.get("contents").toString()).toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         // lịch tiếp sinh viên
         mDatabase.child("list_notification").addValueEventListener(new ValueEventListener() {
             @Override
@@ -226,6 +257,12 @@ public class DepartmentMechanicalFragment extends Fragment {
     // khởi tạo các control
     private void init() {
         viewFlipper = view.findViewById(R.id.viewflipper);
+        rela_filter = view.findViewById(R.id.linear_filter);
+        btn_filter_off  = view.findViewById(R.id.btn_filter_off);
+        btn_filter  = view.findViewById(R.id.btn_filter);
+        txt_contetn = view.findViewById(R.id.txt_content);
+        txt_contetn.setMaxLines(5);
+        txt_contetn.setEllipsize(TextUtils.TruncateAt.END);
         // tìm kiếm
         recy_search = view.findViewById(R.id.list_item);
         adapterSearch_mechanical = new AdapterSearch_Mechanical(getContext(), list_search);
@@ -247,33 +284,33 @@ public class DepartmentMechanicalFragment extends Fragment {
 
     /**
      * Tìm kiếm
-     * **/
+     **/
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.search, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-
         if (searchItem != null) {
             searchView = (SearchView) searchItem.getActionView();
         }
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-
             queryTextListener = new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     Log.i("onQueryTextChange", newText);
                     filter(newText);
                     recy_search.setVisibility(View.VISIBLE);
-                    if (newText.equals("")){
+                    if (newText.equals("")) {
                         recy_search.setVisibility(View.GONE);
                     }
                     adapterSearch_mechanical.notifyDataSetChanged();
                     return true;
                 }
+
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     Log.i("onQueryTextSubmit", query);
@@ -322,5 +359,68 @@ public class DepartmentMechanicalFragment extends Fragment {
             adapterSearch_mechanical.filterList(filteredlist);
             adapterSearch_mechanical.notifyDataSetChanged();
         }
+    }
+
+    boolean b = true;
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.txt_content:
+                if (b) {
+                    txt_contetn.setEllipsize(null);
+                    txt_contetn.setMaxLines(txt_contetn.getText().toString().length());
+                    b = false;
+                } else {
+                    txt_contetn.setMaxLines(5);
+                    txt_contetn.setEllipsize(TextUtils.TruncateAt.END);
+                    b = true;
+                }
+                return;
+            case R.id.txt_start_date:
+                calendar(view.findViewById(R.id.txt_start_date));
+                return;
+            case R.id.txt_end_date:
+                calendar(view.findViewById(R.id.txt_end_date));
+                return;
+            case R.id.btn_filter:
+                rela_filter.setVisibility(View.VISIBLE);
+                btn_filter_off.setVisibility(View.VISIBLE);
+                btn_filter.setVisibility(View.GONE);
+                return;
+            case R.id.btn_filter_off:
+                rela_filter.setVisibility(View.GONE);
+                btn_filter_off.setVisibility(View.GONE);
+                btn_filter.setVisibility(View.VISIBLE);
+                return;
+        }
+    }
+
+    /**
+     * tìm kiếm theo thời gian
+     **/
+    DatePickerDialog.OnDateSetListener setListener;
+
+    // calendar
+    private void calendar(TextView txt) {
+        Calendar calendar = Calendar.getInstance();
+
+        final int year = calendar.get(Calendar.YEAR);
+        final int month = calendar.get(Calendar.MONTH);
+        final int days = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth
+                , setListener, year, month, days);
+        datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        datePickerDialog.show();
+
+        setListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int dayofmonth) {
+                month = month + 1;
+                String date = days + "-" + month + "-" + year;
+                txt.setText(date);
+            }
+        };
     }
 }

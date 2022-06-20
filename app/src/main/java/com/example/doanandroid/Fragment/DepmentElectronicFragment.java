@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,12 +53,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class DepmentElectronicFragment extends Fragment {
+public class DepmentElectronicFragment extends Fragment implements View.OnClickListener {
     public DepmentElectronicFragment() {
         // Required empty public constructor
     }
+    TextView txt_contetn;
+
     RecyclerView recyNews;
     RecyclerView recyNew;
     RecyclerView recy_search;
@@ -79,6 +83,7 @@ public class DepmentElectronicFragment extends Fragment {
         getDataFireBase();
         setHasOptionsMenu(true);
         Actionbar();
+        txt_contetn.setOnClickListener(this::onClick);
         return view;
     }
 
@@ -97,6 +102,9 @@ public class DepmentElectronicFragment extends Fragment {
 
     private void init() {
         viewFlipper = view.findViewById(R.id.viewflipper);
+        txt_contetn = view.findViewById(R.id.txt_content);
+        txt_contetn.setMaxLines(5);
+        txt_contetn.setEllipsize(TextUtils.TruncateAt.END);
 
         // tìm kiếm
         recy_search = view.findViewById(R.id.list_item);
@@ -172,6 +180,19 @@ public class DepmentElectronicFragment extends Fragment {
                 setText(view.findViewById(R.id.txt_phone),rs.getPhone());
                 setText(view.findViewById(R.id.txt_email),rs.getEmail());
                 setText(view.findViewById(R.id.txt_address),rs.getAddress());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        mDatabase.child("contents").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                HashMap<String, Object> hashMap = (HashMap<String, Object>) snapshot.getValue();
+                setText(txt_contetn,Html.fromHtml(hashMap.get("content").toString()).toString());
             }
 
             @Override
@@ -263,6 +284,24 @@ public class DepmentElectronicFragment extends Fragment {
             // nếu có sẽ add vào classAdapter
             adapterSearch_electronic.filterList(filteredlist);
             adapterSearch_electronic.notifyDataSetChanged();
+        }
+    }
+
+    boolean b = true;
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.txt_content:
+                if (b){
+                    txt_contetn.setEllipsize(null);
+                    txt_contetn.setMaxLines(txt_contetn.getText().toString().length());
+                    b = false;
+                }else {
+                    txt_contetn.setMaxLines(5);
+                    txt_contetn.setEllipsize(TextUtils.TruncateAt.END);
+                    b = true;
+                }
+                return;
         }
     }
 }

@@ -10,6 +10,7 @@ public class SharedPreferencessss {
     public static void save(Context context, String key, String value){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
         editor.putString(key, value);
         editor.apply();
     }

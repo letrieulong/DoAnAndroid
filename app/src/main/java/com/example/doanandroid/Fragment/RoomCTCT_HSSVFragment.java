@@ -25,6 +25,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
@@ -51,12 +52,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_noti.ClickItemPost {
+public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_noti.ClickItemPost, View.OnClickListener  {
 
     public RoomCTCT_HSSVFragment() {
         // Required empty public constructor
     }
 
+    public static TextView txt_view_more;
+    public static int count = -1;
     View view;
     ViewFlipper viewFlipper;
     RecyclerView recy_noti;
@@ -65,6 +68,7 @@ public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_
     List<New_Tranning> list_search = new ArrayList<>();
     AdapterCTCT_HSSV_noti adapterCTCT_hssv_noti;
     AdapterSearch_CTCT_HSSV adapterSearch_ctct_hssv;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,12 +79,14 @@ public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_
         getDataFireBase();
         setHasOptionsMenu(true);
         Actionbar();
+        txt_view_more.setOnClickListener(this::onClick);
         return view;
     }
+
     private void Actionbar() {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +99,7 @@ public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_
     private void init() {
         viewFlipper = view.findViewById(R.id.viewflipper);
         recy_noti = view.findViewById(R.id.recyNoti);
+        txt_view_more = view.findViewById(R.id.view_more);
 
         // tìm kiếm
         recy_search = view.findViewById(R.id.list_item);
@@ -105,6 +112,7 @@ public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_
         recy_noti.setAdapter(adapterCTCT_hssv_noti);
 
     }
+
     //Hỗ trợ đổi TEXT
     private void setText(final TextView text, final String value) {
         if (text != null) {
@@ -216,9 +224,10 @@ public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_
 
     /**
      * Tìm kiếm
-     * **/
+     **/
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.search, menu);
@@ -238,12 +247,13 @@ public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_
 
                     filter(newText);
                     recy_search.setVisibility(View.VISIBLE);
-                    if (newText.equals("")){
+                    if (newText.equals("")) {
                         recy_search.setVisibility(View.GONE);
                     }
                     adapterSearch_ctct_hssv.notifyDataSetChanged();
                     return true;
                 }
+
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     Log.i("onQueryTextSubmit", query);
@@ -272,6 +282,7 @@ public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_
         searchView.setOnQueryTextListener(queryTextListener);
         return super.onOptionsItemSelected(item);
     }
+
     // Tìm kiếm giá trị theo mssv
     private void filter(String text) {
         // tạo một danh sách mảng mới để lọc dữ liệu
@@ -299,5 +310,24 @@ public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_
         new_tranning.setRecruit(true);
         i.putExtra("recruit", new_tranning);
         startActivity(i);
+    }
+    public void onClick(View view) {
+        txt_view_more.setText("Xem thêm");
+        switch (view.getId()) {
+            case R.id.view_more:
+                if (txt_view_more.getText().toString().equals("Xem thêm")){
+                    if (list_noti.size() + count < list_noti.size()) {
+                        count++;
+                        adapterCTCT_hssv_noti.notifyDataSetChanged();
+                    }else {
+                        txt_view_more.setText("Thu nhỏ");
+                    }
+                }else {
+                    count = -1;
+                    txt_view_more.setText("Xem thêm");
+                }
+
+                return;
+        }
     }
 }

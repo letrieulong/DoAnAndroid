@@ -35,14 +35,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         String _email = email.getText().toString();
         String _matkhau= matkhau.getText().toString();
-        String mail = "0306181235@gmail.com";
-        String mk = "123456";
+        String mail = "0";
+        String mk = "1";
         String _ok= "";
         switch (v.getId()) {
             case R.id.btnDangnhap:
                 // Nếu đúng chuyển trang chử | sai sẽ thông báo
                     if(_email.equals(mail) && _matkhau.equals(mk)){
-                        Intent intent = new Intent(this, doi_avatar.class);
+                        Intent intent = new Intent(this, trang_chu.class);
 //                        Bundle bundle= new Bundle();
 //                        bundle.putString("Email",_ok);
 //                        intent.putExtra("Email_intent",bundle);

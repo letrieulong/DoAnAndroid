@@ -24,6 +24,9 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".InfoActivity"
+            android:exported="false" />
+        <activity
             android:name=".cai_dat"
             android:exported="false" />
         <activity

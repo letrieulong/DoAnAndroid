@@ -31,6 +31,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         this.context = context;
         this.mobileCollection = mobileCollection;
         this.groupList = groupList;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -81,7 +82,10 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         TextView item = view.findViewById(R.id.mobile);
         ImageView img = view.findViewById(R.id.img_view);
         RelativeLayout check = view.findViewById(R.id.relate_check);
-        if (mobileName.equals("CÀI ĐẶT") || mobileName.equals("THOÁT") || mobileName.equals("TRANG CHỦ")) {
+        if (mobileName.equals("CÀI ĐẶT") || mobileName.equals("THOÁT")
+                || mobileName.equals("TRANG CHỦ") || mobileName.equals("ĐĂNG NHẬP")
+                || mobileName.equals("HỌC BỔNG - VAY VỐN")
+                || mobileName.equals("HỌC PHÍ")) {
             img.setVisibility(View.GONE);
         } else {
             img.setVisibility(View.VISIBLE);
@@ -89,6 +93,12 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         if (mobileName.equals("TRANG CHỦ")) {
             ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_Layout, new HomeFragment()).addToBackStack(null).commit();
         }
+//        if (mobileName.equals("ĐĂNG NHẬP")) {
+//            view.getContext().startActivity(new Intent(context, LoginActivity.class));
+//        }
+//        if (mobileName.equals("THOÁT")){
+//            view.getContext().startActivity(new Intent(context, MainActivity.class));
+//        }
         item.setTypeface(null, Typeface.BOLD);
         item.setText(mobileName);
         return view;
