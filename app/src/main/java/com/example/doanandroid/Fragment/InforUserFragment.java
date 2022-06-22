@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.example.doanandroid.LoginActivity;
+import com.example.doanandroid.Object.LoginActivity;
 import com.example.doanandroid.R;
 
 public class InforUserFragment extends Fragment implements View.OnClickListener {

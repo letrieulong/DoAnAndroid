@@ -1,4 +1,4 @@
-package com.example.doanandroid;
+package com.example.doanandroid.Object;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +23,7 @@ import android.widget.Toast;
 import com.example.doanandroid.Adapter.AdapterComment;
 import com.example.doanandroid.Model.Comment;
 import com.example.doanandroid.Model.New_Tranning;
-import com.example.doanandroid.Model.Recruit_CNTT;
+import com.example.doanandroid.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,7 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class DetailPostRoomTraining extends AppCompatActivity {
+public class Doan_HoiActivity extends AppCompatActivity {
     private TextView tvTitle, tvContent, tvLike, tvCreate, tvView;
     private New_Tranning new_tranning;
     private String postID;
@@ -51,28 +51,25 @@ public class DetailPostRoomTraining extends AppCompatActivity {
     private ArrayList<Comment> comments = new ArrayList<>();
     private AdapterComment adapterComment;
     private String tylePost;
-    private final String RootType = "list_training";
-
+    private final String RootType = "list_group";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_room_training);
-
+        setContentView(R.layout.activity_doan_hoi);
         new_tranning = (New_Tranning) getIntent().getSerializableExtra("recruit");
 
-        if (new_tranning.isRecruit())
+        if (new_tranning.getTypePost() == 0)
         {
-            tylePost = "list_new";
+            tylePost = "list_group_youth";
+        }else if (new_tranning.getTypePost() == 1){
+            tylePost = "list_new_update";
         }else{
-            tylePost = "list_all_content";
-
+            tylePost = "list_group_student";
         }
         setUpViews();
         getdata();
         initEvents();
-
     }
-
     public void hindeInputKey(){
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -242,15 +239,15 @@ public class DetailPostRoomTraining extends AppCompatActivity {
     }
 
     private void setUpViews() {
-        tvTitle = findViewById(R.id.detail_post_training_title);
-        tvContent = findViewById(R.id.detail_post_training_view);
-        tvView = findViewById(R.id.detail_post_training);
-        tvLike = findViewById(R.id.detail_post_training_like);
-        tvCreate = findViewById(R.id.detail_post_training_date_create);
-        floatingActionButton = findViewById(R.id.fab_detail_post_training);
-        recyclerView = findViewById(R.id.rcv_detail_post_training);
-        edtComment = findViewById(R.id.edt_detail_post_training_messeger);
-        imgSent = findViewById(R.id.img_sent_training);
+        tvTitle = findViewById(R.id.detail_post_doanhoi_title);
+        tvContent = findViewById(R.id.detail_post_doanhoi_view);
+        tvView = findViewById(R.id.detail_post_doanhoi);
+        tvLike = findViewById(R.id.detail_post_doanhoi_like);
+        tvCreate = findViewById(R.id.detail_post_doanhoi_date_create);
+        floatingActionButton = findViewById(R.id.fab_detail_post_doanhoi);
+        recyclerView = findViewById(R.id.rcv_detail_post_doanhoi);
+        edtComment = findViewById(R.id.edt_detail_post_doanhoi_messeger);
+        imgSent = findViewById(R.id.img_sent_doanhoi);
         //recyclerView = new AdapterComment(recruit_cnttList);
         adapterComment = new AdapterComment(comments);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

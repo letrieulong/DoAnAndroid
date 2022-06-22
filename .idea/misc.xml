@@ -43,49 +43,6 @@
         <entry key="..\:/Users/ADMIN/AndroidStudioProjects/DoAnAndroid/app/src/main/res/layout/item_search.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/ADMIN/AndroidStudioProjects/DoAnAndroid/app/src/main/res/menu/menu.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/ADMIN/AndroidStudioProjects/DoAnAndroid/app/src/main/res/menu/search.xml" value="0.17552083333333332" />
-<<<<<<< HEAD
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/drawable/back.xml" value="0.1465" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/drawable/custom_infor.xml" value="0.1465" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/drawable/custom_login.xml" value="0.1465" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1465" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/drawable/rounded_corners.xml" value="0.1465" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/drawable/search.xml" value="0.1465" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/drawable/time.xml" value="0.1465" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_cai_dat.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_ctct_hssvactivity.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_dang_ky_tai_khoan.xml" value="0.22916666666666666" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_department_cntt.xml" value="0.22916666666666666" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_detail_post.xml" value="0.25" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_doi_avatar.xml" value="0.12360688956433637" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_doi_mat_khau.xml" value="0.22916666666666666" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_login.xml" value="0.22916666666666666" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_room_training.xml" value="0.14344262295081966" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_search.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_show_screen.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_trang_chu.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/child_item.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/fragment_c_l_b__electronic.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/fragment_c_l_b__i_t_.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/fragment_department_c_n_t_t.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/fragment_department_economy.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/fragment_department_mechanical.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/fragment_group_student.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/fragment_group_youth.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/fragment_home.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/fragment_infor_user.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/fragment_room_admini_strative.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/fragment_room_c_t_c_t__h_s_s_v.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/fragment_room_training.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/group_item.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/item_comment.xml" value="0.253125" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/item_mechanical.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/item_new.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/item_recruit.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/item_search.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/menu/menu.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/menu/search.xml" value="0.25416666666666665" />
-=======
         <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/drawable/bg.xml" value="0.132" />
         <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/drawable/date.xml" value="0.132" />
         <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/drawable/edt_view.xml" value="0.132" />
@@ -106,15 +63,22 @@
         <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/layout/progresbar_dialog.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/ADMIN/Desktop/DoAnAndroid/DoAnAndroid/app/src/main/res/menu/search.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/ADMIN/Desktop/Doan/app/src/main/res/layout/activity_dang_ky_tai_khoan.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/ADMIN/Desktop/Doan/app/src/main/res/layout/activity_tkbactivity.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/ADMIN/Desktop/Doan/app/src/main/res/layout/fragment_department_c_n_t_t.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/ADMIN/Desktop/Doan/app/src/main/res/layout/fragment_room_admini_strative.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/ADMIN/Desktop/Doan/app/src/main/res/layout/fragment_room_c_t_c_t__h_s_s_v.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/ADMIN/Desktop/Doan/app/src/main/res/layout/fragment_room_training.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/ADMIN/Desktop/Doan/app/src/main/res/layout/fragment_scholarship.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/ADMIN/Desktop/Doan/app/src/main/res/layout/fragment_scholarship__loans.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/ADMIN/Desktop/Doan/app/src/main/res/layout/fragment_tuition.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/ADMIN/Desktop/Doan/app/src/main/res/layout/item_btn.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/ADMIN/Desktop/Doan/app/src/main/res/layout/item_search.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/ADMIN/Desktop/Doan/app/src/main/res/layout/item_tuition.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_dang_ky_tai_khoan.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_department_cntt.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_doi_mat_khau.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_login.xml" value="0.22916666666666666" />
         <entry key="..\:/Users/HP/Project/DoAnAndroid/app/src/main/res/layout/activity_main.xml" value="0.1" />
->>>>>>> de620de6658ab32cdced482ee0fcc4dbd5eec307
       </map>
     </option>
   </component>

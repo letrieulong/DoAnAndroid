@@ -23,26 +23,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
 import com.example.doanandroid.Adapter.AdapterNew_Trainning;
-import com.example.doanandroid.Adapter.AdapterRecruit_CNTT;
-import com.example.doanandroid.Adapter.AdapterSearch_CTCT_HSSV;
 import com.example.doanandroid.Adapter.AdapterSearch_Trainning;
-import com.example.doanandroid.DetailPostActivity;
-import com.example.doanandroid.DetailPostRoomTraining;
-import com.example.doanandroid.MainActivity;
+import com.example.doanandroid.Object.DetailPostRoomTraining;
+import com.example.doanandroid.Object.MainActivity;
 import com.example.doanandroid.Model.ContactMechanical;
 import com.example.doanandroid.Model.ContentLink;
 import com.example.doanandroid.Model.Mechanical;
 import com.example.doanandroid.Model.New_Tranning;
-import com.example.doanandroid.Model.Recruit_CNTT;
+import com.example.doanandroid.Object.TKBActivity;
 import com.example.doanandroid.R;
-import com.example.doanandroid.Util.SharedPreferencessss;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,12 +49,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class RoomTrainingFragment extends Fragment  implements AdapterNew_Trainning.ClickItemPost {
+public class RoomTrainingFragment extends Fragment implements AdapterNew_Trainning.ClickItemPost, View.OnClickListener {
 
     public RoomTrainingFragment() {
         // Required empty public constructor
     }
 
+    Button btn_tkb, btn_cla_Exam, btn_cla_train;
     ViewFlipper viewFlipper;
     RecyclerView recyNew;
     RecyclerView recy_search;
@@ -80,12 +77,16 @@ public class RoomTrainingFragment extends Fragment  implements AdapterNew_Trainn
         getDataFireBase();
         setHasOptionsMenu(true);
         Actionbar();
+        view.findViewById(R.id.btn_tkb).setOnClickListener(this::onClick);
+        view.findViewById(R.id.btn_calen).setOnClickListener(this::onClick);
+        view.findViewById(R.id.btn_calenTrain).setOnClickListener(this::onClick);
         return view;
     }
+
     private void Actionbar() {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +123,7 @@ public class RoomTrainingFragment extends Fragment  implements AdapterNew_Trainn
                 //mỗi phần tử có key là name được định nghĩa trong cấu trúc Json của Firebase
 //                String id = hashMap.get("id").toString();
                 new_tranningList.clear();
-                for (DataSnapshot snap : snapshot.getChildren()){
+                for (DataSnapshot snap : snapshot.getChildren()) {
                     New_Tranning n = snap.getValue(New_Tranning.class);
                     new_tranningList.add(n);
                     list_search.add(n);
@@ -201,11 +202,13 @@ public class RoomTrainingFragment extends Fragment  implements AdapterNew_Trainn
         viewFlipper.setInAnimation(animation_slide_in);
         viewFlipper.setOutAnimation(animation_slide_out);
     }
+
     /**
      * Tìm kiếm
-     * **/
+     **/
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.search, menu);
@@ -226,12 +229,13 @@ public class RoomTrainingFragment extends Fragment  implements AdapterNew_Trainn
 
                     filter(newText);
                     recy_search.setVisibility(View.VISIBLE);
-                    if (newText.equals("")){
+                    if (newText.equals("")) {
                         recy_search.setVisibility(View.GONE);
                     }
                     adapterSearch_trainning.notifyDataSetChanged();
                     return true;
                 }
+
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     Log.i("onQueryTextSubmit", query);
@@ -289,5 +293,26 @@ public class RoomTrainingFragment extends Fragment  implements AdapterNew_Trainn
         new_tranning.setRecruit(true);
         i.putExtra("recruit", new_tranning);
         startActivity(i);
+    }
+
+    public static String str;
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_tkb:
+                str = "THỜI KHÓA BIỂU";
+                startActivity(new Intent(getActivity(), TKBActivity.class));
+                return;
+            case R.id.btn_calen:
+                str = "LỊCH THI";
+                startActivity(new Intent(getActivity(), TKBActivity.class));
+                return;
+            case R.id.btn_calenTrain:
+                str = "LỊCH ĐÀO TẠO";
+                startActivity(new Intent(getActivity(), TKBActivity.class));
+                return;
+
+        }
     }
 }

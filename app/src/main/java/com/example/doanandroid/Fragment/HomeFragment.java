@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.doanandroid.MainActivity;
+import com.example.doanandroid.Object.MainActivity;
 import com.example.doanandroid.R;
 
 public class HomeFragment extends Fragment {

@@ -1,4 +1,4 @@
-package com.example.doanandroid;
+package com.example.doanandroid.Object;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,36 +8,33 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.doanandroid.Fragment.CLB_ElectronicFragment;
 import com.example.doanandroid.Fragment.CLB_IT_Fragment;
-import com.example.doanandroid.Fragment.CLB_MusicFragment;
 import com.example.doanandroid.Fragment.DepartmentCNTTFragment;
-import com.example.doanandroid.Fragment.DepartmentEconomyFragment;
 import com.example.doanandroid.Fragment.DepartmentMechanicalFragment;
 import com.example.doanandroid.Fragment.DepmentElectronicFragment;
-import com.example.doanandroid.Fragment.GroupStudentFragment;
 import com.example.doanandroid.Fragment.GroupYouthFragment;
 import com.example.doanandroid.Fragment.HomeFragment;
 import com.example.doanandroid.Fragment.RoomAdminiStrativeFragment;
 import com.example.doanandroid.Fragment.RoomCTCT_HSSVFragment;
 import com.example.doanandroid.Fragment.RoomTrainingFragment;
+import com.example.doanandroid.Fragment.ScholarshipFragment;
+import com.example.doanandroid.Fragment.TuitionFragment;
+import com.example.doanandroid.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int lastExpandedPosition = -1;
 
+            @SuppressLint("WrongConstant")
             @Override
             public void onGroupExpand(int i) {
                 if (lastExpandedPosition != -1 && i != lastExpandedPosition) {
@@ -97,10 +95,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 }
                 if (expandableListAdapter.getGroup(i).equals("HỌC BỔNG - VAY VỐN")){
-                    String url = "https://ctct.caothang.edu.vn/upload//files/So_Tay_SV_2021/Hoc%20bong%20khuyen%20khich%20hoc%20tap%202021.pdf";
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(url));
-                    startActivity(intent);
+                    bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
+                    loadFragment(new ScholarshipFragment());
+                    relate_toolbar.setVisibility(View.GONE);
+                    drawerLayout.close();
+                }
+                if (expandableListAdapter.getGroup(i).equals("HỌC PHÍ")){
+                    bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
+                    loadFragment(new TuitionFragment());
+                    relate_toolbar.setVisibility(View.GONE);
+                    drawerLayout.close();
                 }
             }
         });

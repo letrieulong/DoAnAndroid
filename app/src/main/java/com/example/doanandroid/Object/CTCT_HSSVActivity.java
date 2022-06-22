@@ -1,4 +1,4 @@
-package com.example.doanandroid;
+package com.example.doanandroid.Object;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.doanandroid.Adapter.AdapterComment;
 import com.example.doanandroid.Model.Comment;
 import com.example.doanandroid.Model.New_Tranning;
+import com.example.doanandroid.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,7 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Doan_HoiActivity extends AppCompatActivity {
+public class CTCT_HSSVActivity extends AppCompatActivity {
     private TextView tvTitle, tvContent, tvLike, tvCreate, tvView;
     private New_Tranning new_tranning;
     private String postID;
@@ -50,25 +51,25 @@ public class Doan_HoiActivity extends AppCompatActivity {
     private ArrayList<Comment> comments = new ArrayList<>();
     private AdapterComment adapterComment;
     private String tylePost;
-    private final String RootType = "list_group";
+    private final String RootType = "list_ctct_hssv";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_doan_hoi);
+        setContentView(R.layout.activity_ctct_hssvactivity);
         new_tranning = (New_Tranning) getIntent().getSerializableExtra("recruit");
 
-        if (new_tranning.getTypePost() == 0)
+        if (new_tranning.isRecruit())
         {
-            tylePost = "list_group_youth";
-        }else if (new_tranning.getTypePost() == 1){
-            tylePost = "list_new_update";
+            tylePost = "list_newnoti";
         }else{
-            tylePost = "list_group_student";
+            tylePost = "list_all_content";
+
         }
         setUpViews();
         getdata();
         initEvents();
     }
+
     public void hindeInputKey(){
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -118,7 +119,6 @@ public class Doan_HoiActivity extends AppCompatActivity {
         });
 
     }
-
     private void getComments(){
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("list_comment");
         mDatabase.child(postID).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -238,15 +238,15 @@ public class Doan_HoiActivity extends AppCompatActivity {
     }
 
     private void setUpViews() {
-        tvTitle = findViewById(R.id.detail_post_doanhoi_title);
-        tvContent = findViewById(R.id.detail_post_doanhoi_view);
-        tvView = findViewById(R.id.detail_post_doanhoi);
-        tvLike = findViewById(R.id.detail_post_doanhoi_like);
-        tvCreate = findViewById(R.id.detail_post_doanhoi_date_create);
-        floatingActionButton = findViewById(R.id.fab_detail_post_doanhoi);
-        recyclerView = findViewById(R.id.rcv_detail_post_doanhoi);
-        edtComment = findViewById(R.id.edt_detail_post_doanhoi_messeger);
-        imgSent = findViewById(R.id.img_sent_doanhoi);
+        tvTitle = findViewById(R.id.detail_post_CTCT_title);
+        tvContent = findViewById(R.id.detail_post_CTCT_view);
+        tvView = findViewById(R.id.detail_post_CTCT);
+        tvLike = findViewById(R.id.detail_post_CTCT_like);
+        tvCreate = findViewById(R.id.detail_post_CTCT_date_create);
+        floatingActionButton = findViewById(R.id.fab_detail_post_CTCT);
+        recyclerView = findViewById(R.id.rcv_detail_post_CTCT);
+        edtComment = findViewById(R.id.edt_detail_post_CTCT_messeger);
+        imgSent = findViewById(R.id.img_sent_CTCT);
         //recyclerView = new AdapterComment(recruit_cnttList);
         adapterComment = new AdapterComment(comments);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

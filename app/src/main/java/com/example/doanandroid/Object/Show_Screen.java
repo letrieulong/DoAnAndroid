@@ -1,4 +1,4 @@
-package com.example.doanandroid;
+package com.example.doanandroid.Object;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,18 +6,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.doanandroid.R;
+
 public class Show_Screen extends AppCompatActivity {
     CountDownTimer countDownTimer;
     TextView txt_welcom;
     ImageView img_view;
-    private final int SPLASH_DISPLAY_LENGTH = 3000;
+    private final int SPLASH_DISPLAY_LENGTH = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

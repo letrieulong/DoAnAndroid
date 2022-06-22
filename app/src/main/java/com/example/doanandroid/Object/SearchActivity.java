@@ -1,7 +1,5 @@
-package com.example.doanandroid;
+package com.example.doanandroid.Object;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,39 +11,25 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.Html;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.doanandroid.Adapter.AdapterRecruit_CNTT;
-import com.example.doanandroid.Adapter.AdapterSearch;
 import com.example.doanandroid.Model.ContentLink;
 import com.example.doanandroid.Model.DemoModel;
-import com.example.doanandroid.Model.Infor_All_CNTT;
 import com.example.doanandroid.Model.Mechanical;
 import com.example.doanandroid.Model.Recruit_CNTT;
-import com.example.doanandroid.Util.SharedPreferencessss;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.example.doanandroid.Model.Tuition;
+import com.example.doanandroid.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
@@ -180,7 +164,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 return;
             case R.id.txt_date_start:
 //                calendar(txt_start_date);
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("list_clb");
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("list_training");
 
                 UUID uuid = UUID.randomUUID();
                 String id = uuid.toString();
@@ -196,9 +180,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 ContentLink ct = new ContentLink(id_ct, link, "");
 
                 Mechanical rs = new Mechanical(id, title,"", date, views, size, content_link);
-
+                Tuition t = new Tuition("","","","");
                 userId = mDatabase.push().getKey();
-                mDatabase.child("list_clb_new/" + userId).setValue(rs);
+                mDatabase.child("list_claexam/"+userId).setValue(t);
                 return;
             case R.id.edt_search_1:
 //                Search(edt_search);

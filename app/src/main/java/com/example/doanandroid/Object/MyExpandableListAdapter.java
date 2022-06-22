@@ -1,4 +1,4 @@
-package com.example.doanandroid;
+package com.example.doanandroid.Object;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.doanandroid.Fragment.HomeFragment;
+import com.example.doanandroid.R;
 
 import java.util.List;
 import java.util.Map;

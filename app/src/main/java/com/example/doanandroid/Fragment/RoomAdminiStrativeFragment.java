@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,25 +24,19 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
-import com.example.doanandroid.Adapter.AdapterNew_Trainning;
+import com.example.doanandroid.Adapter.AdapterNew_Admin;
 import com.example.doanandroid.Adapter.AdapterPolicy_Admin;
 import com.example.doanandroid.Adapter.AdapterRecruit_Admin;
 import com.example.doanandroid.Adapter.AdapterSearch_AdmininS;
-import com.example.doanandroid.Adapter.AdapterSearch_CNTT;
-import com.example.doanandroid.MainActivity;
+import com.example.doanandroid.Object.MainActivity;
 import com.example.doanandroid.Model.ContactMechanical;
-import com.example.doanandroid.Model.ContentLink;
-import com.example.doanandroid.Model.Infor_All_CNTT;
-import com.example.doanandroid.Model.Mechanical;
+import com.example.doanandroid.Model.New_Tranning;
 import com.example.doanandroid.Model.Policy;
 import com.example.doanandroid.Model.Recruit_Admin;
-import com.example.doanandroid.Model.Recruit_CNTT;
 import com.example.doanandroid.R;
-import com.example.doanandroid.Util.SharedPreferencessss;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,26 +44,30 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
-public class RoomAdminiStrativeFragment extends Fragment {
+public class RoomAdminiStrativeFragment extends Fragment implements View.OnClickListener {
 
     public RoomAdminiStrativeFragment() {
         // Required empty public constructor
     }
+
     View view;
     ViewFlipper viewFlipper;
     RecyclerView recy_search;
     AdapterRecruit_Admin adapterRecruit_admin;
     AdapterPolicy_Admin adapterPolicy_admin;
     AdapterSearch_AdmininS adapterSearch_admininS;
+    AdapterNew_Admin adapterNew_admin;
+    List<New_Tranning> new_List = new ArrayList<>();
     List<Recruit_Admin> recruit_adminList = new ArrayList<>();
     List<Policy> policyList = new ArrayList<>();
     List<Recruit_Admin> list_search = new ArrayList<>();
     RecyclerView recy_recuirt;
     RecyclerView recy_policy;
+    RecyclerView recy_new;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -81,12 +78,15 @@ public class RoomAdminiStrativeFragment extends Fragment {
         getDataFireBase();
         setHasOptionsMenu(true);
         Actionbar();
+        view.findViewById(R.id.view_more).setOnClickListener(this);
+        view.findViewById(R.id.view_more_recruit).setOnClickListener(this);
         return view;
     }
+
     private void Actionbar() {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,8 +116,15 @@ public class RoomAdminiStrativeFragment extends Fragment {
         recy_policy.setLayoutManager(new LinearLayoutManager(getContext()));
         recy_policy.setAdapter(adapterPolicy_admin);
 
+        // mới
+        recy_new = view.findViewById(R.id.recyNew);
+        adapterNew_admin = new AdapterNew_Admin(getContext(), new_List);
+        recy_new.setLayoutManager(new LinearLayoutManager(getContext()));
+        recy_new.setAdapter(adapterNew_admin);
+
 
     }
+
     //Hỗ trợ đổi TEXT
     private void setText(final TextView text, final String value) {
         if (text != null) {
@@ -233,9 +240,10 @@ public class RoomAdminiStrativeFragment extends Fragment {
 
     /**
      * Tìm kiếm
-     * **/
+     **/
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.search, menu);
@@ -255,12 +263,13 @@ public class RoomAdminiStrativeFragment extends Fragment {
 
                     filter(newText);
                     recy_search.setVisibility(View.VISIBLE);
-                    if (newText.equals("")){
+                    if (newText.equals("")) {
                         recy_search.setVisibility(View.GONE);
                     }
                     adapterSearch_admininS.notifyDataSetChanged();
                     return true;
                 }
+
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     Log.i("onQueryTextSubmit", query);
@@ -289,6 +298,7 @@ public class RoomAdminiStrativeFragment extends Fragment {
         searchView.setOnQueryTextListener(queryTextListener);
         return super.onOptionsItemSelected(item);
     }
+
     // Tìm kiếm giá trị theo mssv
     private void filter(String text) {
         // tạo một danh sách mảng mới để lọc dữ liệu
@@ -307,6 +317,50 @@ public class RoomAdminiStrativeFragment extends Fragment {
             // nếu có sẽ add vào classAdapter
             adapterSearch_admininS.filterList(filteredlist);
             adapterSearch_admininS.notifyDataSetChanged();
+        }
+    }
+
+    TextView txt_view_more;
+    TextView txt_view_more1;
+    public static int count = -2;
+    public static int count_recruit = -2;
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.view_more:
+                txt_view_more = view.findViewById(R.id.view_more);
+                if (txt_view_more.getText().toString().equals("Xem thêm")) {
+                    if (policyList.size() + count < policyList.size()) {
+                        count++;
+                        adapterPolicy_admin.notifyDataSetChanged();
+                        if (policyList.size() + count == policyList.size()) {
+                            txt_view_more.setText("Thu nhỏ");
+                        }
+                    }
+                } else {
+                    count = -2;
+                    txt_view_more.setText("Xem thêm");
+                    adapterPolicy_admin.notifyDataSetChanged();
+                }
+                return;
+
+            case R.id.view_more_recruit:
+                txt_view_more1 = view.findViewById(R.id.view_more_recruit);
+                if (txt_view_more1.getText().toString().equals("Xem thêm")) {
+                    if (recruit_adminList.size() + count_recruit < recruit_adminList.size()) {
+                        count_recruit++;
+                        adapterRecruit_admin.notifyDataSetChanged();
+                        if (recruit_adminList.size() + count_recruit == recruit_adminList.size()) {
+                            txt_view_more1.setText("Thu nhỏ");
+                        }
+                    }
+                } else {
+                    count_recruit = -2;
+                    txt_view_more1.setText("Xem thêm");
+                    adapterRecruit_admin.notifyDataSetChanged();
+                }
+                return;
         }
     }
 }

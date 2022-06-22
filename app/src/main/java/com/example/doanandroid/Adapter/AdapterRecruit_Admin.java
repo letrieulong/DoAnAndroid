@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.doanandroid.Fragment.RoomAdminiStrativeFragment;
 import com.example.doanandroid.Model.Recruit_Admin;
 import com.example.doanandroid.Model.Recruit_CNTT;
 import com.example.doanandroid.R;
@@ -48,7 +49,7 @@ public class AdapterRecruit_Admin extends RecyclerView.Adapter<AdapterRecruit_Ad
 
     @Override
     public int getItemCount() {
-        return recruit_admins.size();
+        return recruit_admins.size() + RoomAdminiStrativeFragment.count_recruit;
     }
 
     public class ViewHodel extends RecyclerView.ViewHolder {

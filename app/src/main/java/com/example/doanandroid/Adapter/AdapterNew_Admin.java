@@ -11,50 +11,45 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.example.doanandroid.Fragment.RoomAdminiStrativeFragment;
-import com.example.doanandroid.Model.Policy;
-import com.example.doanandroid.Model.Recruit_Admin;
+import com.example.doanandroid.Model.New_Tranning;
 import com.example.doanandroid.R;
 
 import java.util.List;
 
-public class AdapterPolicy_Admin extends RecyclerView.Adapter<AdapterPolicy_Admin.ViewHodel> {
+public class AdapterNew_Admin extends RecyclerView.Adapter<AdapterNew_Admin.ViewHodel> {
     Context context;
-    List<Policy> recruit_admins;
+    List<New_Tranning> mechanicalList;
 
-    public AdapterPolicy_Admin(Context context, List<Policy> recruit_admins) {
+    public AdapterNew_Admin(Context context, List<New_Tranning> mechanicalList) {
         this.context = context;
-        this.recruit_admins = recruit_admins;
+        this.mechanicalList = mechanicalList;
+
     }
 
     @NonNull
     @Override
     public ViewHodel onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_recruit, parent, false);
+        View view = inflater.inflate(R.layout.item_mechanical, parent, false);
         return new ViewHodel(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHodel holder, int i) {
-        holder.txt_date.setText("Ngày : " + recruit_admins.get(i).getDate());
-        holder.txt_title.setText(recruit_admins.get(i).getTitle());
-        holder.txt_title.setMaxLines(2);
+        holder.txt_date.setText("Ngày : " + mechanicalList.get(i).getDate());
         holder.txt_title.setEllipsize(TextUtils.TruncateAt.END);
-        Glide.with(context)
-                .load(recruit_admins.get(i).getImage())
-                .into(holder.img);
+        holder.txt_title.setMaxLines(2);
+        holder.txt_title.setText(mechanicalList.get(i).getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return recruit_admins.size() + RoomAdminiStrativeFragment.count;
+        return mechanicalList.size();
     }
 
     public class ViewHodel extends RecyclerView.ViewHolder {
         ImageView img;
-        TextView txt_title, txt_date;
+        TextView txt_title, txt_date, txt_view;
         View v;
         public ViewHodel(@NonNull View view) {
             super(view);
@@ -62,12 +57,13 @@ public class AdapterPolicy_Admin extends RecyclerView.Adapter<AdapterPolicy_Admi
 
             txt_title = view.findViewById(R.id.txt_title);
             txt_date  = view.findViewById(R.id.txt_date);
+            txt_view  = view.findViewById(R.id.txt_view);
             v = view;
         }
     }
     // Lọc Các Từ Khóa Gần Giống Khi search
-//    public void filterList(ArrayList<Recruit_CNTT> filterllist) {
-//        recruit_cnttList = filterllist;
+//    public void filterList(ArrayList<Mechanical> filterllist) {
+//        mechanicalList = filterllist;
 //        notifyDataSetChanged();
 //    }
 }

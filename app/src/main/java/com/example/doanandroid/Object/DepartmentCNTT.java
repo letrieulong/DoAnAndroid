@@ -1,4 +1,4 @@
-package com.example.doanandroid;
+package com.example.doanandroid.Object;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -6,6 +6,8 @@ import androidx.core.view.GravityCompat;
 
 import android.os.Bundle;
 import android.view.View;
+
+import com.example.doanandroid.R;
 
 public class DepartmentCNTT extends AppCompatActivity {
     Toolbar toolbar;

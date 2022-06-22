@@ -25,23 +25,15 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
 import com.example.doanandroid.Adapter.AdapterCTCT_HSSV_noti;
-import com.example.doanandroid.Adapter.AdapterNew_Trainning;
-import com.example.doanandroid.Adapter.AdapterPolicy_Admin;
-import com.example.doanandroid.Adapter.AdapterRecruit_Admin;
-import com.example.doanandroid.Adapter.AdapterSearch_AdmininS;
 import com.example.doanandroid.Adapter.AdapterSearch_CTCT_HSSV;
-import com.example.doanandroid.CTCT_HSSVActivity;
-import com.example.doanandroid.DetailPostRoomTraining;
-import com.example.doanandroid.MainActivity;
+import com.example.doanandroid.Object.CTCT_HSSVActivity;
+import com.example.doanandroid.Object.MainActivity;
 import com.example.doanandroid.Model.ContactMechanical;
 import com.example.doanandroid.Model.New_Tranning;
-import com.example.doanandroid.Model.Policy;
-import com.example.doanandroid.Model.Recruit_Admin;
 import com.example.doanandroid.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -312,19 +304,20 @@ public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_
         startActivity(i);
     }
     public void onClick(View view) {
-        txt_view_more.setText("Xem thêm");
         switch (view.getId()) {
             case R.id.view_more:
-                if (txt_view_more.getText().toString().equals("Xem thêm")){
+                if (txt_view_more.getText().toString().equals("Xem thêm")) {
                     if (list_noti.size() + count < list_noti.size()) {
                         count++;
                         adapterCTCT_hssv_noti.notifyDataSetChanged();
-                    }else {
-                        txt_view_more.setText("Thu nhỏ");
+                        if (list_noti.size() + count == list_noti.size()) {
+                            txt_view_more.setText("Thu nhỏ");
+                        }
                     }
-                }else {
+                } else {
                     count = -1;
                     txt_view_more.setText("Xem thêm");
+                    adapterCTCT_hssv_noti.notifyDataSetChanged();
                 }
 
                 return;

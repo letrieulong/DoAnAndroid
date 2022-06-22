@@ -6,12 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,33 +24,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
 import com.example.doanandroid.Adapter.AdapterRecruit_CNTT;
 import com.example.doanandroid.Adapter.AdapterView_CNTT;
-import com.example.doanandroid.DetailPostActivity;
-import com.example.doanandroid.MainActivity;
+import com.example.doanandroid.Object.DetailPostActivity;
+import com.example.doanandroid.Object.MainActivity;
 import com.example.doanandroid.Model.CNTT_infor;
 import com.example.doanandroid.Model.Infor_All_CNTT;
-import com.example.doanandroid.Model.Mechanical;
 import com.example.doanandroid.Model.Recruit_CNTT;
 import com.example.doanandroid.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
