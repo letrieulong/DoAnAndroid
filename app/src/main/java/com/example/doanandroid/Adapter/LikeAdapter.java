@@ -3,7 +3,6 @@ package com.example.doanandroid.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,9 +13,9 @@ import com.example.doanandroid.R;
 
 import java.util.List;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder>{
+public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.UserViewHolder>{
 
-    public UserAdapter(List<post_care> mListUser) {
+    public LikeAdapter(List<post_care> mListUser) {
         this.mListUser = mListUser;
 
     }
@@ -25,9 +24,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     @NonNull
     @Override
-    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public LikeAdapter.UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post_care,parent,false);
-        return new UserViewHolder(view);
+        return new LikeAdapter.UserViewHolder(view);
     }
 
     @Override
@@ -42,6 +41,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.title.setText(Post_care.getTitle());
         holder.date.setText("Ngày : "+Post_care.getDate());
     }
+
 
     @Override
     public int getItemCount() {

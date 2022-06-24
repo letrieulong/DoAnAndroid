@@ -4,15 +4,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanandroid.Adapter.QuanTamAdapter;
 import com.example.doanandroid.Adapter.UserAdapter;
 import com.example.doanandroid.Model.post_care;
 import com.example.doanandroid.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,15 +74,26 @@ public class Bai_quan_tam_nhieu_Fragment extends Fragment {
 
     private RecyclerView rcvUser;
     private View mView;
-    private UserAdapter mUserAdapter;
-    private List<post_care> mListUser;
+    private List<post_care> mListUser = new ArrayList<>();;
+    private QuanTamAdapter userAdapter;
+    private TextView txt_view_more;
+    public static int count = -1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_bai_quan_tam_nhieu_, container, false);
+        initUi();
+        getListPost();
 
+        return mView;
+    }
+
+    private void initUi(){
         rcvUser = mView.findViewById(R.id.rcv_user);
+
+        txt_view_more= mView.findViewById(R.id.view_more);
+
 
         LinearLayoutManager linearLayoutManager= new LinearLayoutManager(getActivity());
         rcvUser.setLayoutManager(linearLayoutManager);
@@ -82,42 +101,50 @@ public class Bai_quan_tam_nhieu_Fragment extends Fragment {
         RecyclerView.ItemDecoration itemDecoration= new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
         rcvUser.addItemDecoration(itemDecoration);
 
-//        mListUser=new ArrayList<>();
-        mUserAdapter = new UserAdapter();
-        mUserAdapter.setData(getListUser());
-
-        rcvUser.setAdapter(mUserAdapter);
-        return mView;
+        userAdapter = new QuanTamAdapter(mListUser);
+        rcvUser.setAdapter(userAdapter);
     }
 
-    private void getListUser_data(){
+    private void getListPost() {
 
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef=database.getReference("list_group");
+        myRef.child("list_group_student").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<String> list = new ArrayList<>();
+                //cla_modelList.clear();
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    post_care n = snap.getValue(post_care.class);
+                    mListUser.add(n);
+                }
+                userAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
-    private List<post_care> getListUser() {
+    private void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.view_more:
+                if (txt_view_more.getText().toString().equals("Xem thêm")) {
+                    if (mListUser.size() + count < mListUser.size()) {
+                        count++;
+                        userAdapter.notifyDataSetChanged();
+                        if (mListUser.size() + count == mListUser.size()) {
+                            txt_view_more.setText("Thu nhỏ");
+                        }
+                    }
+                } else {
+                    count = -1;
+                    txt_view_more.setText("Xem thêm");
+                    userAdapter.notifyDataSetChanged();
+                }
 
-        List<post_care> list = new ArrayList<>();
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference myRef=database.getReference("list_cntt");
-//        myRef.addValueEventListener(new ValueEventListener() {
-//
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-//                    post_care Post_care  = dataSnapshot.getValue(post_care.class);
-//                    list.add(Post_care);
-//                }
-////                mUserAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(getActivity(),"Sai",Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-        list.add(new post_care(R.drawable.logocaothang,"[TUYỂN DỤNG] - CÔNG TY TNHH SẢN XUẤT FIRST SOLAR VIỆT NAM","10/06/2022"));
-        list.add(new post_care(R.drawable.logocaothang,"[TUYỂN DỤNG] - CÔNG TY TNHH QUỐC TẾ GMB","31/05/2022"));
-        list.add(new post_care(R.drawable.logocaothang ,"[TUYỂN DỤNG] - KỸ THUẬT VIÊN QA/QC CÔNG TY TNHH SV PROBE VIETNAM","25/05/2022"));
-        return list;
+                return;
+        }
     }
 }

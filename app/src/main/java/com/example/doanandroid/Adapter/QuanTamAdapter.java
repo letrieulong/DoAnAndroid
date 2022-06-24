@@ -3,7 +3,6 @@ package com.example.doanandroid.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,9 +13,9 @@ import com.example.doanandroid.R;
 
 import java.util.List;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder>{
+public class QuanTamAdapter  extends RecyclerView.Adapter<QuanTamAdapter.UserViewHolder>{
 
-    public UserAdapter(List<post_care> mListUser) {
+    public QuanTamAdapter(List<post_care> mListUser) {
         this.mListUser = mListUser;
 
     }
@@ -25,9 +24,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     @NonNull
     @Override
-    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public QuanTamAdapter.UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post_care,parent,false);
-        return new UserViewHolder(view);
+        return new QuanTamAdapter.UserViewHolder(view);
     }
 
     @Override
