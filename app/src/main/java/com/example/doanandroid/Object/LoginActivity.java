@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText edt_email, edt_pass;
     Button btn_login;
     FirebaseAuth mAuth;
+    TextView Quenmatkhau,Dangky;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
 
         init();
         Login();
+        dangky();
+        quenmatkhau();
 
         SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
         String checkbox = preferences.getString("remember", "");
@@ -46,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String email = edt_email.getText().toString();
                 String pass = edt_pass.getText().toString();
 //                getData();
@@ -84,60 +89,35 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
+    //  doi mat khau
+    private void dangky(){
+        Dangky.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(LoginActivity.this,dang_ky_tai_khoan.class);
+                startActivity(intent);
+            }
+        });
+    }
+    // quen mat khau
+    private void quenmatkhau(){
+        Quenmatkhau.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(LoginActivity.this,Doi_mat_khau.class);
+                startActivity(intent);
+            }
+        });
+    }
     // Khởi tạo các control
     private void init() {
         edt_email = findViewById(R.id.edt_email_login);
         edt_pass = findViewById(R.id.edt_pass_login);
         btn_login = findViewById(R.id.btn_login);
-    }
+        Dangky = findViewById(R.id.Dangky);
+        Quenmatkhau= findViewById(R.id.Quenmatkhau);
 
-    // tạo form
-//    private void getData() {
-//        String Email = edt_email.getText().toString().trim();
-//        String Pass = edt_pass.getText().toString().trim();
-//
-//        SharedPreferencessss.save(LoginActivity.this, "Email", Email);
-//        SharedPreferencessss.save(LoginActivity.this, "Pass", Pass);
-//
-//        RequestBody requestBody = new MultipartBody.Builder()
-//                .setType(MultipartBody.FORM)
-//                .addFormDataPart("email", Email)
-//                .addFormDataPart("password", Pass)
-//                .build();
-//
-//        ConnectApi.apiService.getUserLogin(requestBody).enqueue(new Callback<StatusCode>() {
-//            @Override
-//            public void onResponse(Call<StatusCode> call, Response<StatusCode> response) {
-//                if (response.body().getStatus().equals("OK")) {
-//                    StatusCode a = response.body();
-//
-//                    // lưu data
-//                    SharedPreferencessss.save(LoginActivity.this, "token", a.getToken());
-//                    SharedPreferencessss.save(LoginActivity.this, "apiHost", a.getApihost());
-//
-//                    SharedPreferencessss.save(LoginActivity.this, "gui_url", a.getPersonal().getGui_url());
-//                    SharedPreferencessss.save(LoginActivity.this, "name", a.getPersonal().getName());
-//                    SharedPreferencessss.save(LoginActivity.this, "position", a.getPersonal().getPosition());
-//                    SharedPreferencessss.save(LoginActivity.this, "phone", a.getPersonal().getPhone());
-//                    SharedPreferencessss.save(LoginActivity.this, "email", a.getPersonal().getEmail());
-//                    SharedPreferencessss.save(LoginActivity.this, "facebook_url", a.getPersonal().getFacebook_url());
-//                    SharedPreferencessss.save(LoginActivity.this, "zalo", a.getPersonal().getZalo());
-//                    SharedPreferencessss.save(LoginActivity.this, "address", a.getPersonal().getAddress());
-//
-//                    SaveLogin();
-//                } else if (response.body().getStatus().equals("ER")) {
-//                    Toast.makeText(LoginActivity.this, "" + response.body().getStatus(), Toast.LENGTH_SHORT).show();
-//                    Toast.makeText(LoginActivity.this, "" + response.body().getMessage(), Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<StatusCode> call, Throwable t) {
-//                Toast.makeText(LoginActivity.this, "Lỗi Kết Nối api", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
+    }
 
     // lưu lần đăng nhập tiếp theo
     private void SaveLogin() {
