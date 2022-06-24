@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dialog = new Dialog(MainActivity.this, androidx.appcompat.R.style.Base_Widget_AppCompat_ProgressBar);
         dialog.setContentView(R.layout.progresbar_dialog);
         loadFragment(new HomeFragment());
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0)); // hiển thị layout dialog trong this
+        dialog.show();
         setActionNavi();
         createGroupList();
         createCollection();
@@ -239,6 +241,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String checkbox = preferences.getString("remember", "");
         if (checkbox.equals("false")) {
             groupList.add("ĐĂNG NHẬP");
+            bottomNavigationView.getMenu()
+                    .findItem(R.id.item_person)
+                    .setVisible(false);
+
+            bottomNavigationView.invalidate();
+
         } else {
             groupList.add("THOÁT");
         }

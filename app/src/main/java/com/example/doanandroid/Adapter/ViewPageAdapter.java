@@ -1,7 +1,13 @@
 package com.example.doanandroid.Adapter;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -9,6 +15,8 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.example.doanandroid.Fragment.Bai_quan_tam_nhieu_Fragment;
 import com.example.doanandroid.Fragment.Bai_viet_moi_Fragment;
 import com.example.doanandroid.Fragment.Bai_yeu_thich_Fragment;
+import com.example.doanandroid.Object.LoginActivity;
+import com.example.doanandroid.Object.MainActivity;
 
 public class ViewPageAdapter extends FragmentStatePagerAdapter {
     public ViewPageAdapter(@NonNull FragmentManager fm, int behavior) {

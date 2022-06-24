@@ -93,10 +93,12 @@ public class InfoActivity extends AppCompatActivity implements View.OnClickListe
     private void Actiontoolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+                MainActivity.dialog.dismiss();
             }
         });
     }

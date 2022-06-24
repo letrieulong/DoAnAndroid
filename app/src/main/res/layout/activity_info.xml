@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:background="#32a3dc"
             app:title=" "
+            
             app:titleTextColor="@color/white" />
         <TextView
             android:layout_centerVertical="true"
