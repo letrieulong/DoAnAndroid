@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.doanandroid.Fragment.DepartmentCNTTFragment;
 import com.example.doanandroid.Model.CNTT_infor;
 import com.example.doanandroid.Model.Infor_All_CNTT;
 import com.example.doanandroid.Model.Recruit_CNTT;
@@ -62,7 +63,7 @@ public class AdapterView_CNTT extends RecyclerView.Adapter<AdapterView_CNTT.View
 
     @Override
     public int getItemCount() {
-        return infor_all_cntts.size();
+        return infor_all_cntts.size() + DepartmentCNTTFragment.count;
     }
 
     public class ViewHodel extends RecyclerView.ViewHolder {

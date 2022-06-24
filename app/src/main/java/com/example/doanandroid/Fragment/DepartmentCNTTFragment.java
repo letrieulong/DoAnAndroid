@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,12 +47,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_CNTT.ClickItemPost, AdapterView_CNTT.ClickItemPost
-
-
-{
-
-
+public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_CNTT.ClickItemPost, AdapterView_CNTT.ClickItemPost, View.OnClickListener {
     public DepartmentCNTTFragment() {
         // Required empty public constructor
     }
@@ -69,6 +65,7 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
     ViewFlipper viewFlipper;
     Toolbar toolbar;
     View view;
+    TextView txt_content;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,12 +77,16 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
         getDataFireBase();
         Acviewflipper();
         Actionbar();
+        view.findViewById(R.id.view_more).setOnClickListener(this);
+        view.findViewById(R.id.view_more_recruit).setOnClickListener(this);
+        view.findViewById(R.id.txt_content).setOnClickListener(this);
         return view;
     }
+
     private void Actionbar() {
         toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,9 +130,12 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
                 Glide.with(getContext())
                         .load(rs.getImage())
                         .into(img_view);
-                setText(view.findViewById(R.id.txt_phone),rs.getPhone());
-                setText(view.findViewById(R.id.txt_email),rs.getEmail());
-                setText(view.findViewById(R.id.txt_address),rs.getAddress());
+                setText(view.findViewById(R.id.txt_phone), rs.getPhone());
+                setText(view.findViewById(R.id.txt_email), rs.getEmail());
+                setText(view.findViewById(R.id.txt_address), rs.getAddress());
+                txt_content.setMaxLines(3);
+                txt_content.setEllipsize(TextUtils.TruncateAt.END);
+                setText(view.findViewById(R.id.txt_content), rs.getContent());
             }
 
             @Override
@@ -170,7 +174,7 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
         arrayViewFlipper.add("https://cntt.caothang.edu.vn/wp-content/uploads/2020/03/khao-sat-elearning.png");
         arrayViewFlipper.add("https://cntt.caothang.edu.vn/wp-content/uploads/2020/03/d6db54c43ea7c5f99cb6.jpg");
         arrayViewFlipper.add("https://cntt.caothang.edu.vn/wp-content/uploads/2018/03/presentation-hackathon-2017.jpg");
-        for (int i = 0 ; i < arrayViewFlipper.size(); i++){
+        for (int i = 0; i < arrayViewFlipper.size(); i++) {
             ImageView imageView = new ImageView(getContext());
             Glide.with(this).load(arrayViewFlipper.get(i)).into(imageView);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY); // sét hình ảnh hiển thị full;
@@ -178,8 +182,8 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
         }
         viewFlipper.setFlipInterval(5000);
         viewFlipper.setAutoStart(true);
-        Animation animation_slide_in = AnimationUtils.loadAnimation(getContext(),R.anim.slide_right_in);
-        Animation animation_slide_out = AnimationUtils.loadAnimation(getContext(),R.anim.slide_right_out);
+        Animation animation_slide_in = AnimationUtils.loadAnimation(getContext(), R.anim.slide_right_in);
+        Animation animation_slide_out = AnimationUtils.loadAnimation(getContext(), R.anim.slide_right_out);
         viewFlipper.setInAnimation(animation_slide_in);
         viewFlipper.setOutAnimation(animation_slide_out);
     }
@@ -197,9 +201,10 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
         txt_title_name = view.findViewById(R.id.txt_title_name);
         img_view = view.findViewById(R.id.img_view);
         viewFlipper = view.findViewById(R.id.viewflipper);
+        txt_content = view.findViewById(R.id.txt_content);
+
 
         // tìm kiếm
-
 
         // list all
         recyInfor = view.findViewById(R.id.recyInfor);
@@ -216,6 +221,7 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.search, menu);
@@ -235,16 +241,17 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
 
                     filter(newText);
                     recy_search.setVisibility(View.VISIBLE);
-                    if (newText.equals("")){
+                    if (newText.equals("")) {
                         recy_search.setVisibility(View.GONE);
                     }
                     return true;
                 }
+
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     Log.i("onQueryTextSubmit", query);
-                    for (Recruit_CNTT rc : recruit_cnttList){
-                        if (rc.getTitle().toLowerCase().contains(query.toLowerCase())){
+                    for (Recruit_CNTT rc : recruit_cnttList) {
+                        if (rc.getTitle().toLowerCase().contains(query.toLowerCase())) {
                             Log.d("abc", rc.getTitle());
                         }
                     }
@@ -309,5 +316,61 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
 //        recruit_cntt.setView(infor_all_cntt.getView());
         i.putExtra("recruit", recruit_cntt);
         startActivity(i);
+    }
+
+    TextView txt_view_more;
+    TextView txt_view_more1;
+    public static int count = -2;
+    public static int count_recruit = -2;
+    boolean b = true;
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.view_more:
+                txt_view_more = view.findViewById(R.id.view_more);
+                if (txt_view_more.getText().toString().equals("Xem thêm")) {
+                    if (infor_all_cntts.size() + count < infor_all_cntts.size()) {
+                        count++;
+                        adapterView_cntt.notifyDataSetChanged();
+                        if (infor_all_cntts.size() + count == infor_all_cntts.size()) {
+                            txt_view_more.setText("Thu nhỏ");
+                        }
+                    }
+                } else {
+                    count = -2;
+                    txt_view_more.setText("Xem thêm");
+                    adapterView_cntt.notifyDataSetChanged();
+                }
+                return;
+
+            case R.id.view_more_recruit:
+                txt_view_more1 = view.findViewById(R.id.view_more_recruit);
+                if (txt_view_more1.getText().toString().equals("Xem thêm")) {
+                    if (recruit_cnttList.size() + count_recruit < recruit_cnttList.size()) {
+                        count_recruit++;
+                        adapterRecruit_cntt.notifyDataSetChanged();
+                        if (recruit_cnttList.size() + count_recruit == recruit_cnttList.size()) {
+                            txt_view_more1.setText("Thu nhỏ");
+                        }
+                    }
+                } else {
+                    count_recruit = -2;
+                    txt_view_more1.setText("Xem thêm");
+                    adapterRecruit_cntt.notifyDataSetChanged();
+                }
+                return;
+            case R.id.txt_content:
+                if (b) {
+                    txt_content.setEllipsize(null);
+                    txt_content.setMaxLines(txt_content.getText().toString().length());
+                    b = false;
+                } else {
+                    txt_content.setMaxLines(5);
+                    txt_content.setEllipsize(TextUtils.TruncateAt.END);
+                    b = true;
+                }
+                return;
+        }
     }
 }
