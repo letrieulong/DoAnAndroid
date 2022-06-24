@@ -11,16 +11,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanandroid.Fragment.RoomAdminiStrativeFragment;
 import com.example.doanandroid.Model.New_Tranning;
+import com.example.doanandroid.Model.Recruit_Admin;
 import com.example.doanandroid.R;
 
 import java.util.List;
 
 public class AdapterNew_Admin extends RecyclerView.Adapter<AdapterNew_Admin.ViewHodel> {
     Context context;
-    List<New_Tranning> mechanicalList;
+    List<Recruit_Admin> mechanicalList;
 
-    public AdapterNew_Admin(Context context, List<New_Tranning> mechanicalList) {
+    public AdapterNew_Admin(Context context, List<Recruit_Admin> mechanicalList) {
         this.context = context;
         this.mechanicalList = mechanicalList;
 
@@ -44,7 +46,7 @@ public class AdapterNew_Admin extends RecyclerView.Adapter<AdapterNew_Admin.View
 
     @Override
     public int getItemCount() {
-        return mechanicalList.size();
+        return mechanicalList.size() + RoomAdminiStrativeFragment.count_new;
     }
 
     public class ViewHodel extends RecyclerView.ViewHolder {

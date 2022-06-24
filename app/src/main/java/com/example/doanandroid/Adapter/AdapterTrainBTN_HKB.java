@@ -3,7 +3,6 @@ package com.example.doanandroid.Adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,19 +13,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanandroid.Model.CLA_Model;
-import com.example.doanandroid.Model.Tuition;
+import com.example.doanandroid.Model.HKB_Model;
 import com.example.doanandroid.Object.MainActivity;
 import com.example.doanandroid.Object.TKBActivity;
 import com.example.doanandroid.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterTrainBTN extends RecyclerView.Adapter<AdapterTrainBTN.ViewHodel> {
+public class AdapterTrainBTN_HKB extends RecyclerView.Adapter<AdapterTrainBTN_HKB.ViewHodel> {
     Context context;
-    List<CLA_Model> mechanicalList;
+    List<HKB_Model> mechanicalList;
 
-    public AdapterTrainBTN(Context context, List<CLA_Model> mechanicalList) {
+    public AdapterTrainBTN_HKB(Context context, List<HKB_Model> mechanicalList) {
         this.context = context;
         this.mechanicalList = mechanicalList;
 
@@ -45,9 +43,7 @@ public class AdapterTrainBTN extends RecyclerView.Adapter<AdapterTrainBTN.ViewHo
         holder.txt_title.setText(mechanicalList.get(i).getTitle());
         holder.txt_size.setVisibility(View.GONE);
 
-        String title = mechanicalList.get(i).getLink().getContent_link();
-        String link = mechanicalList.get(i).getLink().getLink();
-        String size = mechanicalList.get(i).getLink().getSize();
+        String content = mechanicalList.get(i).getContent();
         holder.v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,9 +52,7 @@ public class AdapterTrainBTN extends RecyclerView.Adapter<AdapterTrainBTN.ViewHo
 //                view.getContext().startActivity(intent);
                 Bundle b = new Bundle();
                 Intent i = new Intent(context, MainActivity.class);
-                b.putString("title", title);
-                b.putString("link", link);
-                b.putString("size", size);
+                b.putString("content", content);
                 i.putExtras(b);
                 view.getContext().startActivity(i);
             }

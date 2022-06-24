@@ -80,6 +80,8 @@ public class RoomTrainingFragment extends Fragment implements AdapterNew_Trainni
         view.findViewById(R.id.btn_tkb).setOnClickListener(this::onClick);
         view.findViewById(R.id.btn_calen).setOnClickListener(this::onClick);
         view.findViewById(R.id.btn_calenTrain).setOnClickListener(this::onClick);
+        view.findViewById(R.id.btnHKP).setOnClickListener(this::onClick);
+        view.findViewById(R.id.view_more_New).setOnClickListener(this::onClick);
         return view;
     }
 
@@ -127,6 +129,7 @@ public class RoomTrainingFragment extends Fragment implements AdapterNew_Trainni
                     New_Tranning n = snap.getValue(New_Tranning.class);
                     new_tranningList.add(n);
                     list_search.add(n);
+                    MainActivity.dialog.dismiss();
                 }
                 adapterSearch_trainning.notifyDataSetChanged();
                 adapterNew_trainning.notifyDataSetChanged();
@@ -296,7 +299,8 @@ public class RoomTrainingFragment extends Fragment implements AdapterNew_Trainni
     }
 
     public static String str;
-
+    TextView txt_view_more2;
+    public static int count_new = -1;
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -312,7 +316,26 @@ public class RoomTrainingFragment extends Fragment implements AdapterNew_Trainni
                 str = "LỊCH ĐÀO TẠO";
                 startActivity(new Intent(getActivity(), TKBActivity.class));
                 return;
-
+            case R.id.btnHKP:
+                str = "HK.PHỤ,GHÉP";
+                startActivity(new Intent(getActivity(), TKBActivity.class));
+                return;
+            case R.id.view_more_New:
+                txt_view_more2 = view.findViewById(R.id.view_more_New);
+                if (txt_view_more2.getText().toString().equals("Xem thêm")) {
+                    if (new_tranningList.size() + count_new < new_tranningList.size()) {
+                        count_new++;
+                        adapterNew_trainning.notifyDataSetChanged();
+                        if (new_tranningList.size() + count_new == new_tranningList.size()) {
+                            txt_view_more2.setText("Thu nhỏ");
+                        }
+                    }
+                } else {
+                    count_new = -2;
+                    txt_view_more2.setText("Xem thêm");
+                    adapterNew_trainning.notifyDataSetChanged();
+                }
+                return;
         }
     }
 }

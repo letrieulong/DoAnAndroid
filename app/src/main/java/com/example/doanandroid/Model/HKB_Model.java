@@ -1,10 +1,10 @@
 package com.example.doanandroid.Model;
 
-public class CLA_Model {
+public class HKB_Model {
     String title;
-    TKB_link link;
+    String content;
 
-    public CLA_Model() {
+    public HKB_Model() {
     }
 
     public String getTitle() {
@@ -15,11 +15,11 @@ public class CLA_Model {
         this.title = title;
     }
 
-    public TKB_link getLink() {
-        return link;
+    public String getContent() {
+        return content;
     }
 
-    public void setLink(TKB_link link) {
-        this.link = link;
+    public void setContent(String content) {
+        this.content = content;
     }
 }

@@ -46,7 +46,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupYouthFragment extends Fragment implements AdapterGroup_Youth.ClickItemPost, AdapterGroup_New_update.ClickItemNewUpdate, AdapterGroup_SV.ClickItemSV {
+public class GroupYouthFragment extends Fragment implements AdapterGroup_Youth.ClickItemPost, AdapterGroup_New_update.ClickItemNewUpdate, AdapterGroup_SV.ClickItemSV, View.OnClickListener {
     public GroupYouthFragment() {
         // Required empty public constructor
     }
@@ -76,8 +76,13 @@ public class GroupYouthFragment extends Fragment implements AdapterGroup_Youth.C
         getDataFireBase();
         setHasOptionsMenu(true);
         Actionbar();
+        view.findViewById(R.id.view_more_youth).setOnClickListener(this::onClick);
+        view.findViewById(R.id.view_more_sv).setOnClickListener(this::onClick);
+        view.findViewById(R.id.view_more_new).setOnClickListener(this::onClick);
+
         return view;
     }
+
     private void Actionbar() {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -109,7 +114,7 @@ public class GroupYouthFragment extends Fragment implements AdapterGroup_Youth.C
 
         // đoàn thanh niên
         recy_youth = view.findViewById(R.id.recyyouth);
-        adapterGroup_youth = new AdapterGroup_Youth(getContext(), new_List_youth ,this);
+        adapterGroup_youth = new AdapterGroup_Youth(getContext(), new_List_youth, this);
         recy_youth.setLayoutManager(new LinearLayoutManager(getContext()));
         recy_youth.setAdapter(adapterGroup_youth);
 
@@ -159,6 +164,7 @@ public class GroupYouthFragment extends Fragment implements AdapterGroup_Youth.C
                     New_Tranning rs = dt.getValue(New_Tranning.class);
                     new_List_sv.add(rs);
                     new_List_search.add(rs);
+                    MainActivity.dialog.dismiss();
                 }
                 adapterGroup_search.notifyDataSetChanged();
                 adapterGroup_sv.notifyDataSetChanged();
@@ -275,7 +281,7 @@ public class GroupYouthFragment extends Fragment implements AdapterGroup_Youth.C
                     filter(newText);
                     recy_list_item.setVisibility(View.VISIBLE);
                     adapterGroup_search.notifyDataSetChanged();
-                    if (newText.equals("")){
+                    if (newText.equals("")) {
                         recy_list_item.setVisibility(View.GONE);
                     }
                     return true;
@@ -353,5 +359,75 @@ public class GroupYouthFragment extends Fragment implements AdapterGroup_Youth.C
         new_tranning.setTypePost(2);
         i.putExtra("recruit", new_tranning);
         startActivity(i);
+    }
+
+    TextView txt_view_youth;
+    TextView txt_view_sv;
+    TextView txt_view_new;
+    public static int count_youth = -2;
+    public static int count_sv = -2;
+    public static int count_new = -2;
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.view_more_sv:
+                txt_view_sv = view.findViewById(R.id.view_more_sv);
+                if (txt_view_sv.getText().toString().equals("Xem thêm")) {
+                    if (new_List_sv.size() + count_sv < new_List_sv.size()) {
+                        count_sv++;
+                        adapterGroup_sv.notifyDataSetChanged();
+                        if (new_List_sv.size() + count_sv == new_List_sv.size()) {
+                            txt_view_sv.setText("Thu nhỏ");
+                        }
+                    } else {
+                        count_sv = -3;
+                        adapterGroup_sv.notifyDataSetChanged();
+                    }
+                } else {
+                    count_sv = -3;
+                    txt_view_sv.setText("Xem thêm");
+                    adapterGroup_sv.notifyDataSetChanged();
+                }
+                return;
+            case R.id.view_more_youth:
+                txt_view_youth = view.findViewById(R.id.view_more_youth);
+                if (txt_view_youth.getText().toString().equals("Xem thêm")) {
+                    if (new_List_youth.size() + count_youth < new_List_youth.size()) {
+                        count_youth++;
+                        adapterGroup_youth.notifyDataSetChanged();
+                        if (new_List_youth.size() + count_youth == new_List_youth.size()) {
+                            txt_view_youth.setText("Thu nhỏ");
+                        }
+                    } else {
+                        count_youth = -3;
+                        adapterGroup_youth.notifyDataSetChanged();
+                    }
+                } else {
+                    count_youth = -3;
+                    txt_view_youth.setText("Xem thêm");
+                    adapterGroup_youth.notifyDataSetChanged();
+                }
+                return;
+            case R.id.view_more_new:
+                txt_view_new = view.findViewById(R.id.view_more_new);
+                if (txt_view_new.getText().toString().equals("Xem thêm")) {
+                    if (new_List_update.size() + count_new < new_List_update.size()) {
+                        count_new++;
+                        adapterGroup_new_update.notifyDataSetChanged();
+                        if (new_List_update.size() + count_new == new_List_update.size()) {
+                            txt_view_new.setText("Thu nhỏ");
+                        }
+                    } else {
+                        count_new = -3;
+                        adapterGroup_new_update.notifyDataSetChanged();
+                    }
+                } else {
+                    count_new = -3;
+                    txt_view_new.setText("Xem thêm");
+                    adapterGroup_new_update.notifyDataSetChanged();
+                }
+                return;
+        }
     }
 }

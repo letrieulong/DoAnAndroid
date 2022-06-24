@@ -28,27 +28,19 @@
                     android:layout_height="wrap_content"
                     android:background="#32a3dc"
                     app:navigationIcon="@drawable/menu"
-                    app:title=" "
-                    app:titleTextColor="@color/white" />
+                    app:title="TRANG CHỦ"
+                    app:titleTextAppearance="@style/Widget.MaterialComponents.TextView"
+                    app:titleTextColor="@color/white"  />
 
                 <Button
-                    android:layout_marginStart="50dp"
-                    android:layout_centerVertical="true"
+                    android:visibility="gone"
                     android:id="@+id/btn_account"
                     android:layout_width="26dp"
                     android:layout_height="26dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="50dp"
                     android:layout_marginRight="20dp"
                     android:background="@drawable/img_acount" />
-                <TextView
-                    android:layout_toRightOf="@id/btn_account"
-                    android:id="@+id/txt_name_toolbar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="5dp"
-                    android:text=""
-                    android:textColor="@color/white"
-                    android:textSize="18dp" />
 
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/search_view"
@@ -81,6 +73,7 @@
                     android:layout_alignParentBottom="true"
                     android:background="#234C75"
                     app:itemTextColor="@color/white"
+                    app:itemIconTint="@color/white"
                     app:menu="@menu/menu" />
             </RelativeLayout>
 

@@ -158,7 +158,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 String id_ctt = uuid_ctt.toString();
                 String userkey = mDatabsase.push().getKey();
                 ContentLink ctt = new ContentLink(id_ctt, "", "");
-                mDatabsase.child("list_new/" + userId + "/link/" + userkey).setValue(ctt);
+                mDatabsase.child("list_HKP/" + userId + "/link/" + userkey).setValue(ctt);
 //                Toast.makeText(this, userId, Toast.LENGTH_SHORT).show();
 
                 return;
@@ -182,7 +182,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 Mechanical rs = new Mechanical(id, title,"", date, views, size, content_link);
                 Tuition t = new Tuition("","","","");
                 userId = mDatabase.push().getKey();
-                mDatabase.child("list_claexam/"+userId).setValue(t);
+                mDatabase.child("list_HKP/"+userId).setValue(t);
                 return;
             case R.id.edt_search_1:
 //                Search(edt_search);

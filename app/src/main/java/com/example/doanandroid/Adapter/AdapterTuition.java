@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanandroid.Fragment.TuitionFragment;
 import com.example.doanandroid.Model.New_Tranning;
 import com.example.doanandroid.Model.Tuition;
 import com.example.doanandroid.R;
@@ -53,7 +54,7 @@ public class AdapterTuition extends RecyclerView.Adapter<AdapterTuition.ViewHode
 
     @Override
     public int getItemCount() {
-        return mechanicalList.size();
+        return mechanicalList.size() + TuitionFragment.count;
     }
 
     public class ViewHodel extends RecyclerView.ViewHolder {

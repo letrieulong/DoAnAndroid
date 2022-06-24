@@ -27,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScholarshipFragment extends Fragment {
+public class ScholarshipFragment extends Fragment implements View.OnClickListener {
 
     public ScholarshipFragment() {
         // Required empty public constructor
@@ -38,6 +38,7 @@ public class ScholarshipFragment extends Fragment {
     RecyclerView RecyTuition;
     List<Tuition> tuitionList = new ArrayList<>();
     AdapterScholarship adapterTuition;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class ScholarshipFragment extends Fragment {
         init();
         Actionbar();
         getDataFireBase();
+        view.findViewById(R.id.view_more).setOnClickListener(this::onClick);
         return view;
     }
 
@@ -61,6 +63,7 @@ public class ScholarshipFragment extends Fragment {
             }
         });
     }
+
     // khởi tạo các control
     private void init() {
         // list học bổng
@@ -83,6 +86,7 @@ public class ScholarshipFragment extends Fragment {
                     list.add(dt.getKey());
                     Tuition rs = dt.getValue(Tuition.class);
                     tuitionList.add(rs);
+                    MainActivity.dialog.dismiss();
                 }
                 adapterTuition.notifyDataSetChanged();
             }
@@ -93,10 +97,39 @@ public class ScholarshipFragment extends Fragment {
             }
         });
     }
+
     //Hỗ trợ đổi TEXT
     private void setText(final TextView text, final String value) {
         if (text != null) {
             text.setText(value);
+        }
+    }
+
+    TextView txt_view_more;
+    public static int count = -3;
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.view_more:
+                txt_view_more = view.findViewById(R.id.view_more);
+                if (txt_view_more.getText().toString().equals("Xem thêm")) {
+                    if (tuitionList.size() + count < tuitionList.size()) {
+                        count++;
+                        adapterTuition.notifyDataSetChanged();
+                        if (tuitionList.size() + count == tuitionList.size()) {
+                            txt_view_more.setText("Thu nhỏ");
+                        }
+                    } else {
+                        count = -3;
+                        adapterTuition.notifyDataSetChanged();
+                    }
+                } else {
+                    count = -3;
+                    txt_view_more.setText("Xem thêm");
+                    adapterTuition.notifyDataSetChanged();
+                }
+                return;
         }
     }
 }

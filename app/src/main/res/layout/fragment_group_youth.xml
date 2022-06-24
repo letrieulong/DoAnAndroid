@@ -61,6 +61,13 @@
                     android:id="@+id/recyyouth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/view_more_youth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xem thêm"
+                    android:textColor="#32a3dc"
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
             <TextView
@@ -85,6 +92,13 @@
                     android:id="@+id/recygroupSV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/view_more_sv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xem thêm"
+                    android:textColor="#32a3dc"
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
             <TextView
@@ -109,6 +123,13 @@
                     android:id="@+id/recy_news_update"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/view_more_new"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xem thêm"
+                    android:textColor="#32a3dc"
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
             <TextView

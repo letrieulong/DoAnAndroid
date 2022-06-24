@@ -149,6 +149,7 @@ public class DepmentElectronicFragment extends Fragment implements View.OnClickL
                     News_Electronic rs = dt.getValue(News_Electronic.class);
                     news_electronics.add(rs);
                     list_Search.add(rs);
+                    MainActivity.dialog.dismiss();
                 }
                 adapterSearch_electronic.notifyDataSetChanged();
                 adapterNew_electronic.notifyDataSetChanged();

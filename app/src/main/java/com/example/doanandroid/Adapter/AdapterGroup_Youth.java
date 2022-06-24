@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanandroid.Fragment.GroupYouthFragment;
 import com.example.doanandroid.Model.New_Tranning;
 import com.example.doanandroid.R;
 
@@ -53,7 +54,7 @@ public class AdapterGroup_Youth extends RecyclerView.Adapter<AdapterGroup_Youth.
 
     @Override
     public int getItemCount() {
-        return mechanicalList.size();
+        return mechanicalList.size() + GroupYouthFragment.count_youth;
     }
 
     public class ViewHodel extends RecyclerView.ViewHolder {

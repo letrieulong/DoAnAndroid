@@ -35,6 +35,7 @@ public class InfoActivity extends AppCompatActivity implements View.OnClickListe
         dialog.setContentView(R.layout.progresbar_dialog);
         btn_logout.setOnClickListener(this::onClick);
         linear_logout.setOnClickListener(this::onClick);
+        MainActivity.dialog.dismiss();
     }
 
     // khởi tạo các control

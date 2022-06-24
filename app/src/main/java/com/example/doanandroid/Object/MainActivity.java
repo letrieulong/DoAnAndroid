@@ -9,8 +9,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,10 +45,10 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    public static Dialog dialog;
     public static Toolbar toolbar;
     public static DrawerLayout drawerLayout;
     BottomNavigationView bottomNavigationView;
-    public static TextView txt_name_toolbar;
     CircleImageView img_account;
     List<String> groupList;
     List<String> childList;
@@ -68,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         init();
+        dialog = new Dialog(MainActivity.this, androidx.appcompat.R.style.Base_Widget_AppCompat_ProgressBar);
+        dialog.setContentView(R.layout.progresbar_dialog);
         loadFragment(new HomeFragment());
         setActionNavi();
         createGroupList();
@@ -109,26 +113,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @SuppressLint("WrongConstant")
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0)); // hiển thị layout dialog trong this
+                dialog.show();
                 String selected = expandableListAdapter.getChild(i, i1).toString();
+                bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
                 /**
                  * Khoa
                  * */
                 if (selected.equals(DepartmentModels[0])) {
-                    txt_name_toolbar.setText("KHOA CƠ KHÍ");
                     relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new DepartmentMechanicalFragment());
                     drawerLayout.close();
                 }
                 if (selected.equals(DepartmentModels[1])) {
-                    txt_name_toolbar.setText("KHOA CÔNG NGHỆ THÔNG TIN");
                     relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new DepartmentCNTTFragment());
                     drawerLayout.close();
                 }
                 if (selected.equals(DepartmentModels[2])) {
-                    txt_name_toolbar.setText("KHOA ĐIỆN TỬ");
                     relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new DepmentElectronicFragment());
                     drawerLayout.close();
@@ -137,19 +142,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                  * Phòng Ban
                  * */
                 if (selected.equals(RoomModels[0])) {
-                    txt_name_toolbar.setText("PHÒNG ĐÀO TẠO");
                     loadFragment(new RoomTrainingFragment());
                     relate_toolbar.setVisibility(View.GONE);
                     drawerLayout.close();
                 }
                 if (selected.equals(RoomModels[1])) {
-                    txt_name_toolbar.setText("PHÒNG HÀNH CHÍNH");
                     loadFragment(new RoomAdminiStrativeFragment());
                     relate_toolbar.setVisibility(View.GONE);
                     drawerLayout.close();
                 }
                 if (selected.equals(RoomModels[2])) {
-                    txt_name_toolbar.setText("PHÒNG CTCT-HSSV");
                     loadFragment(new RoomCTCT_HSSVFragment());
                     relate_toolbar.setVisibility(View.GONE);
                     drawerLayout.close();
@@ -158,7 +160,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                  * Đoàn - hội
                  * */
                 if (selected.equals(unionModels[0])) {
-                    txt_name_toolbar.setText("ĐOÀN - HỘI");
                     relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new GroupYouthFragment());
                     drawerLayout.close();
@@ -173,7 +174,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    drawerLayout.close();
 //                }
                 if (selected.equals(CLBModels[0])) {
-                    txt_name_toolbar.setText("CÂU LẠC BỘ TIN HỌC");
                     relate_toolbar.setVisibility(View.GONE);
                     loadFragment(new CLB_IT_Fragment());
                     drawerLayout.close();
@@ -192,7 +192,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void init() {
         toolbar = findViewById(R.id.toolbar);
-        txt_name_toolbar = findViewById(R.id.txt_name_toolbar);
         drawerLayout = findViewById(R.id.drawerlayout);
         expandableListView = findViewById(R.id.elvMobiles);
         bottomNavigationView = findViewById(R.id.bottomnavi);
@@ -248,25 +247,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // set hành động của bottomnavigation
     private void setActionNavi() {
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @SuppressLint("WrongConstant")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment;
                 switch (item.getItemId()) {
                     case R.id.item_home:
-                        txt_name_toolbar.setText("TRANG CHỦ");
                         relate_toolbar.setVisibility(View.VISIBLE);
                         fragment = new HomeFragment();
                         loadFragment(fragment);
-//                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0)); // hiển thị layout dialog trong this
-//                        dialog.show();
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0)); // hiển thị layout dialog trong this
+                        dialog.show();
+                        bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
                         return true;
                     case R.id.item_person:
 //                        txt_name_toolbar.setText("THÔNG TIN CÁ NHÂN");
 //                        fragment = new InforUserFragment();
 //                        loadFragment(fragment);
-                        startActivity(new Intent(MainActivity.this, SearchActivity.class));
-//                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-//                        dialog.show();
+                        startActivity(new Intent(MainActivity.this, InfoActivity.class));
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                        dialog.show();
                         return true;
                 }
                 return false;

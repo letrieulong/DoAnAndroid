@@ -111,6 +111,7 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
                     Infor_All_CNTT rss = dt.getValue(Infor_All_CNTT.class);
                     recruit_cnttList.add(rs);
                     list_search.add(rss);
+                    MainActivity.dialog.dismiss();
                 }
                 adapterRecruit_cntt.notifyDataSetChanged();
             }

@@ -144,6 +144,7 @@ public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_
                     New_Tranning rs = dt.getValue(New_Tranning.class);
                     list_noti.add(rs);
                     list_search.add(rs);
+                    MainActivity.dialog.dismiss();
                 }
                 adapterSearch_ctct_hssv.notifyDataSetChanged();
                 adapterCTCT_hssv_noti.notifyDataSetChanged();

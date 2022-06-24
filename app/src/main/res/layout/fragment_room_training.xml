@@ -80,13 +80,13 @@
                         android:textColor="@color/white" />
 
                     <Button
-                        android:id="@+id/btnProTrain"
+                        android:id="@+id/btnHKP"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:background="@drawable/btncalen"
                         android:padding="10dp"
-                        android:text="CH.TRình\nđào tạo"
+                        android:text="HK.PHỤ\n,GHÉP"
                         android:textColor="@color/white" />
                 </LinearLayout>
             </HorizontalScrollView>
@@ -113,6 +113,13 @@
                     android:id="@+id/recynew"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/view_more_New"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xem thêm"
+                    android:textColor="#32a3dc"
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
             <TextView

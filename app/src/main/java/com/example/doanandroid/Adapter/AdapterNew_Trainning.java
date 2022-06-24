@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanandroid.Fragment.RoomTrainingFragment;
 import com.example.doanandroid.Model.ContentLink;
 import com.example.doanandroid.Model.Mechanical;
 import com.example.doanandroid.Model.New_Tranning;
@@ -63,7 +64,7 @@ public class AdapterNew_Trainning extends RecyclerView.Adapter<AdapterNew_Trainn
 
     @Override
     public int getItemCount() {
-        return mechanicalList.size();
+        return mechanicalList.size() + RoomTrainingFragment.count_new;
     }
 
     public class ViewHodel extends RecyclerView.ViewHolder {

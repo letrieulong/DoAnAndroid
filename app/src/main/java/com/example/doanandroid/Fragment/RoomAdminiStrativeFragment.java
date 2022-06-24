@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextPaint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +25,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
@@ -31,6 +33,8 @@ import com.example.doanandroid.Adapter.AdapterNew_Admin;
 import com.example.doanandroid.Adapter.AdapterPolicy_Admin;
 import com.example.doanandroid.Adapter.AdapterRecruit_Admin;
 import com.example.doanandroid.Adapter.AdapterSearch_AdmininS;
+import com.example.doanandroid.Model.Mechanical;
+import com.example.doanandroid.Model.Tuition;
 import com.example.doanandroid.Object.MainActivity;
 import com.example.doanandroid.Model.ContactMechanical;
 import com.example.doanandroid.Model.New_Tranning;
@@ -60,13 +64,15 @@ public class RoomAdminiStrativeFragment extends Fragment implements View.OnClick
     AdapterPolicy_Admin adapterPolicy_admin;
     AdapterSearch_AdmininS adapterSearch_admininS;
     AdapterNew_Admin adapterNew_admin;
-    List<New_Tranning> new_List = new ArrayList<>();
+    List<Recruit_Admin> new_List = new ArrayList<>();
+    List<Recruit_Admin> new_List1 = new ArrayList<>();
     List<Recruit_Admin> recruit_adminList = new ArrayList<>();
     List<Policy> policyList = new ArrayList<>();
     List<Recruit_Admin> list_search = new ArrayList<>();
     RecyclerView recy_recuirt;
     RecyclerView recy_policy;
     RecyclerView recy_new;
+    int arr[] = {64, 25, 12, 22, 11};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,6 +86,7 @@ public class RoomAdminiStrativeFragment extends Fragment implements View.OnClick
         Actionbar();
         view.findViewById(R.id.view_more).setOnClickListener(this);
         view.findViewById(R.id.view_more_recruit).setOnClickListener(this);
+        view.findViewById(R.id.view_more_New).setOnClickListener(this);
         return view;
     }
 
@@ -164,6 +171,7 @@ public class RoomAdminiStrativeFragment extends Fragment implements View.OnClick
                     Recruit_Admin rs = dt.getValue(Recruit_Admin.class);
                     recruit_adminList.add(rs);
                     list_search.add(rs);
+                    MainActivity.dialog.dismiss();
                 }
                 adapterSearch_admininS.notifyDataSetChanged();
                 adapterRecruit_admin.notifyDataSetChanged();
@@ -186,10 +194,33 @@ public class RoomAdminiStrativeFragment extends Fragment implements View.OnClick
                     policyList.add(rs);
                     Recruit_Admin rss = dt.getValue(Recruit_Admin.class);
                     list_search.add(rss);
+                    MainActivity.dialog.dismiss();
                 }
                 adapterSearch_admininS.notifyDataSetChanged();
                 adapterPolicy_admin.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        // get data từ firebase
+        mDatabase.child("list_news").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                new_List.clear();
+                List<String> list = new ArrayList<>();
+                for (DataSnapshot dt : snapshot.getChildren()) {
+                    list.add(dt.getKey());
+                    Recruit_Admin rs = dt.getValue(Recruit_Admin.class);
+                    new_List.add(rs);
+                    MainActivity.dialog.dismiss();
+                }
+                adapterSearch_admininS.notifyDataSetChanged();
                 adapterPolicy_admin.notifyDataSetChanged();
+                adapterNew_admin.notifyDataSetChanged();
             }
 
             @Override
@@ -235,7 +266,72 @@ public class RoomAdminiStrativeFragment extends Fragment implements View.OnClick
 
             }
         });
+        mDatabase.child("list_recruit").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                new_List1.clear();
+                for (DataSnapshot dt : snapshot.getChildren()) {
+                    Recruit_Admin rs = dt.getValue(Recruit_Admin.class);
+                    new_List1.add(rs);
+                }
+                List<Recruit_Admin> recruit_adminList = new ArrayList<>();
+                mDatabase.child("list_policy").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String str[] = new String[0];
+                        Recruit_Admin rs = null;
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            rs = data.getValue(Recruit_Admin.class);
+                            recruit_adminList.add(rs);
+                            str = rs.getDate().split("\\.");
+                        }
+                        mDatabase.child("list_news").removeValue();
+                        int year = Integer.parseInt(str[2]);
+                        for (int j = 0; j < new_List1.size(); j++) {
+                            String strrr[] = new_List1.get(j).getDate().split("\\.");
+                            int yearrr = Integer.parseInt(strrr[2]);
+                            if (year > yearrr){
+                                String userId = mDatabase.push().getKey();
+                                mDatabase.child("list_news/" + userId).setValue(recruit_adminList.get(j));
+                            }else {
+                                String userId = mDatabase.push().getKey();
+                                mDatabase.child("list_news/" + userId).setValue(new_List1.get(j));
+                            }
+                        }
 
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void addnew (){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("list_adminiStrative");
+        for (int i = 0; i < list_search.size() - 1; i++) {
+            String str[] = list_search.get(i).getDate().split("\\.");
+            int year = Integer.parseInt(str[2]);
+            for (int j = i + 1; j < list_search.size(); j++) {
+                String strrr[] = list_search.get(j).getDate().split("\\.");
+                int yearrr = Integer.parseInt(strrr[2]);
+                if (year > yearrr){
+                    String userId = mDatabase.push().getKey();
+                    mDatabase.child("list_news/" + userId).setValue(list_search.get(i));
+                }else {
+                    String userId = mDatabase.push().getKey();
+                    mDatabase.child("list_news/" + userId).setValue(list_search.get(i));
+                }
+            }
+        }
     }
 
     /**
@@ -322,8 +418,10 @@ public class RoomAdminiStrativeFragment extends Fragment implements View.OnClick
 
     TextView txt_view_more;
     TextView txt_view_more1;
+    TextView txt_view_more2;
     public static int count = -2;
     public static int count_recruit = -2;
+    public static int count_new = -2;
 
     @Override
     public void onClick(View view) {
@@ -359,6 +457,22 @@ public class RoomAdminiStrativeFragment extends Fragment implements View.OnClick
                     count_recruit = -2;
                     txt_view_more1.setText("Xem thêm");
                     adapterRecruit_admin.notifyDataSetChanged();
+                }
+                return;
+            case R.id.view_more_New:
+                txt_view_more2 = view.findViewById(R.id.view_more_New);
+                if (txt_view_more2.getText().toString().equals("Xem thêm")) {
+                    if (new_List.size() + count_new < new_List.size()) {
+                        count_new++;
+                        adapterNew_admin.notifyDataSetChanged();
+                        if (recruit_adminList.size() + count_new == new_List.size()) {
+                            txt_view_more2.setText("Thu nhỏ");
+                        }
+                    }
+                } else {
+                    count_new = -2;
+                    txt_view_more2.setText("Xem thêm");
+                    adapterNew_admin.notifyDataSetChanged();
                 }
                 return;
         }

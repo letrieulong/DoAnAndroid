@@ -119,6 +119,7 @@ public class DepartmentMechanicalFragment extends Fragment implements View.OnCli
                     Mechanical rs = dt.getValue(Mechanical.class);
                     mechanicalList.add(rs);
                     list_search.add(rs);
+                    MainActivity.dialog.dismiss();
                 }
                 adapterSearch_mechanical.notifyDataSetChanged();
                 adapterRecruit_mechanical.notifyDataSetChanged();

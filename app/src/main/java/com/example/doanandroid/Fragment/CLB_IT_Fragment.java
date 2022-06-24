@@ -44,7 +44,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CLB_IT_Fragment extends Fragment {
+public class CLB_IT_Fragment extends Fragment implements View.OnClickListener {
 
 
     public CLB_IT_Fragment() {
@@ -52,7 +52,6 @@ public class CLB_IT_Fragment extends Fragment {
     }
 
     RecyclerView recyCLB;
-    RecyclerView recyWriteNew;
     RecyclerView recy_search;
     List<Infor_All_CNTT> list_clb = new ArrayList<>();
     List<Infor_All_CNTT> list_clb_new = new ArrayList<>();
@@ -75,6 +74,8 @@ public class CLB_IT_Fragment extends Fragment {
         getDataFireBase();
         Acviewflipper();
         Actionbar();
+        view.findViewById(R.id.view_more).setOnClickListener(this::onClick);
+
         return view;
     }
     private void Actionbar() {
@@ -104,6 +105,7 @@ public class CLB_IT_Fragment extends Fragment {
                     Infor_All_CNTT rs = dt.getValue(Infor_All_CNTT.class);
                     list_clb.add(rs);
                     list_search.add(rs);
+                    MainActivity.dialog.dismiss();
                 }
                 adapterClb_clb.notifyDataSetChanged();
             }
@@ -123,31 +125,9 @@ public class CLB_IT_Fragment extends Fragment {
                 Glide.with(getContext())
                         .load(rs.getImage())
                         .into(img_view);
-                setText(view.findViewById(R.id.txt_phone),rs.getPhone());
-                setText(view.findViewById(R.id.txt_email),rs.getEmail());
-                setText(view.findViewById(R.id.txt_address),rs.getAddress());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        // get data từ firebase
-        mDatabase.child("list_clb_new").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list_clb_new.clear();
-                List<String> list = new ArrayList<>();
-                for (DataSnapshot dt : snapshot.getChildren()) {
-                    list.add(dt.getKey());
-                    Infor_All_CNTT rs = dt.getValue(Infor_All_CNTT.class);
-                    list_clb_new.add(rs);
-                    list_search.add(rs);
-                }
-                adapterSearch_cntt.notifyDataSetChanged();
-                adapterNew_clb.notifyDataSetChanged();
+                setText(view.findViewById(R.id.txt_phone), rs.getPhone());
+                setText(view.findViewById(R.id.txt_email), rs.getEmail());
+                setText(view.findViewById(R.id.txt_address), rs.getAddress());
             }
 
             @Override
@@ -204,12 +184,6 @@ public class CLB_IT_Fragment extends Fragment {
         adapterClb_clb = new AdapterClb_CLB(getContext(), list_clb);
         recyCLB.setLayoutManager(new LinearLayoutManager(getContext()));
         recyCLB.setAdapter(adapterClb_clb);
-
-        // list tuyển dụng
-        recyWriteNew = view.findViewById(R.id.recywritenew);
-        adapterNew_clb = new AdapterNew_CLB(getContext(), list_clb_new);
-        recyWriteNew.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyWriteNew.setAdapter(adapterNew_clb);
     }
 
     private SearchView searchView = null;
@@ -281,6 +255,34 @@ public class CLB_IT_Fragment extends Fragment {
             // nếu có sẽ add vào classAdapter
             adapterSearch_cntt.filterList(filteredlist);
             adapterSearch_cntt.notifyDataSetChanged();
+        }
+    }
+
+    TextView txt_view_more;
+    public static int count = -2;
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.view_more:
+                txt_view_more = view.findViewById(R.id.view_more);
+                if (txt_view_more.getText().toString().equals("Xem thêm")) {
+                    if (list_clb.size() + count < list_clb.size()) {
+                        count++;
+                        adapterClb_clb.notifyDataSetChanged();
+                        if (list_clb.size() + count == list_clb.size()) {
+                            txt_view_more.setText("Thu nhỏ");
+                        }
+                    } else {
+                        count = -2;
+                        adapterClb_clb.notifyDataSetChanged();
+                    }
+                } else {
+                    count = -2;
+                    txt_view_more.setText("Xem thêm");
+                    adapterClb_clb.notifyDataSetChanged();
+                }
+                return;
         }
     }
 }
