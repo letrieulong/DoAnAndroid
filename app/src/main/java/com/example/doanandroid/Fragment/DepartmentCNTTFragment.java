@@ -1,8 +1,11 @@
 package com.example.doanandroid.Fragment;
 
+import android.app.DatePickerDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,13 +28,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
+import com.example.doanandroid.Adapter.AdapterFilter;
 import com.example.doanandroid.Adapter.AdapterRecruit_CNTT;
 import com.example.doanandroid.Adapter.AdapterView_CNTT;
+import com.example.doanandroid.Model.Mechanical;
 import com.example.doanandroid.Object.DetailPostActivity;
 import com.example.doanandroid.Object.MainActivity;
 import com.example.doanandroid.Model.CNTT_infor;
@@ -45,12 +54,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_CNTT.ClickItemPost, AdapterView_CNTT.ClickItemPost, View.OnClickListener {
     public DepartmentCNTTFragment() {
         // Required empty public constructor
     }
+    RelativeLayout rela_filter;
+    Button btn_filter, btn_filter_off, btn_search;
+    RecyclerView recy_filter;
+    List<Mechanical> list_filter = new ArrayList<>();
+    List<Mechanical> mechanicalList = new ArrayList<>();
+    AdapterFilter adapterFilter;
 
     RecyclerView recyRecruit;
     RecyclerView recyInfor;
@@ -80,6 +96,11 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
         view.findViewById(R.id.view_more).setOnClickListener(this);
         view.findViewById(R.id.view_more_recruit).setOnClickListener(this);
         view.findViewById(R.id.txt_content).setOnClickListener(this);
+        view.findViewById(R.id.txt_end_date).setOnClickListener(this::onClick);
+        view.findViewById(R.id.txt_start_date).setOnClickListener(this::onClick);
+        view.findViewById(R.id.btn_filter_search).setOnClickListener(this);
+        view.findViewById(R.id.btn_filter).setOnClickListener(this::onClick);
+        view.findViewById(R.id.btn_filter_off).setOnClickListener(this::onClick);
         return view;
     }
 
@@ -111,6 +132,8 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
                     Infor_All_CNTT rss = dt.getValue(Infor_All_CNTT.class);
                     recruit_cnttList.add(rs);
                     list_search.add(rss);
+                    Mechanical ns = dt.getValue(Mechanical.class);
+                    mechanicalList.add(ns);
                     MainActivity.dialog.dismiss();
                 }
                 adapterRecruit_cntt.notifyDataSetChanged();
@@ -156,6 +179,8 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
                     Infor_All_CNTT rs = dt.getValue(Infor_All_CNTT.class);
                     infor_all_cntts.add(rs);
                     list_search.add(rs);
+                    Mechanical ns = dt.getValue(Mechanical.class);
+                    mechanicalList.add(ns);
                 }
                 adapterView_cntt.notifyDataSetChanged();
             }
@@ -204,8 +229,15 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
         viewFlipper = view.findViewById(R.id.viewflipper);
         txt_content = view.findViewById(R.id.txt_content);
 
+        rela_filter = view.findViewById(R.id.linear_filter);
+        btn_filter_off = view.findViewById(R.id.btn_filter_off);
+        btn_filter = view.findViewById(R.id.btn_filter);
 
-        // tìm kiếm
+        // filter
+        recy_filter = view.findViewById(R.id.list_filter);
+        adapterFilter = new AdapterFilter(getContext(), list_filter);
+        recy_filter.setLayoutManager(new LinearLayoutManager(getContext()));
+        recy_filter.setAdapter(adapterFilter);
 
         // list all
         recyInfor = view.findViewById(R.id.recyInfor);
@@ -325,8 +357,13 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
     public static int count_recruit = -2;
     boolean b = true;
 
+    TextView txt_start_date, txt_end_date;
+    String strStartDate = "";
+    String strEndDate = "";
     @Override
     public void onClick(View view) {
+        txt_start_date = view.findViewById(R.id.txt_start_date);
+        txt_end_date = view.findViewById(R.id.txt_end_date);
         switch (view.getId()) {
             case R.id.view_more:
                 txt_view_more = view.findViewById(R.id.view_more);
@@ -372,6 +409,93 @@ public class DepartmentCNTTFragment extends Fragment implements AdapterRecruit_C
                     b = true;
                 }
                 return;
+            case R.id.txt_start_date:
+                calendar(txt_start_date);
+                strStartDate = txt_start_date.getText().toString().trim();
+                return;
+            case R.id.txt_end_date:
+                calendar(txt_end_date);
+                strEndDate = txt_end_date.getText().toString().trim();
+                return;
+            case R.id.btn_filter_search:
+                Toast.makeText(getContext(), strStartDate, Toast.LENGTH_SHORT).show();
+                if (!strEndDate.isEmpty() && !strStartDate.isEmpty()) {
+                    filterdate(strStartDate, strEndDate);
+                }
+                return;
+            case R.id.btn_filter:
+                rela_filter.setVisibility(View.VISIBLE);
+                btn_filter_off.setVisibility(View.VISIBLE);
+                btn_filter.setVisibility(View.GONE);
+                return;
+            case R.id.btn_filter_off:
+                rela_filter.setVisibility(View.GONE);
+                btn_filter_off.setVisibility(View.GONE);
+                btn_filter.setVisibility(View.VISIBLE);
+                return;
         }
+    }
+    // Tìm kiếm giá trị theo mssv
+    private void filterdate(String start, String end) {
+        String StrStart[] = start.split("-");
+        int yearStart = Integer.parseInt(StrStart[2]);
+        int monthStart = Integer.parseInt(StrStart[1]);
+        String StrEnd[] = end.split("-");
+        int yearEnd = Integer.parseInt(StrEnd[2]);
+        int monthEnd = Integer.parseInt(StrEnd[1]);
+        // tạo một danh sách mảng mới để lọc dữ liệu
+        ArrayList<Mechanical> filteredlist = new ArrayList<>();
+
+        // so sánh các phần từ trong adapter
+        for (Mechanical item : mechanicalList) {
+            String strItem[] = item.getDate().replace("/",".").split("\\.");
+//            int yearItem = Integer.parseInt(strItem[2]);
+            int monthItem = Integer.parseInt(strItem[1]);
+            if (2022 <= 2022 && 2022 >= 2022) {
+                // kiểm tra chuỗi vừa nhập có khớp với giá trị cần so sánh hay không
+                if (monthStart <= monthItem && monthItem <= monthEnd) {
+                    filteredlist.add(item);
+                    recy_filter.setVisibility(View.VISIBLE);
+                }
+            } else {
+
+            }
+
+        }
+        // kiểm tra data vừa nhập có chứa nội dung trong adapter hay không
+        if (filteredlist.isEmpty()) {
+        } else {
+            // nếu có sẽ add vào classAdapter
+            adapterFilter.filterList(filteredlist);
+            adapterFilter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * tìm kiếm theo thời gian
+     **/
+    DatePickerDialog.OnDateSetListener setListener;
+
+    // calendar
+    private void calendar(TextView txt) {
+        Calendar calendar = Calendar.getInstance();
+
+        final int year = calendar.get(Calendar.YEAR);
+        final int month = calendar.get(Calendar.MONTH);
+        final int days = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth
+                , setListener, year, month, days);
+        datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        datePickerDialog.show();
+
+        setListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int dayofmonth) {
+                month = month + 1;
+                String date = days + "-" + month + "-" + year;
+                txt.setText(date);
+            }
+        };
     }
 }

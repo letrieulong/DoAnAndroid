@@ -1,8 +1,11 @@
 package com.example.doanandroid.Fragment;
 
+import android.app.DatePickerDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,15 +26,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
+import com.example.doanandroid.Adapter.AdapterFilter;
 import com.example.doanandroid.Adapter.AdapterGroup_New_update;
 import com.example.doanandroid.Adapter.AdapterGroup_SV;
 import com.example.doanandroid.Adapter.AdapterGroup_Search;
 import com.example.doanandroid.Adapter.AdapterGroup_Youth;
+import com.example.doanandroid.Model.Mechanical;
 import com.example.doanandroid.Object.Doan_HoiActivity;
 import com.example.doanandroid.Object.MainActivity;
 import com.example.doanandroid.Model.ContactMechanical;
@@ -44,12 +53,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class GroupYouthFragment extends Fragment implements AdapterGroup_Youth.ClickItemPost, AdapterGroup_New_update.ClickItemNewUpdate, AdapterGroup_SV.ClickItemSV, View.OnClickListener {
     public GroupYouthFragment() {
         // Required empty public constructor
     }
+
+    RelativeLayout rela_filter;
+    Button btn_filter, btn_filter_off, btn_search;
+    RecyclerView recy_filter;
+    List<Mechanical> list_filter = new ArrayList<>();
+    List<Mechanical> mechanicalList = new ArrayList<>();
+    AdapterFilter adapterFilter;
 
     View view;
     ViewFlipper viewFlipper;
@@ -79,7 +96,11 @@ public class GroupYouthFragment extends Fragment implements AdapterGroup_Youth.C
         view.findViewById(R.id.view_more_youth).setOnClickListener(this::onClick);
         view.findViewById(R.id.view_more_sv).setOnClickListener(this::onClick);
         view.findViewById(R.id.view_more_new).setOnClickListener(this::onClick);
-
+        view.findViewById(R.id.txt_end_date).setOnClickListener(this::onClick);
+        view.findViewById(R.id.txt_start_date).setOnClickListener(this::onClick);
+        view.findViewById(R.id.btn_filter_search).setOnClickListener(this);
+        view.findViewById(R.id.btn_filter).setOnClickListener(this::onClick);
+        view.findViewById(R.id.btn_filter_off).setOnClickListener(this::onClick);
         return view;
     }
 
@@ -99,6 +120,15 @@ public class GroupYouthFragment extends Fragment implements AdapterGroup_Youth.C
     // khởi tạo các control
     private void init() {
         viewFlipper = view.findViewById(R.id.viewflipper);
+        rela_filter = view.findViewById(R.id.linear_filter);
+        btn_filter_off = view.findViewById(R.id.btn_filter_off);
+        btn_filter = view.findViewById(R.id.btn_filter);
+
+        // filter
+        recy_filter = view.findViewById(R.id.list_filter);
+        adapterFilter = new AdapterFilter(getContext(), list_filter);
+        recy_filter.setLayoutManager(new LinearLayoutManager(getContext()));
+        recy_filter.setAdapter(adapterFilter);
 
         // tìm kiếm
         recy_list_item = view.findViewById(R.id.list_item);
@@ -164,6 +194,8 @@ public class GroupYouthFragment extends Fragment implements AdapterGroup_Youth.C
                     New_Tranning rs = dt.getValue(New_Tranning.class);
                     new_List_sv.add(rs);
                     new_List_search.add(rs);
+                    Mechanical ns = dt.getValue(Mechanical.class);
+                    mechanicalList.add(ns);
                     MainActivity.dialog.dismiss();
                 }
                 adapterGroup_search.notifyDataSetChanged();
@@ -186,6 +218,8 @@ public class GroupYouthFragment extends Fragment implements AdapterGroup_Youth.C
                     New_Tranning rs = dt.getValue(New_Tranning.class);
                     new_List_youth.add(rs);
                     new_List_search.add(rs);
+                    Mechanical ns = dt.getValue(Mechanical.class);
+                    mechanicalList.add(ns);
                 }
                 adapterGroup_search.notifyDataSetChanged();
                 adapterGroup_youth.notifyDataSetChanged();
@@ -207,6 +241,8 @@ public class GroupYouthFragment extends Fragment implements AdapterGroup_Youth.C
                     list.add(dt.getKey());
                     New_Tranning rs = dt.getValue(New_Tranning.class);
                     new_List_update.add(rs);
+                    Mechanical ns = dt.getValue(Mechanical.class);
+                    mechanicalList.add(ns);
                 }
                 adapterGroup_new_update.notifyDataSetChanged();
             }
@@ -368,8 +404,14 @@ public class GroupYouthFragment extends Fragment implements AdapterGroup_Youth.C
     public static int count_sv = -2;
     public static int count_new = -2;
 
+
+    TextView txt_start_date, txt_end_date;
+    String strStartDate = "";
+    String strEndDate = "";
     @Override
     public void onClick(View view) {
+        txt_start_date = view.findViewById(R.id.txt_start_date);
+        txt_end_date = view.findViewById(R.id.txt_end_date);
         switch (view.getId()) {
             case R.id.view_more_sv:
                 txt_view_sv = view.findViewById(R.id.view_more_sv);
@@ -428,6 +470,93 @@ public class GroupYouthFragment extends Fragment implements AdapterGroup_Youth.C
                     adapterGroup_new_update.notifyDataSetChanged();
                 }
                 return;
+            case R.id.txt_start_date:
+                calendar(txt_start_date);
+                strStartDate = txt_start_date.getText().toString().trim();
+                return;
+            case R.id.txt_end_date:
+                calendar(txt_end_date);
+                strEndDate = txt_end_date.getText().toString().trim();
+                return;
+            case R.id.btn_filter_search:
+                Toast.makeText(getContext(), strStartDate, Toast.LENGTH_SHORT).show();
+                if (!strEndDate.isEmpty() && !strStartDate.isEmpty()) {
+                    filterdate(strStartDate, strEndDate);
+                }
+                return;
+            case R.id.btn_filter:
+                rela_filter.setVisibility(View.VISIBLE);
+                btn_filter_off.setVisibility(View.VISIBLE);
+                btn_filter.setVisibility(View.GONE);
+                return;
+            case R.id.btn_filter_off:
+                rela_filter.setVisibility(View.GONE);
+                btn_filter_off.setVisibility(View.GONE);
+                btn_filter.setVisibility(View.VISIBLE);
+                return;
         }
+    }
+    // Tìm kiếm giá trị theo mssv
+    private void filterdate(String start, String end) {
+        String StrStart[] = start.split("-");
+        int yearStart = Integer.parseInt(StrStart[2]);
+        int monthStart = Integer.parseInt(StrStart[1]);
+        String StrEnd[] = end.split("-");
+        int yearEnd = Integer.parseInt(StrEnd[2]);
+        int monthEnd = Integer.parseInt(StrEnd[1]);
+        // tạo một danh sách mảng mới để lọc dữ liệu
+        ArrayList<Mechanical> filteredlist = new ArrayList<>();
+
+        // so sánh các phần từ trong adapter
+        for (Mechanical item : mechanicalList) {
+            String strItem[] = item.getDate().replace("/",".").replace("-",".").split("\\.");
+//            int yearItem = Integer.parseInt(strItem[2]);
+            int monthItem = Integer.parseInt(strItem[1]);
+            if (2022 <= 2022 && 2022 >= 2022) {
+                // kiểm tra chuỗi vừa nhập có khớp với giá trị cần so sánh hay không
+                if (monthStart <= monthItem && monthItem <= monthEnd) {
+                    filteredlist.add(item);
+                    recy_filter.setVisibility(View.VISIBLE);
+                }
+            } else {
+
+            }
+
+        }
+        // kiểm tra data vừa nhập có chứa nội dung trong adapter hay không
+        if (filteredlist.isEmpty()) {
+        } else {
+            // nếu có sẽ add vào classAdapter
+            adapterFilter.filterList(filteredlist);
+            adapterFilter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * tìm kiếm theo thời gian
+     **/
+    DatePickerDialog.OnDateSetListener setListener;
+
+    // calendar
+    private void calendar(TextView txt) {
+        Calendar calendar = Calendar.getInstance();
+
+        final int year = calendar.get(Calendar.YEAR);
+        final int month = calendar.get(Calendar.MONTH);
+        final int days = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth
+                , setListener, year, month, days);
+        datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        datePickerDialog.show();
+
+        setListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int dayofmonth) {
+                month = month + 1;
+                String date = days + "-" + month + "-" + year;
+                txt.setText(date);
+            }
+        };
     }
 }

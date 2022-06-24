@@ -1,7 +1,10 @@
 package com.example.doanandroid.Fragment;
 
+import android.app.DatePickerDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,14 +26,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
 import com.example.doanandroid.Adapter.AdapterClb_CLB;
+import com.example.doanandroid.Adapter.AdapterFilter;
 import com.example.doanandroid.Adapter.AdapterNew_CLB;
 import com.example.doanandroid.Adapter.AdapterSearch_CNTT;
+import com.example.doanandroid.Model.Mechanical;
 import com.example.doanandroid.Object.MainActivity;
 import com.example.doanandroid.Model.CNTT_infor;
 import com.example.doanandroid.Model.Infor_All_CNTT;
@@ -42,6 +51,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class CLB_IT_Fragment extends Fragment implements View.OnClickListener {
@@ -50,6 +60,13 @@ public class CLB_IT_Fragment extends Fragment implements View.OnClickListener {
     public CLB_IT_Fragment() {
         // Required empty public constructor
     }
+
+    RelativeLayout rela_filter;
+    Button btn_filter, btn_filter_off, btn_search;
+    RecyclerView recy_filter;
+    List<Mechanical> list_filter = new ArrayList<>();
+    List<Mechanical> mechanicalList = new ArrayList<>();
+    AdapterFilter adapterFilter;
 
     RecyclerView recyCLB;
     RecyclerView recy_search;
@@ -64,6 +81,7 @@ public class CLB_IT_Fragment extends Fragment implements View.OnClickListener {
     ViewFlipper viewFlipper;
     Toolbar toolbar;
     View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,13 +93,18 @@ public class CLB_IT_Fragment extends Fragment implements View.OnClickListener {
         Acviewflipper();
         Actionbar();
         view.findViewById(R.id.view_more).setOnClickListener(this::onClick);
-
+        view.findViewById(R.id.txt_end_date).setOnClickListener(this::onClick);
+        view.findViewById(R.id.txt_start_date).setOnClickListener(this::onClick);
+        view.findViewById(R.id.btn_filter_search).setOnClickListener(this);
+        view.findViewById(R.id.btn_filter).setOnClickListener(this::onClick);
+        view.findViewById(R.id.btn_filter_off).setOnClickListener(this::onClick);
         return view;
     }
+
     private void Actionbar() {
         toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +128,8 @@ public class CLB_IT_Fragment extends Fragment implements View.OnClickListener {
                     Infor_All_CNTT rs = dt.getValue(Infor_All_CNTT.class);
                     list_clb.add(rs);
                     list_search.add(rs);
+                    Mechanical ns = dt.getValue(Mechanical.class);
+                    mechanicalList.add(ns);
                     MainActivity.dialog.dismiss();
                 }
                 adapterClb_clb.notifyDataSetChanged();
@@ -145,7 +170,7 @@ public class CLB_IT_Fragment extends Fragment implements View.OnClickListener {
         arrayViewFlipper.add("https://cntt.caothang.edu.vn/wp-content/uploads/2020/03/khao-sat-elearning.png");
         arrayViewFlipper.add("https://cntt.caothang.edu.vn/wp-content/uploads/2020/03/d6db54c43ea7c5f99cb6.jpg");
         arrayViewFlipper.add("https://cntt.caothang.edu.vn/wp-content/uploads/2018/03/presentation-hackathon-2017.jpg");
-        for (int i = 0 ; i < arrayViewFlipper.size(); i++){
+        for (int i = 0; i < arrayViewFlipper.size(); i++) {
             ImageView imageView = new ImageView(getContext());
             Glide.with(this).load(arrayViewFlipper.get(i)).into(imageView);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY); // sét hình ảnh hiển thị full;
@@ -153,8 +178,8 @@ public class CLB_IT_Fragment extends Fragment implements View.OnClickListener {
         }
         viewFlipper.setFlipInterval(5000);
         viewFlipper.setAutoStart(true);
-        Animation animation_slide_in = AnimationUtils.loadAnimation(getContext(),R.anim.slide_right_in);
-        Animation animation_slide_out = AnimationUtils.loadAnimation(getContext(),R.anim.slide_right_out);
+        Animation animation_slide_in = AnimationUtils.loadAnimation(getContext(), R.anim.slide_right_in);
+        Animation animation_slide_out = AnimationUtils.loadAnimation(getContext(), R.anim.slide_right_out);
         viewFlipper.setInAnimation(animation_slide_in);
         viewFlipper.setOutAnimation(animation_slide_out);
     }
@@ -184,10 +209,22 @@ public class CLB_IT_Fragment extends Fragment implements View.OnClickListener {
         adapterClb_clb = new AdapterClb_CLB(getContext(), list_clb);
         recyCLB.setLayoutManager(new LinearLayoutManager(getContext()));
         recyCLB.setAdapter(adapterClb_clb);
+
+        rela_filter = view.findViewById(R.id.linear_filter);
+        btn_filter_off = view.findViewById(R.id.btn_filter_off);
+        btn_filter = view.findViewById(R.id.btn_filter);
+
+        // filter
+        recy_filter = view.findViewById(R.id.list_filter);
+        adapterFilter = new AdapterFilter(getContext(), list_filter);
+        recy_filter.setLayoutManager(new LinearLayoutManager(getContext()));
+        recy_filter.setAdapter(adapterFilter);
+
     }
 
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.search, menu);
@@ -207,12 +244,13 @@ public class CLB_IT_Fragment extends Fragment implements View.OnClickListener {
 
                     filter(newText);
                     recy_search.setVisibility(View.VISIBLE);
-                    if (newText.equals("")){
+                    if (newText.equals("")) {
                         recy_search.setVisibility(View.GONE);
                     }
                     adapterSearch_cntt.notifyDataSetChanged();
                     return true;
                 }
+
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     Log.i("onQueryTextSubmit", query);
@@ -261,8 +299,14 @@ public class CLB_IT_Fragment extends Fragment implements View.OnClickListener {
     TextView txt_view_more;
     public static int count = -2;
 
+    TextView txt_start_date, txt_end_date;
+    String strStartDate = "";
+    String strEndDate = "";
+
     @Override
     public void onClick(View view) {
+        txt_start_date = view.findViewById(R.id.txt_start_date);
+        txt_end_date = view.findViewById(R.id.txt_end_date);
         switch (view.getId()) {
             case R.id.view_more:
                 txt_view_more = view.findViewById(R.id.view_more);
@@ -283,6 +327,95 @@ public class CLB_IT_Fragment extends Fragment implements View.OnClickListener {
                     adapterClb_clb.notifyDataSetChanged();
                 }
                 return;
+            case R.id.txt_start_date:
+                calendar(txt_start_date);
+                strStartDate = txt_start_date.getText().toString().trim();
+                return;
+            case R.id.txt_end_date:
+                calendar(txt_end_date);
+                strEndDate = txt_end_date.getText().toString().trim();
+                return;
+            case R.id.btn_filter_search:
+                Toast.makeText(getContext(), strStartDate, Toast.LENGTH_SHORT).show();
+                if (!strEndDate.isEmpty() && !strStartDate.isEmpty()) {
+                    filterdate(strStartDate, strEndDate);
+                }
+                return;
+            case R.id.btn_filter:
+                rela_filter.setVisibility(View.VISIBLE);
+                btn_filter_off.setVisibility(View.VISIBLE);
+                btn_filter.setVisibility(View.GONE);
+                return;
+            case R.id.btn_filter_off:
+                rela_filter.setVisibility(View.GONE);
+                btn_filter_off.setVisibility(View.GONE);
+                btn_filter.setVisibility(View.VISIBLE);
+                return;
+
         }
+    }
+
+    // Tìm kiếm giá trị theo mssv
+    private void filterdate(String start, String end) {
+        String StrStart[] = start.split("-");
+        int yearStart = Integer.parseInt(StrStart[2]);
+        int monthStart = Integer.parseInt(StrStart[1]);
+        String StrEnd[] = end.split("-");
+        int yearEnd = Integer.parseInt(StrEnd[2]);
+        int monthEnd = Integer.parseInt(StrEnd[1]);
+        // tạo một danh sách mảng mới để lọc dữ liệu
+        ArrayList<Mechanical> filteredlist = new ArrayList<>();
+
+        // so sánh các phần từ trong adapter
+        for (Mechanical item : mechanicalList) {
+            String strItem[] = item.getDate().replace("/", ".").split("\\.");
+//            int yearItem = Integer.parseInt(strItem[2]);
+            int monthItem = Integer.parseInt(strItem[1]);
+            if (2022 <= 2022 && 2022 >= 2022) {
+                // kiểm tra chuỗi vừa nhập có khớp với giá trị cần so sánh hay không
+                if (monthStart <= monthItem && monthItem <= monthEnd) {
+                    filteredlist.add(item);
+                    recy_filter.setVisibility(View.VISIBLE);
+                }
+            } else {
+
+            }
+
+        }
+        // kiểm tra data vừa nhập có chứa nội dung trong adapter hay không
+        if (filteredlist.isEmpty()) {
+        } else {
+            // nếu có sẽ add vào classAdapter
+            adapterFilter.filterList(filteredlist);
+            adapterFilter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * tìm kiếm theo thời gian
+     **/
+    DatePickerDialog.OnDateSetListener setListener;
+
+    // calendar
+    private void calendar(TextView txt) {
+        Calendar calendar = Calendar.getInstance();
+
+        final int year = calendar.get(Calendar.YEAR);
+        final int month = calendar.get(Calendar.MONTH);
+        final int days = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth
+                , setListener, year, month, days);
+        datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        datePickerDialog.show();
+
+        setListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int dayofmonth) {
+                month = month + 1;
+                String date = days + "-" + month + "-" + year;
+                txt.setText(date);
+            }
+        };
     }
 }

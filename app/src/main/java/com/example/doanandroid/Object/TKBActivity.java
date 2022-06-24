@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.doanandroid.Adapter.AdapterSearch_Trainning;
 import com.example.doanandroid.Adapter.AdapterTrainBTN;
@@ -52,11 +53,19 @@ public class TKBActivity extends AppCompatActivity implements View.OnClickListen
     private void init() {
         recy_tkb = findViewById(R.id.recy_tkb);
 
-        if (RoomTrainingFragment.str.equals("HK.PHỤ,GHÉP")){
+        if (RoomTrainingFragment.str.equals("HK.PHỤ,GHÉP")) {
             adapterTrainBTN_hkb = new AdapterTrainBTN_HKB(TKBActivity.this, hkb_modelList);
             recy_tkb.setLayoutManager(new LinearLayoutManager(TKBActivity.this));
             recy_tkb.setAdapter(adapterTrainBTN_hkb);
-        }else {
+        } else if (RoomTrainingFragment.str.equals("LỊCH THI")) {
+            adapterTrainBTN = new AdapterTrainBTN(this, cla_modelList);
+            recy_tkb.setLayoutManager(new LinearLayoutManager(this));
+            recy_tkb.setAdapter(adapterTrainBTN);
+        } else if (RoomTrainingFragment.str.equals("LỊCH ĐÀO TẠO")) {
+            adapterTrainBTN = new AdapterTrainBTN(this, cla_modelList);
+            recy_tkb.setLayoutManager(new LinearLayoutManager(this));
+            recy_tkb.setAdapter(adapterTrainBTN);
+        } else {
             adapterTrainBTN = new AdapterTrainBTN(this, cla_modelList);
             recy_tkb.setLayoutManager(new LinearLayoutManager(this));
             recy_tkb.setAdapter(adapterTrainBTN);
@@ -68,11 +77,13 @@ public class TKBActivity extends AppCompatActivity implements View.OnClickListen
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("list_training");
         DatabaseReference mData = FirebaseDatabase.getInstance().getReference("list_train");
         if (RoomTrainingFragment.str.equals("THỜI KHÓA BIỂU")) {
+            cla_modelList.clear();
+            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
+
             mDatabase.child("list_TKB").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     List<String> list = new ArrayList<>();
-                    cla_modelList.clear();
                     for (DataSnapshot snap : snapshot.getChildren()) {
                         CLA_Model n = snap.getValue(CLA_Model.class);
                         cla_modelList.add(n);
@@ -85,7 +96,9 @@ public class TKBActivity extends AppCompatActivity implements View.OnClickListen
 
                 }
             });
-        } else if (RoomTrainingFragment.str.equals("LỊCH THI")) {
+        }
+        if (RoomTrainingFragment.str.equals("LỊCH THI")) {
+            cla_modelList.clear();
             mDatabase.child("list_claexam").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -122,7 +135,8 @@ public class TKBActivity extends AppCompatActivity implements View.OnClickListen
 
                 }
             });
-        } else {
+        }
+        if (RoomTrainingFragment.str.equals("LỊCH ĐÀO TẠO")) {
             mData.child("list_TKB").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -164,7 +178,7 @@ public class TKBActivity extends AppCompatActivity implements View.OnClickListen
         switch (view.getId()) {
             case R.id.view_more_tkb:
                 txt_view_tkb = view.findViewById(R.id.view_more_tkb);
-                if (RoomTrainingFragment.str.equals("HK.PHỤ,GHÉP")){
+                if (RoomTrainingFragment.str.equals("HK.PHỤ,GHÉP")) {
                     if (txt_view_tkb.getText().toString().equals("Xem thêm")) {
                         if (hkb_modelList.size() + count_tkb < hkb_modelList.size()) {
                             count_tkb++;
@@ -181,7 +195,7 @@ public class TKBActivity extends AppCompatActivity implements View.OnClickListen
                         txt_view_tkb.setText("Xem thêm");
                         adapterTrainBTN_hkb.notifyDataSetChanged();
                     }
-                }else {
+                } else {
                     if (txt_view_tkb.getText().toString().equals("Xem thêm")) {
                         if (cla_modelList.size() + count_tkb < cla_modelList.size()) {
                             count_tkb++;

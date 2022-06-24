@@ -32,9 +32,11 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
+import com.example.doanandroid.Adapter.AdapterFilter;
 import com.example.doanandroid.Adapter.AdapterNotification_Mechanical;
 import com.example.doanandroid.Adapter.AdapterRecruit_Mechanical;
 import com.example.doanandroid.Adapter.AdapterSearch_Mechanical;
@@ -56,18 +58,21 @@ import java.util.List;
 public class DepartmentMechanicalFragment extends Fragment implements View.OnClickListener {
     TextView txt_contetn;
     RelativeLayout rela_filter;
-    Button btn_filter, btn_filter_off;
+    Button btn_filter, btn_filter_off, btn_search;
 
     RecyclerView recyRecruit;
     RecyclerView recyNotification;
     RecyclerView recy_search;
+    RecyclerView recy_filter;
     ViewFlipper viewFlipper;
     AdapterRecruit_Mechanical adapterRecruit_mechanical;
     AdapterSearch_Mechanical adapterSearch_mechanical;
     AdapterNotification_Mechanical adapterNotification_mechanical;
+    AdapterFilter adapterFilter;
     List<Mechanical> mechanicalList = new ArrayList<>();
     List<Mechanical> mechanicalList_noti = new ArrayList<>();
     List<Mechanical> list_search = new ArrayList<>();
+    List<Mechanical> list_filter = new ArrayList<>();
     View view;
 
     public DepartmentMechanicalFragment() {
@@ -87,6 +92,9 @@ public class DepartmentMechanicalFragment extends Fragment implements View.OnCli
         txt_contetn.setOnClickListener(this::onClick);
         view.findViewById(R.id.txt_end_date).setOnClickListener(this::onClick);
         view.findViewById(R.id.txt_start_date).setOnClickListener(this::onClick);
+        view.findViewById(R.id.view_more_recruit).setOnClickListener(this);
+        view.findViewById(R.id.view_more_noti).setOnClickListener(this);
+        view.findViewById(R.id.btn_filter_search).setOnClickListener(this);
         btn_filter.setOnClickListener(this::onClick);
         btn_filter_off.setOnClickListener(this::onClick);
         return view;
@@ -247,11 +255,12 @@ public class DepartmentMechanicalFragment extends Fragment implements View.OnCli
     private void init() {
         viewFlipper = view.findViewById(R.id.viewflipper);
         rela_filter = view.findViewById(R.id.linear_filter);
-        btn_filter_off  = view.findViewById(R.id.btn_filter_off);
-        btn_filter  = view.findViewById(R.id.btn_filter);
+        btn_filter_off = view.findViewById(R.id.btn_filter_off);
+        btn_filter = view.findViewById(R.id.btn_filter);
         txt_contetn = view.findViewById(R.id.txt_content);
         txt_contetn.setMaxLines(5);
         txt_contetn.setEllipsize(TextUtils.TruncateAt.END);
+
         // tìm kiếm
         recy_search = view.findViewById(R.id.list_item);
         adapterSearch_mechanical = new AdapterSearch_Mechanical(getContext(), list_search);
@@ -269,6 +278,12 @@ public class DepartmentMechanicalFragment extends Fragment implements View.OnCli
         adapterNotification_mechanical = new AdapterNotification_Mechanical(getContext(), mechanicalList_noti);
         recyNotification.setLayoutManager(new LinearLayoutManager(getContext()));
         recyNotification.setAdapter(adapterNotification_mechanical);
+
+        // filter
+        recy_filter = view.findViewById(R.id.list_filter);
+        adapterFilter = new AdapterFilter(getContext(), list_filter);
+        recy_filter.setLayoutManager(new LinearLayoutManager(getContext()));
+        recy_filter.setAdapter(adapterFilter);
     }
 
     /**
@@ -351,9 +366,18 @@ public class DepartmentMechanicalFragment extends Fragment implements View.OnCli
     }
 
     boolean b = true;
+    TextView txt_view_more;
+    TextView txt_view_more1;
+    TextView txt_start_date, txt_end_date;
+    public static int count = -2;
+    public static int count_recruit = -2;
+    String strStartDate = "";
+    String strEndDate = "";
 
     @Override
     public void onClick(View view) {
+        txt_start_date = view.findViewById(R.id.txt_start_date);
+        txt_end_date = view.findViewById(R.id.txt_end_date);
         switch (view.getId()) {
             case R.id.txt_content:
                 if (b) {
@@ -367,10 +391,12 @@ public class DepartmentMechanicalFragment extends Fragment implements View.OnCli
                 }
                 return;
             case R.id.txt_start_date:
-                calendar(view.findViewById(R.id.txt_start_date));
+                calendar(txt_start_date);
+                strStartDate = txt_start_date.getText().toString().trim();
                 return;
             case R.id.txt_end_date:
-                calendar(view.findViewById(R.id.txt_end_date));
+                calendar(txt_end_date);
+                strEndDate = txt_end_date.getText().toString().trim();
                 return;
             case R.id.btn_filter:
                 rela_filter.setVisibility(View.VISIBLE);
@@ -382,6 +408,83 @@ public class DepartmentMechanicalFragment extends Fragment implements View.OnCli
                 btn_filter_off.setVisibility(View.GONE);
                 btn_filter.setVisibility(View.VISIBLE);
                 return;
+            case R.id.view_more_recruit:
+                txt_view_more1 = view.findViewById(R.id.view_more_recruit);
+                if (txt_view_more1.getText().toString().equals("Xem thêm")) {
+                    if (mechanicalList.size() + count_recruit < mechanicalList.size()) {
+                        count_recruit++;
+                        adapterRecruit_mechanical.notifyDataSetChanged();
+                        if (mechanicalList.size() + count_recruit == mechanicalList.size()) {
+                            txt_view_more1.setText("Thu nhỏ");
+                        }
+                    }
+                } else {
+                    count_recruit = -2;
+                    txt_view_more1.setText("Xem thêm");
+                    adapterRecruit_mechanical.notifyDataSetChanged();
+                }
+                return;
+            case R.id.view_more_noti:
+                txt_view_more = view.findViewById(R.id.view_more_noti);
+                if (txt_view_more.getText().toString().equals("Xem thêm")) {
+                    if (mechanicalList_noti.size() + count < mechanicalList_noti.size()) {
+                        count++;
+                        adapterNotification_mechanical.notifyDataSetChanged();
+                        if (mechanicalList_noti.size() + count == mechanicalList_noti.size()) {
+                            txt_view_more.setText("Thu nhỏ");
+                        }
+                    }
+                } else {
+                    count = -2;
+                    txt_view_more.setText("Xem thêm");
+                    adapterNotification_mechanical.notifyDataSetChanged();
+                }
+                return;
+            case R.id.btn_filter_search:
+                Toast.makeText(getContext(), strStartDate, Toast.LENGTH_SHORT).show();
+                if (!strEndDate.isEmpty() && !strStartDate.isEmpty()) {
+                    filterdate(strStartDate, strEndDate);
+                }
+
+                return;
+
+        }
+    }
+
+    // Tìm kiếm giá trị theo mssv
+    private void filterdate(String start, String end) {
+        String StrStart[] = start.split("-");
+        int yearStart = Integer.parseInt(StrStart[2]);
+        int monthStart = Integer.parseInt(StrStart[1]);
+        String StrEnd[] = end.split("-");
+        int yearEnd = Integer.parseInt(StrEnd[2]);
+        int monthEnd = Integer.parseInt(StrEnd[1]);
+        // tạo một danh sách mảng mới để lọc dữ liệu
+        ArrayList<Mechanical> filteredlist = new ArrayList<>();
+
+        // so sánh các phần từ trong adapter
+        for (Mechanical item : list_search) {
+            String strItem[] = item.getDate().split("\\.");
+//            int yearItem = Integer.parseInt(strItem[2]);
+            int monthItem = Integer.parseInt(strItem[1]);
+            if (2022 <= 2022 && 2022 >= 2022) {
+                // kiểm tra chuỗi vừa nhập có khớp với giá trị cần so sánh hay không
+                if (monthStart <= monthItem && monthItem <= monthEnd) {
+                    filteredlist.add(item);
+                    recy_filter.setVisibility(View.VISIBLE);
+                }
+            } else {
+
+            }
+
+        }
+        // kiểm tra data vừa nhập có chứa nội dung trong adapter hay không
+        if (filteredlist.isEmpty()) {
+        } else {
+            // nếu có sẽ add vào classAdapter
+            adapterFilter.filterList(filteredlist);
+            adapterSearch_mechanical.notifyDataSetChanged();
+            adapterFilter.notifyDataSetChanged();
         }
     }
 

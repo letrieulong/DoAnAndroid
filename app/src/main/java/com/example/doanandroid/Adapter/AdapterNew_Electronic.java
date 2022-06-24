@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.doanandroid.Fragment.DepmentElectronicFragment;
 import com.example.doanandroid.Model.News_Electronic;
 import com.example.doanandroid.R;
 
@@ -43,7 +44,7 @@ public class AdapterNew_Electronic extends RecyclerView.Adapter<AdapterNew_Elect
 
     @Override
     public int getItemCount() {
-        return news_electronics.size();
+        return news_electronics.size() + DepmentElectronicFragment.count;
     }
 
     public class ViewHodel extends RecyclerView.ViewHolder {

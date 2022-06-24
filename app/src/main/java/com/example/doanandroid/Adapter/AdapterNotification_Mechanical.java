@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanandroid.Fragment.DepartmentMechanicalFragment;
 import com.example.doanandroid.Model.Mechanical;
 import com.example.doanandroid.R;
 
@@ -42,7 +43,7 @@ public class AdapterNotification_Mechanical extends RecyclerView.Adapter<Adapter
 
     @Override
     public int getItemCount() {
-        return mechanicalList.size();
+        return mechanicalList.size() + DepartmentMechanicalFragment.count;
     }
 
     public class ViewHodel extends RecyclerView.ViewHolder {

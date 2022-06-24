@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_2"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.DepartmentCNTTFragment">
 
@@ -18,12 +19,107 @@
             android:layout_height="wrap_content"
             android:background="#32a3dc"
             app:navigationIcon="@drawable/back"
+            android:paddingEnd="50dp"
             app:title="KHOA CÔNG NGHỆ THÔNG TIN"
             app:titleTextAppearance="@style/Widget.MaterialComponents.TextView"
             app:titleTextColor="@color/white" />
+
+        <Button
+            android:id="@+id/btn_filter"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/filter" />
+
+        <Button
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/btn_filter_off"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/filter_off"
+            android:visibility="gone" />
     </RelativeLayout>
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/linear_filter"
+        android:layout_below="@id/relate_toolbar"
+        android:layout_width="match_parent"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:gravity="center"
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#32a3dc"
+            android:paddingBottom="5dp"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp"
+            android:paddingTop="5dp"
+            android:weightSum="3">
+
+            <TextView
+                android:textColor="#000000"
+                android:id="@+id/txt_start_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_weight="0.97"
+                android:background="@drawable/date"
+                android:hint="14/01/2022"
+                android:paddingVertical="10dp"
+                android:paddingStart="10dp"
+                android:textSize="14dp" />
+
+            <TextView
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="đến"
+                android:layout_marginHorizontal="5dp"
+                android:textSize="15dp" />
+
+            <TextView
+                android:textColor="#000000"
+                android:id="@+id/txt_end_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.97"
+                android:background="@drawable/date"
+                android:hint="14/02/2022"
+                android:paddingVertical="10dp"
+                android:paddingStart="10dp"
+                android:layout_marginEnd="5dp"
+                android:textSize="14dp" />
+            <Button
+                android:id="@+id/btn_filter_search"
+                style="@style/TextAppearance.AppCompat"
+                android:layout_weight="1.1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Tìm kiếm"
+                android:background="@drawable/edt_view"
+                android:layout_below="@+id/line1"/>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="wrap_content"
+            android:id="@+id/list_filter"
+            android:background="@color/white"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/line1"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
     <androidx.core.widget.NestedScrollView
-        android:layout_below="@+id/relate_toolbar"
+        android:layout_below="@+id/linear_filter"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
