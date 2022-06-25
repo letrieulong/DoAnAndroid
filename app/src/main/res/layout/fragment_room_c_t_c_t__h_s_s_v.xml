@@ -132,6 +132,49 @@
                 android:layout_width="match_parent"
                 android:layout_height="190dp" />
 
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="10dp"
+                android:padding="15dp"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+
+                    <Button
+                        android:id="@+id/btn_shcn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btntkb"
+                        android:padding="10dp"
+                        android:text="Nội Dung\nSHCN"
+                        android:textColor="@color/white" />
+
+                    <Button
+                        android:id="@+id/btn_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/btncalen"
+                        android:padding="10dp"
+                        android:text="Lịch\nPhòng Học"
+                        android:textColor="@color/white" />
+
+                    <Button
+                        android:id="@+id/btn_registerSV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/btntkb"
+                        android:padding="10dp"
+                        android:text="Đăng Ký\nXác Nhận SV"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </HorizontalScrollView>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

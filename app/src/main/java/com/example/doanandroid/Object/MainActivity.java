@@ -272,9 +272,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                        txt_name_toolbar.setText("THÔNG TIN CÁ NHÂN");
 //                        fragment = new InforUserFragment();
 //                        loadFragment(fragment);
-                        startActivity(new Intent(MainActivity.this, InfoActivity.class));
-                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                        dialog.show();
+                        startActivity(new Intent(MainActivity.this, SearchActivity.class));
+//                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+//                        dialog.show();
                         return true;
                 }
                 return false;

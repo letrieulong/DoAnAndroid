@@ -2,6 +2,7 @@ package com.example.doanandroid.Model;
 
 public class CLA_Model {
     String title;
+    String content;
     TKB_link link;
 
     public CLA_Model() {
@@ -21,5 +22,13 @@ public class CLA_Model {
 
     public void setLink(TKB_link link) {
         this.link = link;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

@@ -38,11 +38,14 @@ import com.bumptech.glide.Glide;
 import com.example.doanandroid.Adapter.AdapterCTCT_HSSV_noti;
 import com.example.doanandroid.Adapter.AdapterFilter;
 import com.example.doanandroid.Adapter.AdapterSearch_CTCT_HSSV;
+import com.example.doanandroid.Model.CLA_Model;
 import com.example.doanandroid.Model.Mechanical;
 import com.example.doanandroid.Object.CTCT_HSSVActivity;
 import com.example.doanandroid.Object.MainActivity;
 import com.example.doanandroid.Model.ContactMechanical;
 import com.example.doanandroid.Model.New_Tranning;
+import com.example.doanandroid.Object.SHCNActivity;
+import com.example.doanandroid.Object.TKBActivity;
 import com.example.doanandroid.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -64,6 +67,7 @@ public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_
     RecyclerView recy_filter;
     List<Mechanical> list_filter = new ArrayList<>();
     List<Mechanical> mechanicalList = new ArrayList<>();
+    List<CLA_Model> cla_modelList = new ArrayList<>();
     AdapterFilter adapterFilter;
 
 
@@ -94,6 +98,9 @@ public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_
         view.findViewById(R.id.btn_filter_search).setOnClickListener(this);
         view.findViewById(R.id.btn_filter).setOnClickListener(this::onClick);
         view.findViewById(R.id.btn_filter_off).setOnClickListener(this::onClick);
+        view.findViewById(R.id.btn_shcn).setOnClickListener(this::onClick);
+        view.findViewById(R.id.btn_room).setOnClickListener(this::onClick);
+        view.findViewById(R.id.btn_registerSV).setOnClickListener(this::onClick);
         return view;
     }
 
@@ -336,6 +343,8 @@ public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_
         i.putExtra("recruit", new_tranning);
         startActivity(i);
     }
+
+    public static int btn_count;
     TextView txt_start_date, txt_end_date;
     String strStartDate = "";
     String strEndDate = "";
@@ -381,6 +390,18 @@ public class RoomCTCT_HSSVFragment extends Fragment implements AdapterCTCT_HSSV_
                 rela_filter.setVisibility(View.GONE);
                 btn_filter_off.setVisibility(View.GONE);
                 btn_filter.setVisibility(View.VISIBLE);
+                return;
+            case R.id.btn_shcn:
+                btn_count = 1;
+                startActivity(new Intent(getActivity(), SHCNActivity.class));
+                return;
+            case R.id.btn_room:
+                btn_count = 2;
+                startActivity(new Intent(getActivity(), SHCNActivity.class));
+                return;
+            case R.id.btn_registerSV:
+                btn_count = 3;
+                startActivity(new Intent(getActivity(), SHCNActivity.class));
                 return;
         }
     }

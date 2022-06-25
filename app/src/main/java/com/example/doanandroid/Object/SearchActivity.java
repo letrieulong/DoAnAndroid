@@ -153,18 +153,18 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         switch (view.getId()) {
             case R.id.txt_date_end:
 //                calendar(txt_end_date);
-                DatabaseReference mDatabsase = FirebaseDatabase.getInstance().getReference("list_training");
+                DatabaseReference mDatabsase = FirebaseDatabase.getInstance().getReference("list_ctct_hssv");
                 UUID uuid_ctt = UUID.randomUUID();
                 String id_ctt = uuid_ctt.toString();
                 String userkey = mDatabsase.push().getKey();
                 ContentLink ctt = new ContentLink(id_ctt, "", "");
-                mDatabsase.child("list_HKP/" + userId + "/link/" + userkey).setValue(ctt);
+                mDatabsase.child("list_roomschool/" + userId + "/link/" + userkey).setValue(ctt);
 //                Toast.makeText(this, userId, Toast.LENGTH_SHORT).show();
 
                 return;
             case R.id.txt_date_start:
 //                calendar(txt_start_date);
-                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("list_training");
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("list_ctct_hssv");
 
                 UUID uuid = UUID.randomUUID();
                 String id = uuid.toString();
@@ -182,7 +182,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 Mechanical rs = new Mechanical(id, title,"", date, views, size, content_link);
                 Tuition t = new Tuition("","","","");
                 userId = mDatabase.push().getKey();
-                mDatabase.child("list_HKP/"+userId).setValue(t);
+                mDatabase.child("list_roomschool/"+userId).setValue(t);
                 return;
             case R.id.edt_search_1:
 //                Search(edt_search);
